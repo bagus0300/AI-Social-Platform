@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34302.71
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI-Social-Platform.Server", "AI-Social-Platform.Server\AI-Social-Platform.Server.csproj", "{C0F9711C-6FEA-4920-AAD1-BF0DB2470BF8}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "ai-social-platform.client", "ai-social-platform.client\ai-social-platform.client.esproj", "{11770EC5-284F-46B4-A8C1-678F8BCCC032}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C0F9711C-6FEA-4920-AAD1-BF0DB2470BF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0F9711C-6FEA-4920-AAD1-BF0DB2470BF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0F9711C-6FEA-4920-AAD1-BF0DB2470BF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0F9711C-6FEA-4920-AAD1-BF0DB2470BF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11770EC5-284F-46B4-A8C1-678F8BCCC032}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11770EC5-284F-46B4-A8C1-678F8BCCC032}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11770EC5-284F-46B4-A8C1-678F8BCCC032}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{11770EC5-284F-46B4-A8C1-678F8BCCC032}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11770EC5-284F-46B4-A8C1-678F8BCCC032}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11770EC5-284F-46B4-A8C1-678F8BCCC032}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {87EC6F88-DE6A-4846-B723-521B7E02ABBF}
+	EndGlobalSection
+EndGlobal
