@@ -3,9 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34302.71
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI-Social-Platform.Server", "AI-Social-Platform.Server\AI-Social-Platform.Server.csproj", "{C0F9711C-6FEA-4920-AAD1-BF0DB2470BF8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI-Social-Platform.Server", "AI-Social-Platform.Server\AI-Social-Platform.Server.csproj", "{C0F9711C-6FEA-4920-AAD1-BF0DB2470BF8}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "ai-social-platform.client", "ai-social-platform.client\ai-social-platform.client.esproj", "{11770EC5-284F-46B4-A8C1-678F8BCCC032}"
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "AI-Social-Platform.Client", "ai-social-platform.client\AI-Social-Platform.Client.esproj", "{11770EC5-284F-46B4-A8C1-678F8BCCC032}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI-Social-Platform.Common", "AI-Social-Platform.Common\AI-Social-Platform.Common.csproj", "{99C73B5C-76A3-4A7C-A599-067E60090946}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI-Social-Platform.Core", "AI-Social-Platform.Core\AI-Social-Platform.Core.csproj", "{304B978A-7127-471D-9662-7C9A5EEF8D19}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI-Social-Platform.Data", "AI-Social-Platform.Data\AI-Social-Platform.Data.csproj", "{CE99556D-5A93-48CC-954E-AAEF78B05919}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI-Social-Platform.Data.Models", "AI-Social-Platform.Data.Models\AI-Social-Platform.Data.Models.csproj", "{1610144E-93E3-4D83-87B5-2BFD84A01282}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI-Social-Platform.Services.Data", "TravelAgency.Services.Data\AI-Social-Platform.Services.Data.csproj", "{D9E2E19B-CDEE-4FD0-844A-67529DFA1AC0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{3186CD87-6009-482A-B753-BC8E12C368AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI-Social-Platform.Services.Data.Models", "AI-Social-Platform.Services.Data.Models\AI-Social-Platform.Services.Data.Models.csproj", "{84A39DFF-394A-48AD-80E4-DD4AB1A11B7E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,9 +37,37 @@ Global
 		{11770EC5-284F-46B4-A8C1-678F8BCCC032}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11770EC5-284F-46B4-A8C1-678F8BCCC032}.Release|Any CPU.Build.0 = Release|Any CPU
 		{11770EC5-284F-46B4-A8C1-678F8BCCC032}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{99C73B5C-76A3-4A7C-A599-067E60090946}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99C73B5C-76A3-4A7C-A599-067E60090946}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99C73B5C-76A3-4A7C-A599-067E60090946}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99C73B5C-76A3-4A7C-A599-067E60090946}.Release|Any CPU.Build.0 = Release|Any CPU
+		{304B978A-7127-471D-9662-7C9A5EEF8D19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{304B978A-7127-471D-9662-7C9A5EEF8D19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{304B978A-7127-471D-9662-7C9A5EEF8D19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{304B978A-7127-471D-9662-7C9A5EEF8D19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE99556D-5A93-48CC-954E-AAEF78B05919}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE99556D-5A93-48CC-954E-AAEF78B05919}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE99556D-5A93-48CC-954E-AAEF78B05919}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE99556D-5A93-48CC-954E-AAEF78B05919}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1610144E-93E3-4D83-87B5-2BFD84A01282}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1610144E-93E3-4D83-87B5-2BFD84A01282}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1610144E-93E3-4D83-87B5-2BFD84A01282}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1610144E-93E3-4D83-87B5-2BFD84A01282}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9E2E19B-CDEE-4FD0-844A-67529DFA1AC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9E2E19B-CDEE-4FD0-844A-67529DFA1AC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9E2E19B-CDEE-4FD0-844A-67529DFA1AC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9E2E19B-CDEE-4FD0-844A-67529DFA1AC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84A39DFF-394A-48AD-80E4-DD4AB1A11B7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84A39DFF-394A-48AD-80E4-DD4AB1A11B7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84A39DFF-394A-48AD-80E4-DD4AB1A11B7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84A39DFF-394A-48AD-80E4-DD4AB1A11B7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D9E2E19B-CDEE-4FD0-844A-67529DFA1AC0} = {3186CD87-6009-482A-B753-BC8E12C368AF}
+		{84A39DFF-394A-48AD-80E4-DD4AB1A11B7E} = {3186CD87-6009-482A-B753-BC8E12C368AF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {87EC6F88-DE6A-4846-B723-521B7E02ABBF}

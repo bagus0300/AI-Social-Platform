@@ -13,15 +13,26 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy">
-      <Version>6.*-*</Version>
+      <Version>6.0.24</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.24">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.ApiDescription.Server" Version="6.0.24">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ai-social-platform.client\ai-social-platform.client.esproj">
+    <ProjectReference Include="..\ai-social-platform.client\AI-Social-Platform.Client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="..\AI-Social-Platform.Common\AI-Social-Platform.Common.csproj" />
+    <ProjectReference Include="..\AI-Social-Platform.Data\AI-Social-Platform.Data.csproj" />
+    <ProjectReference Include="..\TravelAgency.Services.Data\AI-Social-Platform.Services.Data.csproj" />
   </ItemGroup>
 
 </Project>
