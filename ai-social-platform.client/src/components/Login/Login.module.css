@@ -6,7 +6,7 @@ a:visited {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80vh;
+    min-height: 100vh;
     background-color: #eee;
 }
 
@@ -134,25 +134,28 @@ a:visited {
 } */
 
 @media screen and (width < 900px) {
+
     .login-wrapper {
         flex-direction: column-reverse;
+    }
+
+    .login-form-wrapper {
+        border-bottom-right-radius: 0.5em;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
     }
 
     .media-content {
         background-color: #004aad;
         text-align: center;
+        border-top-left-radius: 0.5em;
+        border-top-right-radius: 0.5em;
     }
 
     .media-content img {
         height: auto;
         width: 300px;
         border-top-left-radius: 0.5em;
-        border-bottom-right-radius: 0;
-    }
-
-    .login-wrapper {
-        border-bottom-left-radius: 0.5em;
-        border-bottom-right-radius: 0.5em;
     }
 
     .email-wrapper i,
@@ -163,6 +166,11 @@ a:visited {
     /* .input-checkbox {
         transform: scale(0.9);
     } */
+
+    .forgot-password a {
+        top: 0.4em;
+        left: 8em;
+    }
 
     .create-account {
         padding-bottom: 2em;
