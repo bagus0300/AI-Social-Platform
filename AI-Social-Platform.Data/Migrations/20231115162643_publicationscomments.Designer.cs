@@ -4,6 +4,7 @@ using AI_Social_Platform.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AI_Social_Platform.Data.Migrations
 {
     [DbContext(typeof(ASPDbContext))]
-    partial class ASPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231115162643_publicationscomments")]
+    partial class publicationscomments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -138,33 +140,6 @@ namespace AI_Social_Platform.Data.Migrations
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         });
-                });
-
-            modelBuilder.Entity("AI_Social_Platform.Data.Models.Media", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<byte[]>("DataFile")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Title")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("MediaFiles");
                 });
 
             modelBuilder.Entity("AI_Social_Platform.Data.Models.Publication.Comment", b =>
