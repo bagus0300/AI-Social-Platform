@@ -12,8 +12,10 @@ builder.Services.AddDbContext<ASPDbContext>(options =>
 
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
+
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddScoped<IPublicationService, PublicationService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
