@@ -32,7 +32,7 @@
     </ProjectReference>
     <ProjectReference Include="..\AI-Social-Platform.Common\AI-Social-Platform.Common.csproj" />
     <ProjectReference Include="..\AI-Social-Platform.Data\AI-Social-Platform.Data.csproj" />
-    <ProjectReference Include="..\TravelAgency.Services.Data\AI-Social-Platform.Services.Data.csproj" />
+    <ProjectReference Include="..\AI-Social-Platform.Services.Data\AI-Social-Platform.Services.Data.csproj" />
   </ItemGroup>
 
 </Project>
