@@ -107,4 +107,34 @@ public class PublicationController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
+    [HttpDelete("comment/{id}", Name = "deleteComment")]
+    public async Task<IActionResult> DeleteComment(Guid id)
+    {
+        try
+        {
+            await publicationService.DeleteCommentAsync(id);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+
+    [HttpPut("comment/{id}", Name = "updateComment")]
+    public async Task<IActionResult> UpdateComment(CommentFormDto dto, Guid id)
+    {
+        try
+        {
+            await publicationService.UpdateCommentAsync(dto, id);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
 }

@@ -135,13 +135,28 @@ public class PublicationService : IPublicationService
         await dbContext.SaveChangesAsync();
     }
 
-    public Task UpdateCommentAsync(CommentFormDto dto, Guid id)
+    public async Task UpdateCommentAsync(CommentFormDto dto, Guid id)
     {
-        throw new NotImplementedException();
+       var comment = await dbContext.Comments.FirstOrDefaultAsync(c => c.Id == id);
+       if (comment == null)
+       {
+           throw new Exception("Comment not found");
+       }
+
+       comment.Content = dto.Content;
+       await dbContext.SaveChangesAsync();
     }
 
-    public Task DeleteCommentAsync(Guid id)
+    public async Task DeleteCommentAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var comment = await dbContext.Comments.FirstOrDefaultAsync(c => c.Id == id);
+
+        if(comment == null)
+        {
+            throw new Exception("Comment not found");
+        }
+
+        dbContext.Comments.Remove(comment);
+        await dbContext.SaveChangesAsync();
     }
 }
