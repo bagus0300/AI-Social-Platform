@@ -1,0 +1,170 @@
+a:visited {
+    color: #004aad;
+}
+
+.section-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    background-color: #eee;
+}
+
+.login-wrapper {
+    display: flex;
+    box-shadow: 0 0 1em rgba(171, 171, 171, 0.5);
+    border-top-left-radius: 0.5em;
+    border-bottom-left-radius: 0.5em;
+}
+
+.login-form-wrapper {
+    padding: 2em 3em 0 3em;
+    background-color: #fff;
+    border-top-left-radius: 0.5em;
+    border-bottom-left-radius: 0.5em;
+}
+
+.login-form-wrapper h2 {
+    padding-bottom: 0.2em;
+}
+
+.login-form-wrapper p {
+    color: #7e7e7e;
+}
+
+.media-content img {
+    border-top-right-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
+    height: 100%;
+    width: auto;
+}
+
+.login-form {
+    margin-top: 1em;
+}
+
+.email-wrapper,
+.password-wrapper {
+    position: relative;
+}
+
+.email-wrapper {
+    padding-bottom: 1em;
+}
+
+.input-field {
+    padding: 0.2em 0.5em 0.2em 2em;
+    border: 1px solid #aaa;
+    border-radius: 0.3em;
+    font-size: 1em;
+    width: 90%;
+}
+
+.email-wrapper i,
+.password-wrapper i {
+    position: absolute;
+    left: 0.5em;
+    top: 0.3em;
+    color: #aaa;
+}
+
+.forgot-password {
+    font-size: 0.8em;
+    text-align: center;
+    margin-top: 1em;
+    border-bottom: 1px solid #aaa;
+    position: relative;
+    padding: 0.5em;
+}
+
+.forgot-password a {
+    text-decoration: none;
+    position: absolute;
+    top: 0.3em;
+    left: 6.2em;
+    background-color: #fff;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+.login-button {
+    margin-top: 1.5em;
+    padding: 0.2em 0;
+    border: 1px solid #aaa;
+    border-radius: 0.3em;
+    font-size: 1.2em;
+    width: 100%;
+    background-color: #004aad;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.4s ease-in-out;
+}
+
+.login-button:hover {
+    border-radius: 0;
+    background-color: #003b88;
+}
+
+.create-account {
+    margin-top: 2.8em;
+    font-size: 0.7em;
+    display: flex;
+    justify-content: center;
+    gap: 0.3em;
+}
+
+.create-account a {
+    text-decoration: none;
+    color: #004aad;
+}
+
+.create-account a:hover {
+    text-decoration: underline;
+}
+
+/* .remember-me {
+    display: flex;
+    gap: 0.2em;
+} */
+
+/* .input-checkbox {
+    transform: scale(1.1);
+} */
+
+@media screen and (width < 900px) {
+    .login-wrapper {
+        flex-direction: column-reverse;
+    }
+
+    .media-content {
+        background-color: #004aad;
+        text-align: center;
+    }
+
+    .media-content img {
+        height: auto;
+        width: 300px;
+        border-top-left-radius: 0.5em;
+        border-bottom-right-radius: 0;
+    }
+
+    .login-wrapper {
+        border-bottom-left-radius: 0.5em;
+        border-bottom-right-radius: 0.5em;
+    }
+
+    .email-wrapper i,
+    .password-wrapper i {
+        top: 0.4em;
+    }
+
+    /* .input-checkbox {
+        transform: scale(0.9);
+    } */
+
+    .create-account {
+        padding-bottom: 2em;
+    }
+}

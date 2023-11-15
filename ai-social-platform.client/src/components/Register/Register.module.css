@@ -1,0 +1,163 @@
+a:visited {
+    color: #004aad;
+}
+
+.section-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    background-color: #eee;
+}
+
+.register-wrapper {
+    display: flex;
+    box-shadow: 0 0 1em rgba(171, 171, 171, 0.5);
+    border-radius: 0.5em;
+}
+
+.register-form-wrapper {
+    padding: 2em 1em 1em 2em;
+    background-color: #fff;
+    border-top-right-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
+    text-align: center;
+}
+
+.register-form-wrapper h2 {
+    padding-bottom: 0.2em;
+}
+
+.register-form-wrapper p {
+    color: #7e7e7e;
+}
+
+.media-content {
+    background-color: #004aad;
+    border-top-left-radius: 0.5em;
+    border-bottom-left-radius: 0.5em;
+}
+
+.media-content img {
+    width: 100%;
+    height: auto;
+}
+
+.register-form {
+    margin-top: 1em;
+}
+
+.names-wrapper {
+    display: flex;
+    gap: 0.5em;
+}
+
+.name-input {
+    font-size: 1em;
+    padding: 0.2em 0 0.2em 2em;
+    border: 1px solid #aaa;
+    border-radius: 0.3em;
+}
+
+.email-wrapper,
+.password-wrapper,
+.first-name,
+.last-name,
+.confirm-password-wrapper {
+    position: relative;
+}
+
+.names-wrapper,
+.email-wrapper,
+.password-wrapper {
+    padding-bottom: 1em;
+}
+
+.input-field {
+    padding: 0.2em 0.5em 0.2em 2em;
+    border: 1px solid #aaa;
+    border-radius: 0.3em;
+    font-size: 1em;
+    width: 93%;
+}
+
+.email-wrapper i,
+.password-wrapper i,
+.first-name i,
+.last-name i,
+.confirm-password-wrapper i {
+    position: absolute;
+    left: 0.5em;
+    top: 0.3em;
+    color: #aaa;
+}
+
+.register-button {
+    margin-top: 1.5em;
+    padding: 0.2em 0;
+    border: 1px solid #aaa;
+    border-radius: 0.3em;
+    font-size: 1.2em;
+    width: 100%;
+    background-color: #004aad;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.4s ease-in-out;
+}
+
+.register-button:hover {
+    border-radius: 0;
+    background-color: #003b88;
+}
+
+.sign-in {
+    margin-top: 2.8em;
+    font-size: 0.7em;
+    display: flex;
+    justify-content: center;
+    gap: 0.3em;
+}
+
+.sign-in a {
+    text-decoration: none;
+    color: #004aad;
+}
+
+.sign-in a:hover {
+    text-decoration: underline;
+}
+
+@media screen and (width < 900px) {
+    .register-wrapper {
+        flex-direction: column;
+    }
+
+    .media-content {
+        text-align: center;
+    }
+
+    .media-content img {
+        height: auto;
+        width: 300px;
+        border-top-left-radius: 0.5em;
+        border-bottom-right-radius: 0;
+    }
+
+    .register-wrapper {
+        border-bottom-left-radius: 0.5em;
+        border-bottom-right-radius: 0.5em;
+    }
+
+    .email-wrapper i,
+    .password-wrapper i {
+        top: 0.4em;
+    }
+
+    /* .input-checkbox {
+        transform: scale(0.9);
+    } */
+
+    .create-account {
+        padding-bottom: 2em;
+    }
+}

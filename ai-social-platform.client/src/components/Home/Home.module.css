@@ -1,0 +1,11 @@
+.home-page {
+    display: flex;
+    height: 80vh;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+}
+
+.home-page a {
+    text-decoration: none;
+}
