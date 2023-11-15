@@ -13,11 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AI-Social-Platform.Common\AI-Social-Platform.Common.csproj" />
+    <Folder Include="Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
+    <ProjectReference Include="..\AI-Social-Platform.Common\AI-Social-Platform.Common.csproj" />
   </ItemGroup>
 
 </Project>

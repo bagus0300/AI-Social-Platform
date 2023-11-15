@@ -10,6 +10,7 @@
         public ApplicationUser()
         {
             this.Id = Guid.NewGuid();
+            this.Publications = new HashSet<Publication.Publication>();
         }
 
         [Required]
@@ -19,5 +20,7 @@
         [Required]
         [MaxLength(LastNameMaxLength)]
         public string LastName { get; set; } = null!;
+
+        public ICollection<Publication.Publication> Publications { get; set; }
     }
 }
