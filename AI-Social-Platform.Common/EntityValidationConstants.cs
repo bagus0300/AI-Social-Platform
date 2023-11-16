@@ -15,6 +15,13 @@
 
             public const int PhoneNumberMaxLength = 10;
             public const int PhoneNumberMinLength = 8;
+
+        }
+
+        public static class MediaConstants
+        {
+            public const int MediaTitleMaxLength = 50;
+            public const int MediaTitleMinLength = 2;
         }
     }
 }

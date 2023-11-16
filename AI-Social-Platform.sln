@@ -15,11 +15,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI-Social-Platform.Data", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI-Social-Platform.Data.Models", "AI-Social-Platform.Data.Models\AI-Social-Platform.Data.Models.csproj", "{1610144E-93E3-4D83-87B5-2BFD84A01282}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI-Social-Platform.Services.Data", "TravelAgency.Services.Data\AI-Social-Platform.Services.Data.csproj", "{D9E2E19B-CDEE-4FD0-844A-67529DFA1AC0}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{3186CD87-6009-482A-B753-BC8E12C368AF}"
+	ProjectSection(SolutionItems) = preProject
+		AI-Social-Platform.Services.Data\MediaService.cs = AI-Social-Platform.Services.Data\MediaService.cs
+		AI-Social-Platform.Services.Data\UserService.cs = AI-Social-Platform.Services.Data\UserService.cs
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI-Social-Platform.Services.Data.Models", "AI-Social-Platform.Services.Data.Models\AI-Social-Platform.Services.Data.Models.csproj", "{84A39DFF-394A-48AD-80E4-DD4AB1A11B7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI-Social-Platform.Services.Data.Models", "AI-Social-Platform.Services.Data.Models\AI-Social-Platform.Services.Data.Models.csproj", "{84A39DFF-394A-48AD-80E4-DD4AB1A11B7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI-Social-Platform.FormModels", "AI-Social-Platform.FormModels\AI-Social-Platform.FormModels.csproj", "{10F5489A-705B-415F-9141-ACCBD5A39284}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI-Social-Platform.Services.Data", "AI-Social-Platform.Services.Data\AI-Social-Platform.Services.Data.csproj", "{13581442-0426-438D-8427-5BA3C78B5509}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,21 +59,25 @@ Global
 		{1610144E-93E3-4D83-87B5-2BFD84A01282}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1610144E-93E3-4D83-87B5-2BFD84A01282}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1610144E-93E3-4D83-87B5-2BFD84A01282}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D9E2E19B-CDEE-4FD0-844A-67529DFA1AC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D9E2E19B-CDEE-4FD0-844A-67529DFA1AC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D9E2E19B-CDEE-4FD0-844A-67529DFA1AC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D9E2E19B-CDEE-4FD0-844A-67529DFA1AC0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{84A39DFF-394A-48AD-80E4-DD4AB1A11B7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{84A39DFF-394A-48AD-80E4-DD4AB1A11B7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84A39DFF-394A-48AD-80E4-DD4AB1A11B7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84A39DFF-394A-48AD-80E4-DD4AB1A11B7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10F5489A-705B-415F-9141-ACCBD5A39284}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10F5489A-705B-415F-9141-ACCBD5A39284}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10F5489A-705B-415F-9141-ACCBD5A39284}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10F5489A-705B-415F-9141-ACCBD5A39284}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13581442-0426-438D-8427-5BA3C78B5509}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13581442-0426-438D-8427-5BA3C78B5509}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13581442-0426-438D-8427-5BA3C78B5509}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13581442-0426-438D-8427-5BA3C78B5509}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{D9E2E19B-CDEE-4FD0-844A-67529DFA1AC0} = {3186CD87-6009-482A-B753-BC8E12C368AF}
 		{84A39DFF-394A-48AD-80E4-DD4AB1A11B7E} = {3186CD87-6009-482A-B753-BC8E12C368AF}
+		{13581442-0426-438D-8427-5BA3C78B5509} = {3186CD87-6009-482A-B753-BC8E12C368AF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {87EC6F88-DE6A-4846-B723-521B7E02ABBF}

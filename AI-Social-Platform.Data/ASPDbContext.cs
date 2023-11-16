@@ -15,6 +15,8 @@
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; } = null!;
 
+        public DbSet<Media> MediaFiles { get; set; } = null!;
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

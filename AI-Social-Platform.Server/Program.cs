@@ -1,4 +1,6 @@
 using AI_Social_Platform.Data;
+using AI_Social_Platform.Services.Data;
+using AI_Social_Platform.Services.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -18,7 +20,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
 
-
+builder.Services.AddScoped<IMediaService, MediaService>();
 
 var app = builder.Build();
 
