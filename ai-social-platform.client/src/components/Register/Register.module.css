@@ -6,7 +6,8 @@ a:visited {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80vh;
+    padding: 0 2em 0 2em;
+    height: 100vh;
     background-color: #eee;
 }
 
@@ -17,10 +18,10 @@ a:visited {
 }
 
 .register-form-wrapper {
-    padding: 2em 1em 1em 2em;
+    padding: 2em;
     background-color: #fff;
-    border-top-right-radius: 0.5em;
-    border-bottom-right-radius: 0.5em;
+    border-top-left-radius: 0.5em;
+    border-bottom-left-radius: 0.5em;
     text-align: center;
 }
 
@@ -34,12 +35,14 @@ a:visited {
 
 .media-content {
     background-color: #004aad;
-    border-top-left-radius: 0.5em;
-    border-bottom-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
 }
 
 .media-content img {
     width: 100%;
+    border-top-right-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
     height: auto;
 }
 
@@ -49,7 +52,7 @@ a:visited {
 
 .names-wrapper {
     display: flex;
-    gap: 0.5em;
+    gap: 1em;
 }
 
 .name-input {
@@ -57,6 +60,7 @@ a:visited {
     padding: 0.2em 0 0.2em 2em;
     border: 1px solid #aaa;
     border-radius: 0.3em;
+    width: 89%;
 }
 
 .email-wrapper,
@@ -129,23 +133,23 @@ a:visited {
 
 @media screen and (width < 900px) {
     .register-wrapper {
-        flex-direction: column;
+        flex-direction: column-reverse;
     }
 
     .media-content {
         text-align: center;
+        background-color: #004aad;
+        border-bottom-right-radius: 0;
+        border-top-left-radius: 0.5em;
+    }
+
+    .register-form-wrapper {
+        border-bottom-right-radius: 0.5em;
     }
 
     .media-content img {
         height: auto;
-        width: 300px;
-        border-top-left-radius: 0.5em;
-        border-bottom-right-radius: 0;
-    }
-
-    .register-wrapper {
-        border-bottom-left-radius: 0.5em;
-        border-bottom-right-radius: 0.5em;
+        width: 200px;
     }
 
     .email-wrapper i,

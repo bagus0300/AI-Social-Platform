@@ -6,9 +6,6 @@ export default function Register() {
     return (
         <section className={styles['section-wrapper']}>
             <div className={styles['register-wrapper']}>
-                <div className={styles['media-content']}>
-                    <img src="/images/Logo.png" alt="Logo" />
-                </div>
                 <div className={styles['register-form-wrapper']}>
                     <h2>Create Account</h2>
                     <p>It's quick and easy</p>
@@ -74,6 +71,9 @@ export default function Register() {
                         <p>Already have an account?</p>
                         <Link to={'/login'}>Sign In</Link>
                     </section>
+                </div>
+                <div className={styles['media-content']}>
+                    <img src="/images/Logo.png" alt="Logo" />
                 </div>
             </div>
         </section>
