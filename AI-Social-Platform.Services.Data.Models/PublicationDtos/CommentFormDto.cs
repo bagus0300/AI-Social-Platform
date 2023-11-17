@@ -11,9 +11,6 @@ namespace AI_Social_Platform.Services.Data.Models.PublicationDtos
 
         //Relations
         [Required]
-        public Guid PublicationId { get; set; }
-
-        [Required]
         public Guid AuthorId { get; set; }
     }
 }

@@ -12,7 +12,9 @@ public interface IPublicationService
 
     public Task DeletePublicationAsync(Guid id);
 
-    public Task CreateCommentAsync(CommentFormDto dto);
+    public Task<IEnumerable<CommentDto>> GetCommentsOnPublicationAsync(Guid publicationId);
+
+    public Task CreateCommentAsync(CommentFormDto dto, Guid publicationId);
 
     public Task UpdateCommentAsync(CommentFormDto dto, Guid id);
 

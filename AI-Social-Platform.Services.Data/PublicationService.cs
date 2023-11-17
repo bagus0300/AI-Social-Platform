@@ -18,21 +18,15 @@ public class PublicationService : IPublicationService
     {
         var publications = await
             dbContext.Publications
-                .Include(p => p.Comments)
+                .OrderByDescending(p => p.DateCreated)
                 .Select(p => new PublicationDto()
                 {
                     Id = p.Id,
                     Content = p.Content,
-                    DateCreated = p.DateCreated.ToShortDateString(),
-                    AuthorId = p.AuthorId,
-                    Comments = p.Comments.Select(c => new CommentDto()
-                    {
-                        AuthorId = c.AuthorId,
-                        Content = c.Content,
-                        DateCreated = c.DateCreated.ToShortDateString(),
-                        Id = c.Id,
-                        PublicationId = c.PublicationId
-                    }).ToList(),
+                    DateCreated = p.DateCreated.ToShortDateString() 
+                                  + " " 
+                                  + p.DateCreated.ToShortTimeString(),
+                    AuthorId = p.AuthorId
                 })
                 .ToListAsync();
 
@@ -43,7 +37,6 @@ public class PublicationService : IPublicationService
     {
         var publication = await dbContext.Publications
             .Where(p => p.Id == id)
-            .Include(p => p.Comments)
             .FirstOrDefaultAsync();
 
         if (publication == null)
@@ -55,16 +48,10 @@ public class PublicationService : IPublicationService
         {
             Id = publication.Id,
             Content = publication.Content,
-            DateCreated = publication.DateCreated.ToShortDateString(),
-            AuthorId = publication.AuthorId,
-            Comments = publication.Comments.Select(c => new CommentDto()
-            {
-                AuthorId = c.AuthorId,
-                Content = c.Content,
-                DateCreated = c.DateCreated.ToShortDateString(),
-                Id = c.Id,
-                PublicationId = c.PublicationId
-            }).ToList(),
+            DateCreated = publication.DateCreated.ToShortDateString()
+                          + " " 
+                          + publication.DateCreated.ToShortTimeString(),
+            AuthorId = publication.AuthorId
         };
 
         return publicationDto;
@@ -113,25 +100,22 @@ public class PublicationService : IPublicationService
     }
 
     //Comment
-    public async Task CreateCommentAsync(CommentFormDto dto)
+    public async Task CreateCommentAsync(CommentFormDto dto, Guid publicationId)
     {
         var publication = await dbContext.Publications
-            .Include(p => p.Comments)
-            .FirstOrDefaultAsync(p => p.Id == dto.PublicationId);
+            .FirstOrDefaultAsync(p => p.Id == publicationId);
 
         if (publication == null)
         {
             throw new Exception("Publication not found");
         }
 
-        publication.Comments.Add(new Comment()
+        await dbContext.Comments.AddAsync(new Comment()
         {
             AuthorId = dto.AuthorId,
             Content = dto.Content,
-            PublicationId = dto.PublicationId
+            PublicationId = publicationId
         });
-
-        await dbContext.Comments.AddAsync(publication.Comments.Last());
         await dbContext.SaveChangesAsync();
     }
 
@@ -158,5 +142,25 @@ public class PublicationService : IPublicationService
 
         dbContext.Comments.Remove(comment);
         await dbContext.SaveChangesAsync();
+    }
+
+    public async Task<IEnumerable<CommentDto>> GetCommentsOnPublicationAsync(Guid publicationId)
+    {
+        var publicationComments = await dbContext.Comments
+            .Where(c => c.PublicationId == publicationId)
+            .OrderByDescending(c => c.DateCreated)
+            .Select(c => new CommentDto()
+            {
+                Id = c.Id,
+                Content = c.Content,
+                DateCreated = c.DateCreated.ToShortDateString() 
+                              + " " 
+                              + c.DateCreated.ToShortTimeString(),
+                AuthorId = c.AuthorId,
+                PublicationId = c.PublicationId
+            })
+            .ToListAsync();
+
+        return publicationComments;
     }
 }

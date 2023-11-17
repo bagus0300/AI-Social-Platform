@@ -93,13 +93,26 @@ public class PublicationController : ControllerBase
         }
     }
 
-
-    [HttpPost("comment", Name = "createComment")]
-    public async Task<IActionResult> CreateComment(CommentFormDto dto)
+    [HttpGet("comment/{publicationId}", Name = "getComment")]
+    public async Task<IEnumerable<CommentDto>> GetComments(Guid publicationId)
     {
         try
         {
-            await publicationService.CreateCommentAsync(dto);
+            var comments = await publicationService.GetCommentsOnPublicationAsync(publicationId);
+            return comments;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    [HttpPost("comment/{publicationId}", Name = "createComment")]
+    public async Task<IActionResult> CreateComment(CommentFormDto dto, Guid publicationId)
+    {
+        try
+        {
+            await publicationService.CreateCommentAsync(dto, publicationId);
             return Ok();
         }
         catch (Exception ex)
@@ -108,12 +121,12 @@ public class PublicationController : ControllerBase
         }
     }
 
-    [HttpDelete("comment/{id}", Name = "deleteComment")]
-    public async Task<IActionResult> DeleteComment(Guid id)
+    [HttpDelete("comment/{commentId}", Name = "deleteComment")]
+    public async Task<IActionResult> DeleteComment(Guid commentId)
     {
         try
         {
-            await publicationService.DeleteCommentAsync(id);
+            await publicationService.DeleteCommentAsync(commentId);
             return Ok();
         }
         catch (Exception ex)
@@ -123,12 +136,12 @@ public class PublicationController : ControllerBase
     }
 
 
-    [HttpPut("comment/{id}", Name = "updateComment")]
-    public async Task<IActionResult> UpdateComment(CommentFormDto dto, Guid id)
+    [HttpPut("comment/{commentId}", Name = "updateComment")]
+    public async Task<IActionResult> UpdateComment(CommentFormDto dto, Guid commentId)
     {
         try
         {
-            await publicationService.UpdateCommentAsync(dto, id);
+            await publicationService.UpdateCommentAsync(dto, commentId);
             return Ok();
         }
         catch (Exception ex)
