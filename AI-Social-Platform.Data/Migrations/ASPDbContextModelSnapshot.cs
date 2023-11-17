@@ -23,349 +23,360 @@ namespace AI_Social_Platform.Data.Migrations
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("AI_Social_Platform.Data.Models.ApplicationUser", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
+                b.Property<int>("AccessFailedCount")
+                    .HasColumnType("int");
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ConcurrencyStamp")
+                    .IsConcurrencyToken()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                b.Property<string>("Email")
+                    .HasMaxLength(256)
+                    .HasColumnType("nvarchar(256)");
 
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
+                b.Property<bool>("EmailConfirmed")
+                    .HasColumnType("bit");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)")
-                        .HasDefaultValue("Test");
+                b.Property<string>("FirstName")
+                    .IsRequired()
+                    .ValueGeneratedOnAdd()
+                    .HasMaxLength(15)
+                    .HasColumnType("nvarchar(15)")
+                    .HasDefaultValue("Test");
 
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)")
-                        .HasDefaultValue("Test");
+                b.Property<string>("LastName")
+                    .IsRequired()
+                    .ValueGeneratedOnAdd()
+                    .HasMaxLength(15)
+                    .HasColumnType("nvarchar(15)")
+                    .HasDefaultValue("Test");
 
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
+                b.Property<bool>("LockoutEnabled")
+                    .HasColumnType("bit");
 
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
+                b.Property<DateTimeOffset?>("LockoutEnd")
+                    .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                b.Property<string>("NormalizedEmail")
+                    .HasMaxLength(256)
+                    .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                b.Property<string>("NormalizedUserName")
+                    .HasMaxLength(256)
+                    .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("PasswordHash")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("PhoneNumber")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
+                b.Property<bool>("PhoneNumberConfirmed")
+                    .HasColumnType("bit");
 
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("SecurityStamp")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
+                b.Property<bool>("TwoFactorEnabled")
+                    .HasColumnType("bit");
 
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                b.Property<string>("UserName")
+                    .HasMaxLength(256)
+                    .HasColumnType("nvarchar(256)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
+                b.HasIndex("NormalizedEmail")
+                    .HasDatabaseName("EmailIndex");
 
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+                b.HasIndex("NormalizedUserName")
+                    .IsUnique()
+                    .HasDatabaseName("UserNameIndex")
+                    .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers", (string)null);
+                b.ToTable("AspNetUsers", (string)null);
 
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"),
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "1728f2b3-00f7-40af-b6a5-c53b1a9df8ee",
-                            Email = "user@user.com",
-                            EmailConfirmed = false,
-                            FirstName = "Georgi",
-                            LastName = "Georgiev",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "user@user.com",
-                            NormalizedUserName = "USER@USER.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKplQhprWD7nSVisJeVhJzMA6LpMD6K41SWNMESyyyYQmcvBNPgs4NxKr8MC9LKh4g==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "0587a909-ba16-4964-8a5f-b95f0e6a169a",
-                            TwoFactorEnabled = false,
-                            UserName = "user@user.com"
-                        },
-                        new
-                        {
-                            Id = new Guid("949a14ed-2e82-4f5a-a684-a9c7e3ccb52e"),
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "3874bf05-723b-496e-89df-5e30389a0c7c",
-                            Email = "admin@admin.com",
-                            EmailConfirmed = false,
-                            FirstName = "Ivan",
-                            LastName = "Ivanov",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@ADMIN.com",
-                            NormalizedUserName = "ADMIN@ADMIN.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHA8dvENAtxm3WmlzQMOKU3M5fSrws4BzrV3pQ/j+orksoQtKYNYt8Iwm758/a3ccQ==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "6742573c-c9ea-4d6a-beb5-b512e38ec7c5",
-                            TwoFactorEnabled = false,
-                            UserName = "admin@admin.com"
-                        });
-                });
+                b.HasData(
+                    new
+                    {
+                        Id = new Guid("6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"),
+                        AccessFailedCount = 0,
+                        ConcurrencyStamp = "1728f2b3-00f7-40af-b6a5-c53b1a9df8ee",
+                        Email = "user@user.com",
+                        EmailConfirmed = false,
+                        FirstName = "Georgi",
+                        LastName = "Georgiev",
+                        LockoutEnabled = false,
+                        NormalizedEmail = "user@user.com",
+                        NormalizedUserName = "USER@USER.com",
+                        PasswordHash =
+                            "AQAAAAEAACcQAAAAEKplQhprWD7nSVisJeVhJzMA6LpMD6K41SWNMESyyyYQmcvBNPgs4NxKr8MC9LKh4g==",
+                        PhoneNumberConfirmed = false,
+                        SecurityStamp = "0587a909-ba16-4964-8a5f-b95f0e6a169a",
+                        TwoFactorEnabled = false,
+                        UserName = "user@user.com"
+                    },
+                    new
+                    {
+                        Id = new Guid("949a14ed-2e82-4f5a-a684-a9c7e3ccb52e"),
+                        AccessFailedCount = 0,
+                        ConcurrencyStamp = "3874bf05-723b-496e-89df-5e30389a0c7c",
+                        Email = "admin@admin.com",
+                        EmailConfirmed = false,
+                        FirstName = "Ivan",
+                        LastName = "Ivanov",
+                        LockoutEnabled = false,
+                        NormalizedEmail = "ADMIN@ADMIN.com",
+                        NormalizedUserName = "ADMIN@ADMIN.com",
+                        PasswordHash =
+                            "AQAAAAEAACcQAAAAEHA8dvENAtxm3WmlzQMOKU3M5fSrws4BzrV3pQ/j+orksoQtKYNYt8Iwm758/a3ccQ==",
+                        PhoneNumberConfirmed = false,
+                        SecurityStamp = "6742573c-c9ea-4d6a-beb5-b512e38ec7c5",
+                        TwoFactorEnabled = false,
+                        UserName = "admin@admin.com"
+                    });
+            });
 
             modelBuilder.Entity("AI_Social_Platform.Data.Models.Media", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<byte[]>("DataFile")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                b.Property<byte[]>("DataFile")
+                    .IsRequired()
+                    .HasColumnType("varbinary(max)");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                b.Property<bool>("IsDeleted")
+                    .HasColumnType("bit");
 
-                    b.Property<string>("Title")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                b.Property<string>("Title")
+                    .HasMaxLength(50)
+                    .HasColumnType("nvarchar(50)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("UserId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                b.HasIndex("UserId");
 
-                    b.ToTable("MediaFiles");
-                });
+                b.ToTable("MediaFiles");
+            });
 
             modelBuilder.Entity("AI_Social_Platform.Data.Models.Publication.Comment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("AuthorId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("AuthorId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                b.Property<string>("Content")
+                    .IsRequired()
+                    .HasMaxLength(256)
+                    .HasColumnType("nvarchar(256)");
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
+                b.Property<DateTime>("DateCreated")
+                    .HasColumnType("datetime2");
 
-                    b.Property<Guid>("PublicationId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("PublicationId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
+                b.HasIndex("AuthorId");
 
-                    b.HasIndex("PublicationId");
+                b.HasIndex("PublicationId");
 
-                    b.ToTable("Comments");
-                });
+                b.ToTable("Comments");
+            });
 
             modelBuilder.Entity("AI_Social_Platform.Data.Models.Publication.Publication", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("AuthorId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("AuthorId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasMaxLength(600)
-                        .HasColumnType("nvarchar(600)");
+                b.Property<string>("Content")
+                    .IsRequired()
+                    .HasMaxLength(600)
+                    .HasColumnType("nvarchar(600)");
 
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
+                b.Property<DateTime>("DateCreated")
+                    .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
+                b.HasIndex("AuthorId");
 
-                    b.ToTable("Publications");
+                b.ToTable("Publications");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("5aab2881-2ee8-48f4-9438-3ca29cc53b0c"),
-                            AuthorId = new Guid("949a14ed-2e82-4f5a-a684-a9c7e3ccb52e"),
-                            Content = "This is the first seeded publication Content from Ivan",
-                            DateCreated = new DateTime(2023, 11, 15, 16, 26, 43, 368, DateTimeKind.Utc).AddTicks(4136)
-                        },
-                        new
-                        {
-                            Id = new Guid("4d3921a7-0312-4ea4-a3d9-1742cfe34a93"),
-                            AuthorId = new Guid("6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"),
-                            Content = "This is the second seeded publication Content from Georgi",
-                            DateCreated = new DateTime(2023, 11, 15, 16, 26, 43, 368, DateTimeKind.Utc).AddTicks(4148)
-                        });
-                });
+                b.HasData(
+                    new
+                    {
+                        Id = new Guid("5aab2881-2ee8-48f4-9438-3ca29cc53b0c"),
+                        AuthorId = new Guid("949a14ed-2e82-4f5a-a684-a9c7e3ccb52e"),
+                        Content = "This is the first seeded publication Content from Ivan",
+                        DateCreated = new DateTime(2023, 11, 15, 16, 26, 43, 368, DateTimeKind.Utc).AddTicks(4136)
+                    },
+                    new
+                    {
+                        Id = new Guid("4d3921a7-0312-4ea4-a3d9-1742cfe34a93"),
+                        AuthorId = new Guid("6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"),
+                        Content = "This is the second seeded publication Content from Georgi",
+                        DateCreated = new DateTime(2023, 11, 15, 16, 26, 43, 368, DateTimeKind.Utc).AddTicks(4148)
+                    });
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ConcurrencyStamp")
+                    .IsConcurrencyToken()
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                b.Property<string>("Name")
+                    .HasMaxLength(256)
+                    .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                b.Property<string>("NormalizedName")
+                    .HasMaxLength(256)
+                    .HasColumnType("nvarchar(256)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
+                b.HasIndex("NormalizedName")
+                    .IsUnique()
+                    .HasDatabaseName("RoleNameIndex")
+                    .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("AspNetRoles", (string)null);
-                });
+                b.ToTable("AspNetRoles", (string)null);
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ClaimType")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ClaimValue")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("RoleId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("RoleId");
+                b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetRoleClaims", (string)null);
-                });
+                b.ToTable("AspNetRoleClaims", (string)null);
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ClaimType")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ClaimValue")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("UserId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims", (string)null);
-                });
+                b.ToTable("AspNetUserClaims", (string)null);
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+            {
+                b.Property<string>("LoginProvider")
+                    .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                b.Property<string>("ProviderKey")
+                    .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("ProviderDisplayName")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("UserId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("LoginProvider", "ProviderKey");
+                b.HasKey("LoginProvider", "ProviderKey");
 
-                    b.HasIndex("UserId");
+                b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins", (string)null);
-                });
+                b.ToTable("AspNetUserLogins", (string)null);
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("UserId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
+                b.Property<Guid>("RoleId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("UserId", "RoleId");
+                b.HasKey("UserId", "RoleId");
 
-                    b.HasIndex("RoleId");
+                b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetUserRoles", (string)null);
-                });
+                b.ToTable("AspNetUserRoles", (string)null);
+            });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+            {
+                b.Property<Guid>("UserId")
+                    .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                b.Property<string>("LoginProvider")
+                    .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                b.Property<string>("Name")
+                    .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
+                b.Property<string>("Value")
+                    .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("UserId", "LoginProvider", "Name");
+                b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AspNetUserTokens", (string)null);
-                });
+                b.ToTable("AspNetUserTokens", (string)null);
+            });
+
+            modelBuilder.Entity("AI_Social_Platform.Data.Models.Media", b =>
+            {
+                b.HasOne("AI_Social_Platform.Data.Models.ApplicationUser", "User")
+                    .WithMany()
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
 
             modelBuilder.Entity("AI_Social_Platform.Data.Models.Publication.Comment", b =>
                 {
@@ -386,7 +397,7 @@ namespace AI_Social_Platform.Data.Migrations
                     b.Navigation("Publication");
                 });
 
-            modelBuilder.Entity("AI_Social_Platform.Data.Models.Publication.Publication", b =>
+                modelBuilder.Entity("AI_Social_Platform.Data.Models.Publication.Publication", b =>
                 {
                     b.HasOne("AI_Social_Platform.Data.Models.ApplicationUser", "Author")
                         .WithMany("Publications")
@@ -397,7 +408,7 @@ namespace AI_Social_Platform.Data.Migrations
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
+                modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
                         .WithMany()
@@ -406,7 +417,7 @@ namespace AI_Social_Platform.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+                modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.HasOne("AI_Social_Platform.Data.Models.ApplicationUser", null)
                         .WithMany()
@@ -415,7 +426,7 @@ namespace AI_Social_Platform.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+                modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.HasOne("AI_Social_Platform.Data.Models.ApplicationUser", null)
                         .WithMany()
@@ -424,7 +435,7 @@ namespace AI_Social_Platform.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+                modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
                         .WithMany()
@@ -439,7 +450,7 @@ namespace AI_Social_Platform.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+                modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.HasOne("AI_Social_Platform.Data.Models.ApplicationUser", null)
                         .WithMany()
@@ -448,16 +459,12 @@ namespace AI_Social_Platform.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AI_Social_Platform.Data.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("Publications");
-                });
+                modelBuilder.Entity("AI_Social_Platform.Data.Models.ApplicationUser",
+                    b => { b.Navigation("Publications"); });
 
-            modelBuilder.Entity("AI_Social_Platform.Data.Models.Publication.Publication", b =>
-                {
-                    b.Navigation("Comments");
-                });
+                modelBuilder.Entity("AI_Social_Platform.Data.Models.Publication.Publication",
+                    b => { b.Navigation("Comments"); });
 #pragma warning restore 612, 618
+            }
         }
     }
-}
