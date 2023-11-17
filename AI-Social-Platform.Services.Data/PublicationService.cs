@@ -79,6 +79,11 @@ public class PublicationService : IPublicationService
             throw new Exception("Publication not found");
         }
 
+        if (publication.AuthorId != dto.AuthorId)
+        {
+            throw new Exception("You are not the author of this publication");
+        }
+
         publication.Content = dto.Content;
         await dbContext.SaveChangesAsync();
     }
@@ -122,9 +127,15 @@ public class PublicationService : IPublicationService
     public async Task UpdateCommentAsync(CommentFormDto dto, Guid id)
     {
        var comment = await dbContext.Comments.FirstOrDefaultAsync(c => c.Id == id);
+
        if (comment == null)
        {
            throw new Exception("Comment not found");
+       }
+
+       if (comment.AuthorId != dto.AuthorId)
+       {
+           throw new Exception("You are not the author of this comment");
        }
 
        comment.Content = dto.Content;
