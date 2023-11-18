@@ -3,6 +3,7 @@ using AI_Social_Platform.Data.Models;
 using AI_Social_Platform.Services.Data;
 using AI_Social_Platform.Services.Data.Interfaces;
 using AI_Social_Platform.Services.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -20,7 +21,6 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddScoped<IUserService, UserService>();
-
 builder.Services.AddScoped<IPublicationService, PublicationService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
