@@ -1,0 +1,18 @@
+.posts-section img {
+    max-width: 100%;
+    height: auto;
+}
+
+.posts-section {
+    background-color: #eee;
+    padding: 2em 0;
+    width: 100%;
+    scroll-behavior: smooth;
+}
+
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+}
