@@ -1,0 +1,166 @@
+.post-item {
+    background-color: #fff;
+    overflow: hidden;
+    width: 30em;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.5em;
+    box-shadow: 0 0 0.2em 0.1em #ddd;
+}
+
+.user-info {
+    display: flex;
+    justify-content: space-between;
+}
+
+.user-info .edit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5em 1em 0.5em 1em;
+    cursor: pointer;
+    color: #585858;
+}
+
+.user-info-wrapper {
+    display: flex;
+    gap: 1em;
+    padding: 0.5em 1em 0.5em 1em;
+    align-items: center;
+}
+
+.user-img {
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+}
+
+.username {
+    font-size: 0.9em;
+    font-weight: 600;
+}
+
+.posted-on {
+    font-size: 0.6em;
+    color: rgb(99, 99, 99);
+}
+
+.content-description,
+.likes {
+    padding: 0 1em 0.5em 1em;
+    font-size: 0.9em;
+}
+
+.likes {
+    display: flex;
+    justify-content: space-between;
+    color: #636363;
+}
+
+.likes-count {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+}
+
+.likes-count i {
+    color: #369;
+}
+
+.likes-count i,
+.likes .comments-count {
+    padding-right: 0.2em;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-evenly;
+    border-top: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+.buttons > * {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    cursor: pointer;
+    padding: 0 2em 0 2em;
+}
+
+.like-button,
+.comment-button-wrapper,
+.comment-button {
+    color: #797979;
+}
+
+.comment-button {
+    text-decoration: none;
+}
+
+.like-button:hover,
+.comment-button-wrapper:hover {
+    background-color: #eee;
+}
+
+.comments {
+    padding: 1em 1em 0.5em 1em;
+}
+
+.comment {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.comment:not(:last-child) {
+    margin-bottom: 0.5em;
+}
+
+.comment-info {
+    background-color: #ddd;
+    padding: 0.2em 0.4em 0.2em 0.4em;
+    border-radius: 0.7em;
+}
+
+.comment-info .username {
+    font-size: 0.6em;
+}
+
+.comment-info .description {
+    font-size: 0.7rem;
+}
+
+.comment-user-img {
+    height: 2em;
+    width: 2em;
+    border-radius: 50%;
+}
+
+.add-comment {
+    display: flex;
+    align-items: center;
+    padding: 0.2em 1em 0.5em 1em;
+    gap: 0.2em;
+}
+
+.comment-area {
+    position: relative;
+}
+
+.comment-input {
+    padding: 0.8em 25em 0.8em 2em;
+    border-radius: 0.4em;
+    border: 0;
+    background-color: #eee;
+}
+
+.comment-area i {
+    position: absolute;
+    top: 0.7em;
+    right: 1em;
+    color: #aaa;
+    font-size: 0.8em;
+    cursor: no-drop;
+}

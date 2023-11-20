@@ -1,6 +1,42 @@
 .app-header {
     background-color: #004aad;
-    padding: 0.8em 0.3em;
+    padding: 0.5em 1em;
     color: #fff;
     text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.app-header a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.app-header a:hover {
+    text-decoration: underline;
+}
+
+.app-header a:visited {
+    color: #fff;
+}
+
+.search-form input,
+.search-form button {
+    padding: 0.3em 0.5em;
+    border: 0;
+    border-radius: 0.3em;
+}
+
+.search-form input {
+    margin-right: 0.5em;
+}
+
+.profile {
+    display: flex;
+    gap: 1em;
+}
+
+.profile a:hover {
+    text-decoration: underline;
 }
