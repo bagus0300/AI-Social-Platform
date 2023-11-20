@@ -1,6 +1,7 @@
 ﻿namespace AI_Social_Platform.Data
 {
-    using AI_Social_Platform.Data.Models;
+    using Models;
+    using Models.Publication;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,8 @@
         }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; } = null!;
+        public DbSet<Publication> Publications { get; set; } = null!;
+        public DbSet<Comment> Comments { get; set; } = null!;
 
         public DbSet<Media> MediaFiles { get; set; } = null!;
 

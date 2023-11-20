@@ -23,5 +23,16 @@
             public const int MediaTitleMaxLength = 50;
             public const int MediaTitleMinLength = 2;
         }
+
+        public static class Publication
+        {
+            public const int PublicationContentMaxLength = 600;
+       
+        }
+
+        public static class Comment
+        {
+            public const int CommentContentMaxLength = 256;
+        }
     }
 }
