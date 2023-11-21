@@ -8,6 +8,8 @@
     using Microsoft.AspNetCore.Mvc;
     using System.Security.Claims;
 
+    using static Extensions.ClaimsPrincipalExtensions;
+
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
@@ -22,9 +24,6 @@
         [HttpPost("upload")]
         public async Task<IActionResult> Post(IFormFile file)
         {
-            string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            
-
             if (file == null || file.Length <= 0)
             {
                 return BadRequest("No file uploaded");
@@ -32,13 +31,13 @@
 
             try
             {
-                await mediaService.UploadMediaAsync(file, userId);
+                string userId = User.GetUserId()!;
+                await mediaService.UploadMediaAsync(file, userId!);
                 return Ok("Successfully upload media");
 
             }
             catch (Exception)
             {
-
                 return BadRequest("Something went wrong");
             }
         }
@@ -46,7 +45,7 @@
         [HttpPut("edit/{id}")]
         public async Task<IActionResult> ReplaceMedia(string id, [FromForm] MediaFormModel updatedMedia)
         {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userId = User.GetUserId()!;
 
             bool isUserOwner = await mediaService.IsUserOwnThedMedia(userId, id);
 
@@ -70,7 +69,7 @@
             {
                 return BadRequest("Something went wrong!");
             }
-           
+
         }
 
         [HttpPost("delete/{id}")]
@@ -82,7 +81,7 @@
                 return BadRequest("Media is not selected");
             }
 
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userId = User.GetUserId()!;
 
             bool isUserOwner = await mediaService.IsUserOwnThedMedia(userId, id);
 
@@ -98,7 +97,6 @@
             }
             catch (Exception)
             {
-
                 return BadRequest("Something went wrong!");
             }
         }
