@@ -23,9 +23,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{31
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI-Social-Platform.Services.Data.Models", "AI-Social-Platform.Services.Data.Models\AI-Social-Platform.Services.Data.Models.csproj", "{84A39DFF-394A-48AD-80E4-DD4AB1A11B7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI-Social-Platform.FormModels", "AI-Social-Platform.FormModels\AI-Social-Platform.FormModels.csproj", "{10F5489A-705B-415F-9141-ACCBD5A39284}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI-Social-Platform.FormModels", "AI-Social-Platform.FormModels\AI-Social-Platform.FormModels.csproj", "{10F5489A-705B-415F-9141-ACCBD5A39284}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI-Social-Platform.Services.Data", "AI-Social-Platform.Services.Data\AI-Social-Platform.Services.Data.csproj", "{13581442-0426-438D-8427-5BA3C78B5509}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI-Social-Platform.Extensions", "AI-Social-Platform.Extensions\AI-Social-Platform.Extensions.csproj", "{90687E21-458E-43AB-BC4F-F053456D37E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,10 @@ Global
 		{13581442-0426-438D-8427-5BA3C78B5509}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13581442-0426-438D-8427-5BA3C78B5509}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13581442-0426-438D-8427-5BA3C78B5509}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90687E21-458E-43AB-BC4F-F053456D37E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90687E21-458E-43AB-BC4F-F053456D37E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90687E21-458E-43AB-BC4F-F053456D37E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90687E21-458E-43AB-BC4F-F053456D37E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
