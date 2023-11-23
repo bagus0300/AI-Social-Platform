@@ -1,15 +1,20 @@
 ﻿namespace AI_Social_Platform.Server.Controllers
 {
-    using AI_Social_Platform.Data.Models;
-    using AI_Social_Platform.Server.Models;
-    using AI_Social_Platform.Services.Data.Interfaces;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Caching.Memory;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authorization;
+
+    using AI_Social_Platform.Data.Models;
+    using AI_Social_Platform.Server.Models;
+    using AI_Social_Platform.Services.Data.Interfaces;
+    using AI_Social_Platform.FormModels;
 
     using static Common.NotificationMessagesConstants;
     using static Common.GeneralApplicationConstants;
+    using static Extensions.ClaimsPrincipalExtensions;
+    
 
     [ApiController]
     [Route("api/[controller]")]
@@ -58,17 +63,17 @@
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
                 return BadRequest(new { Message = RegistrationFailed, Errors = result.Errors });
-               
+
             }
             await signInManager.SignInAsync(user, isPersistent: false);
             this.memoryCache.Remove(UserCacheKey);
             return Ok(new { Message = SuccessMessage });
-            
+
         }
 
 
         [HttpPost("login")]
-        [AllowAnonymous] 
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginFormModel model)
         {
             if (!ModelState.IsValid)
@@ -80,6 +85,11 @@
 
             if (result.Succeeded)
             {
+                var user = await userManager.FindByEmailAsync(model.Email);
+                var claimsPrincipal = await signInManager.CreateUserPrincipalAsync(user);
+
+                await HttpContext.SignInAsync(claimsPrincipal);
+
                 return Ok(new { Token = LoginSuccessful });
             }
             else
@@ -87,6 +97,40 @@
                 return BadRequest(new { Message = LoginFailed });
             }
         }
+
+
+        [HttpPut("updateUser")]
+        public async Task<IActionResult> UpdateUserData([FromBody] UpdateUserFormModel model)
+        {
+            var userId = HttpContext.User.GetUserId();
+
+            try
+            {
+                bool success = await userService.EditUserDataAsync(userId!, model);
+
+                if (success)
+                {
+                    return Ok("User data updated successfully");
+                }
+                else
+                {
+                    return NotFound("User not found or not active");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpGet]
+        [Route("Users/current")]
+        public async Task<IActionResult> getCurrentuserId()
+        {
+            var id = HttpContext.User.GetUserId();
+            return Ok(new { userId = id });
+        }
+
 
     }
 

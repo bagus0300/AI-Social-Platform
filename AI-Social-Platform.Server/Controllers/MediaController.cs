@@ -5,8 +5,7 @@
     using AI_Social_Platform.Services.Data.Interfaces;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
-    using System.Security.Claims;
+    using Microsoft.AspNetCore.Mvc;    
 
     using static Extensions.ClaimsPrincipalExtensions;
 
@@ -31,7 +30,7 @@
 
             try
             {
-                string userId = User.GetUserId()!;
+                string userId = HttpContext.User.GetUserId()!;
                 await mediaService.UploadMediaAsync(file, userId!);
                 return Ok("Successfully upload media");
 
@@ -45,7 +44,7 @@
         [HttpPut("edit/{id}")]
         public async Task<IActionResult> ReplaceMedia(string id, [FromForm] MediaFormModel updatedMedia)
         {
-            string userId = User.GetUserId()!;
+            string userId = HttpContext.User.GetUserId()!;
 
             bool isUserOwner = await mediaService.IsUserOwnThedMedia(userId, id);
 
@@ -81,7 +80,7 @@
                 return BadRequest("Media is not selected");
             }
 
-            string userId = User.GetUserId()!;
+            string userId = HttpContext.User.GetUserId()!;
 
             bool isUserOwner = await mediaService.IsUserOwnThedMedia(userId, id);
 
