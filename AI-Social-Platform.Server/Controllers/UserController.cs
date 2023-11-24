@@ -2,14 +2,14 @@
 {
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Caching.Memory;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.Extensions.Caching.Memory;
 
+    using Models;
+    using FormModels;
     using AI_Social_Platform.Data.Models;
-    using AI_Social_Platform.Server.Models;
     using AI_Social_Platform.Services.Data.Interfaces;
-    using AI_Social_Platform.FormModels;
 
     using static Common.NotificationMessagesConstants;
     using static Common.GeneralApplicationConstants;
@@ -62,8 +62,7 @@
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
-                return BadRequest(new { Message = RegistrationFailed, Errors = result.Errors });
-
+                return BadRequest(new { Message = RegistrationFailed, result.Errors });
             }
             await signInManager.SignInAsync(user, isPersistent: false);
             this.memoryCache.Remove(UserCacheKey);
@@ -74,28 +73,24 @@
 
         [HttpPost("login")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(LoginFormModel model)
+        public async Task<LoginResponse> Login(LoginFormModel model)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(new { Message = InvalidLoginData });
+                return new LoginResponse { Succeeded = false, ErrorMessage = InvalidLoginData };
             }
 
             var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: false, lockoutOnFailure: false);
 
-            if (result.Succeeded)
-            {
-                var user = await userManager.FindByEmailAsync(model.Email);
-                var claimsPrincipal = await signInManager.CreateUserPrincipalAsync(user);
+            if (!result.Succeeded)
+                return new LoginResponse { Succeeded = false, ErrorMessage = LoginFailed };
 
-                await HttpContext.SignInAsync(claimsPrincipal);
+            var user = await userManager.FindByEmailAsync(model.Email);
+            var claimsPrincipal = await signInManager.CreateUserPrincipalAsync(user);
 
-                return Ok(new { Token = LoginSuccessful });
-            }
-            else
-            {
-                return BadRequest(new { Message = LoginFailed });
-            }
+            await HttpContext.SignInAsync(claimsPrincipal);
+
+            return new LoginResponse { Succeeded = true, Token = userService.BuildToken(model.Email) };
         }
 
 
@@ -110,7 +105,7 @@
 
                 if (success)
                 {
-                    return Ok("User data updated successfully");
+                    return Ok("User data updated successfully"); 
                 }
                 else
                 {

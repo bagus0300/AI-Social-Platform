@@ -6,6 +6,8 @@ namespace AI_Social_Platform.Services.Data.Interfaces
 {
     public interface IUserService
     {
+        string BuildToken(string userEmail);
+
         Task<ApplicationUser> GetUserByIdAsync(string userId);
 
         Task<bool> EditUserDataAsync(string id, UpdateUserFormModel updatedUserData);
