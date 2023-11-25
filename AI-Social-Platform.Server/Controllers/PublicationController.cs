@@ -8,6 +8,7 @@ namespace AI_Social_Platform.Server.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class PublicationController : ControllerBase
 {
     private readonly IPublicationService publicationService;

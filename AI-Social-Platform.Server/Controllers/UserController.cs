@@ -90,6 +90,8 @@
 
             await HttpContext.SignInAsync(claimsPrincipal);
 
+            await signInManager.SignInAsync(user, true);
+            
             return new LoginResponse { Succeeded = true, Token = userService.BuildToken(model.Email) };
         }
 

@@ -38,7 +38,7 @@ namespace AI_Social_Platform.Services.Data.Models
                 this.configuration["Jwt:Issuer"],
                 this.configuration["Jwt:Audience"],
                 claims,
-                expires: DateTime.Now.AddHours(1),
+                expires: DateTime.UtcNow.AddHours(24),
                 signingCredentials: creds
             );
 
