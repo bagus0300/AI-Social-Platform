@@ -5,6 +5,7 @@
     using AI_Social_Platform.Services.Data.Interfaces;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;    
 
     using static Extensions.ClaimsPrincipalExtensions;
@@ -15,9 +16,11 @@
     public class MediaController : ControllerBase
     {
         private readonly IMediaService mediaService;
-        public MediaController(IMediaService mediaService)
+        private readonly UserManager<ApplicationUser> userManager;
+        public MediaController(IMediaService mediaService, UserManager<ApplicationUser> userManager)
         {
             this.mediaService = mediaService;
+            this.userManager = userManager;
         }
 
         [HttpPost("upload")]
@@ -30,7 +33,8 @@
 
             try
             {
-                string userId = HttpContext.User.GetUserId()!;
+                var userId = await GetUserId();
+
                 await mediaService.UploadMediaAsync(file, userId!);
                 return Ok("Successfully upload media");
 
@@ -44,7 +48,7 @@
         [HttpPut("edit/{id}")]
         public async Task<IActionResult> ReplaceMedia(string id, [FromForm] MediaFormModel updatedMedia)
         {
-            string userId = HttpContext.User.GetUserId()!;
+            var userId = await GetUserId();
 
             bool isUserOwner = await mediaService.IsUserOwnThedMedia(userId, id);
 
@@ -80,7 +84,7 @@
                 return BadRequest("Media is not selected");
             }
 
-            string userId = HttpContext.User.GetUserId()!;
+            string userId = await GetUserId();
 
             bool isUserOwner = await mediaService.IsUserOwnThedMedia(userId, id);
 
@@ -98,6 +102,14 @@
             {
                 return BadRequest("Something went wrong!");
             }
+        }
+
+        private async Task<string> GetUserId()
+        {
+            string userName = HttpContext.User.GetUserEmail()!;
+            var user = await userManager.FindByEmailAsync(userName);
+            var userId = user.Id.ToString();
+            return userId;
         }
     }
 }

@@ -4,7 +4,7 @@
 
     public static class ClaimsPrincipalExtensions
     {
-        public static string? GetUserId(this ClaimsPrincipal claimsPrincipal)
+        public static string? GetUserEmail(this ClaimsPrincipal claimsPrincipal)
         {
             var userIdClaim = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier);
             return userIdClaim?.Value;
