@@ -4,10 +4,18 @@
 
     public static class ClaimsPrincipalExtensions
     {
-        public static string? GetUserEmail(this ClaimsPrincipal claimsPrincipal)
+        public static string GetUserId(this ClaimsPrincipal principal)
         {
-            var userIdClaim = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier);
-            return userIdClaim?.Value;
-        }
+            if (principal == null)
+                throw new ArgumentNullException(nameof(principal));
+
+            var loggedInUserId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (Guid.TryParse(loggedInUserId, out Guid userId))
+            {
+                return userId.ToString();
+            }
+
+            return Guid.Empty.ToString(); }
     }
 }

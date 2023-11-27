@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using AI_Social_Platform.Common;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -23,12 +24,11 @@ namespace AI_Social_Platform.Services.Data.Models
         }
 
         
-        public string BuildToken(string userEmail)
+        public string BuildToken(string userId)
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, userEmail),
-                
+                new Claim(ClaimTypes.NameIdentifier, userId),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));

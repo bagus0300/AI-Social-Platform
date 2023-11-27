@@ -1,5 +1,7 @@
 ﻿namespace AI_Social_Platform.Server.Controllers
 {
+    using System.Security.Claims;
+
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Authentication;
@@ -86,13 +88,22 @@
                 return new LoginResponse { Succeeded = false, ErrorMessage = LoginFailed };
 
             var user = await userManager.FindByEmailAsync(model.Email);
-            var claimsPrincipal = await signInManager.CreateUserPrincipalAsync(user);
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), 
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, "ApplicationCookie");
+            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
             await HttpContext.SignInAsync(claimsPrincipal);
 
             await signInManager.SignInAsync(user, true);
-            
-            return new LoginResponse { Succeeded = true, Token = userService.BuildToken(model.Email) };
+
+            string userId = user.Id.ToString();
+
+            return new LoginResponse { Succeeded = true, Token = userService.BuildToken(userId) };
         }
 
 
