@@ -8,9 +8,5 @@ namespace AI_Social_Platform.Services.Data.Models.PublicationDtos
         [Required]
         [StringLength(CommentContentMaxLength, MinimumLength = 1)]
         public string Content { get; set; } = null!;
-
-        //Relations
-        [Required]
-        public Guid AuthorId { get; set; }
     }
 }

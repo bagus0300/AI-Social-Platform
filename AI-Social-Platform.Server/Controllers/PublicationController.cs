@@ -3,8 +3,9 @@ using AI_Social_Platform.Services.Data.Models.PublicationDtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AI_Social_Platform.Server.Controllers;
+using static AI_Social_Platform.Common.NotificationMessagesConstants;
 
+namespace AI_Social_Platform.Server.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -30,21 +31,15 @@ public class PublicationController : ControllerBase
         {
             throw new Exception(ex.Message);
         }
-        
     }
 
     [HttpPost(Name = "create")]
     public async Task<IActionResult> Create(PublicationFormDto dto)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest();
-        }
-
         try
         {
             await publicationService.CreatePublicationAsync(dto);
-            return Ok();
+            return CreatedAtAction(nameof(Create), new { message = PublicationSuccessfullyCreated });
         }
         catch (Exception ex)
         {
@@ -60,19 +55,31 @@ public class PublicationController : ControllerBase
             var publication = await publicationService.GetPublicationAsync(id);
             return Ok(publication);
         }
-        catch (Exception ex)
+        catch (NullReferenceException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch(Exception ex)
         {
             return BadRequest(ex.Message);
         }
     }
 
-    [HttpDelete(Name = "delete")]
+    [HttpDelete("{id}",Name = "delete")]
     public async Task<IActionResult> Delete(Guid id)
     {
         try
         {
             await publicationService.DeletePublicationAsync(id);
-            return Ok();
+            return Ok(PublicationSuccessfullyDeleted);
+        }
+        catch (NullReferenceException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (AccessViolationException ex)
+        {
+            return StatusCode(403,ex.Message);
         }
         catch (Exception ex)
         {
@@ -86,7 +93,15 @@ public class PublicationController : ControllerBase
         try
         {
             await publicationService.UpdatePublicationAsync(dto, id);
-            return Ok();
+            return Ok(PublicationSuccessfullyEdited);
+        }
+        catch (NullReferenceException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (AccessViolationException ex)
+        {
+            return StatusCode(403, ex.Message);
         }
         catch (Exception ex)
         {
@@ -114,7 +129,11 @@ public class PublicationController : ControllerBase
         try
         {
             await publicationService.CreateCommentAsync(dto, publicationId);
-            return Ok();
+            return CreatedAtAction(nameof(CreateComment), new { message = CommentSuccessfullyCreated});
+        }
+        catch (NullReferenceException ex)
+        {
+            return NotFound(ex.Message);
         }
         catch (Exception ex)
         {
@@ -128,7 +147,15 @@ public class PublicationController : ControllerBase
         try
         {
             await publicationService.DeleteCommentAsync(commentId);
-            return Ok();
+            return Ok(CommentSuccessfullyDeleted);
+        }
+        catch (NullReferenceException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (AccessViolationException ex)
+        {
+            return StatusCode(403, ex.Message);
         }
         catch (Exception ex)
         {
@@ -143,7 +170,15 @@ public class PublicationController : ControllerBase
         try
         {
             await publicationService.UpdateCommentAsync(dto, commentId);
-            return Ok();
+            return Ok(CommentSuccessfullyEdited);
+        }
+        catch (NullReferenceException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (AccessViolationException ex)
+        {
+            return StatusCode(403, ex.Message);
         }
         catch (Exception ex)
         {

@@ -110,7 +110,7 @@
         [HttpPut("updateUser")]
         public async Task<IActionResult> UpdateUserData([FromBody] UpdateUserFormModel model)
         {
-            var userId = HttpContext.User.GetUserEmail();
+            var userId = HttpContext.User.GetUserId();
 
             try
             {
@@ -135,7 +135,7 @@
         [Route("Users/current")]
         public async Task<IActionResult> getCurrentuserId()
         {
-            var id = HttpContext.User.GetUserEmail();
+            var id = HttpContext.User.GetUserId();
             return Ok(new { userId = id });
         }
 

@@ -6,7 +6,7 @@
 
         public string Content { get; set; } = null!;
 
-        public string DateCreated { get; set; } = null!;
+        public DateTime DateCreated { get; set; }
 
         public Guid PublicationId { get; set; }
 

@@ -106,7 +106,7 @@
 
         private async Task<string> GetUserId()
         {
-            string userName = HttpContext.User.GetUserEmail()!;
+            string userName = HttpContext.User.GetUserId()!;
             var user = await userManager.FindByEmailAsync(userName);
             var userId = user.Id.ToString();
             return userId;

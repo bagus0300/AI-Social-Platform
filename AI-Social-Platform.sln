@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI-Social-Platform.Services
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI-Social-Platform.Extensions", "AI-Social-Platform.Extensions\AI-Social-Platform.Extensions.csproj", "{AD30F7A0-9775-4159-80EC-A550078F2DDA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ai-Social-Platform.Tests", "Ai-Social-Platform.Tests\Ai-Social-Platform.Tests.csproj", "{F560607F-025A-4323-B84D-39E2D0039A1E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,10 @@ Global
 		{AD30F7A0-9775-4159-80EC-A550078F2DDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD30F7A0-9775-4159-80EC-A550078F2DDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD30F7A0-9775-4159-80EC-A550078F2DDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F560607F-025A-4323-B84D-39E2D0039A1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F560607F-025A-4323-B84D-39E2D0039A1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F560607F-025A-4323-B84D-39E2D0039A1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F560607F-025A-4323-B84D-39E2D0039A1E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

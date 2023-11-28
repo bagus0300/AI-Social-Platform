@@ -16,5 +16,15 @@ namespace AI_Social_Platform.Common
         public const string InvalidLoginData = "Invalid login data!";
         public const string LoginSuccessful = "Login successful!";
         public const string LoginFailed = "Login failed!";
+
+        //Publication
+        public const string PublicationSuccessfullyCreated = "Successfully created publication!";
+        public const string PublicationSuccessfullyEdited = "Successfully edited publication!";
+        public const string PublicationSuccessfullyDeleted = "Successfully deleted publication!";
+        
+        //Comment
+        public const string CommentSuccessfullyCreated = "Successfully created comment!";
+        public const string CommentSuccessfullyEdited = "Successfully edited comment!";
+        public const string CommentSuccessfullyDeleted = "Successfully deleted comment!";
     }
 }

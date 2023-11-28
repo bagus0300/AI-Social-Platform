@@ -14,7 +14,7 @@
                 .HasMany(x => x.Comments)
                 .WithOne(x => x.Publication)
                 .HasForeignKey(x => x.PublicationId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder
                 .HasOne(x => x.Author)
