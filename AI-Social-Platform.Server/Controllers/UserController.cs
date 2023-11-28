@@ -16,7 +16,7 @@
     using static Common.NotificationMessagesConstants;
     using static Common.GeneralApplicationConstants;
     using static Extensions.ClaimsPrincipalExtensions;
-    
+
 
     [ApiController]
     [Route("api/[controller]")]
@@ -91,7 +91,7 @@
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), 
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, "ApplicationCookie");
@@ -118,7 +118,7 @@
 
                 if (success)
                 {
-                    return Ok("User data updated successfully"); 
+                    return Ok("User data updated successfully");
                 }
                 else
                 {
@@ -131,12 +131,85 @@
             }
         }
 
-        [HttpGet]
-        [Route("Users/current")]
-        public async Task<IActionResult> getCurrentuserId()
+        [HttpPost("addFriend/{friendId}")]
+        public async Task<IActionResult> AddFriend(string friendId)
         {
-            var id = HttpContext.User.GetUserId();
-            return Ok(new { userId = id });
+            try
+            {
+                var currentUser = await userManager.GetUserAsync(User);
+
+                if (currentUser == null)
+                {
+                    return NotFound("Current user not found!");
+                }
+
+                if (currentUser.Id.ToString() == friendId)
+                {
+                    return BadRequest("Cannot add yourself as a friends list!");
+                }
+
+                var success = await userService.AddFriend(currentUser!, friendId!);
+
+                if (success)
+                {
+                    return Ok("Friend added successfully.");
+                }
+
+                return BadRequest("Failed to add friend.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpPost("removeFriend/{friendId}")]
+        public async Task<IActionResult> RemoveFriend(string friendId)
+        {
+            try
+            {
+                var currentUser = await userManager.GetUserAsync(User);
+
+                if (currentUser == null)
+                {
+                    return NotFound("Current user not found!");
+                }
+
+                var success = await userService.RemoveFriend(currentUser!, friendId!);
+
+                if (success)
+                {
+                    return Ok("Friend removed successfully.");
+                }
+
+                return BadRequest("Failed to remove friend.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpGet("allFriends")]
+        public async Task<IActionResult> GetAllFriends()
+        {
+            try
+            {
+                var userId = this.User.GetUserId();
+
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return BadRequest("User not found.");
+                }
+
+                var friends = await userService.GetFriendsAsync(userId);
+
+                return Ok(friends);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
         }
 
 

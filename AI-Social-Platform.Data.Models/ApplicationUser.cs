@@ -11,6 +11,7 @@
         {
             this.Id = Guid.NewGuid();
             this.Publications = new HashSet<Publication.Publication>();
+            this.Friends = new HashSet<ApplicationUser>();
         }
 
         [Required]
@@ -22,5 +23,7 @@
         public string LastName { get; set; } = null!;
 
         public ICollection<Publication.Publication> Publications { get; set; }
+
+        public ICollection<ApplicationUser> Friends { get; set; }
     }
 }
