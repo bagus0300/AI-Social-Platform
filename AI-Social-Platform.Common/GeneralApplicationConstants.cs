@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AI_Social_Platform.Common
+﻿namespace AI_Social_Platform.Common
 {
     public static class GeneralApplicationConstants
     {

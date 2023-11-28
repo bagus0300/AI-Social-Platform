@@ -1,9 +1,9 @@
 ﻿namespace AI_Social_Platform.Data.Configurations
 {
-    using AI_Social_Platform.Data.Models;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using Models;
 
     public class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<ApplicationUser>
     {
@@ -18,7 +18,7 @@
 
         private ApplicationUser[] GenerateIdentityUser()
         {
-            ICollection<ApplicationUser> users = new HashSet<ApplicationUser>();
+           ICollection<ApplicationUser> users = new HashSet<ApplicationUser>();
 
             ApplicationUser user;
             var hasher = new PasswordHasher<ApplicationUser>();

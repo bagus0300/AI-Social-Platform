@@ -1,14 +1,19 @@
-using AI_Social_Platform.Common;
-using AI_Social_Platform.Data;
-using AI_Social_Platform.Data.Models;
-using AI_Social_Platform.Services.Data;
-using AI_Social_Platform.Services.Data.Interfaces;
-using AI_Social_Platform.Services.Data.Models;
+using System.Text;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
+
+using AI_Social_Platform.Data;
+using AI_Social_Platform.Data.Models;
+using AI_Social_Platform.Extensions;
+using AI_Social_Platform.Services.Data;
+using AI_Social_Platform.Services.Data.Interfaces;
+using AI_Social_Platform.Services.Data.Models;
+
+using static AI_Social_Platform.Common.GeneralApplicationConstants;
+
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -51,12 +56,15 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     options.Password.RequireDigit = false;
     options.Password.RequiredLength = 3;
 })
+    .AddRoles<IdentityRole<Guid>>()
     .AddEntityFrameworkStores<ASPDbContext>();
 
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPublicationService, PublicationService>();
+builder.Services.AddScoped<IMediaService, MediaService>();
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -65,7 +73,6 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddScoped<IMediaService, MediaService>();
 
 var app = builder.Build();
 
@@ -83,6 +90,11 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+if (app.Environment.IsDevelopment())
+{
+    app.SeedAdministrator(DevelopmentAdminEmail);
+}
 
 app.MapControllers();
 
