@@ -13,6 +13,7 @@ public class Publication
         Id = Guid.NewGuid();
         DateCreated = DateTime.UtcNow;
         Comments = new HashSet<Comment>();
+        MediaFiles = new HashSet<Media>();
     }
 
     [Key]
@@ -34,4 +35,6 @@ public class Publication
     public ApplicationUser Author { get; set; } = null!;
 
     public ICollection<Comment> Comments { get; set; }
+
+    public ICollection<Media> MediaFiles{ get; set; } 
 }

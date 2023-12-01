@@ -4,6 +4,7 @@ using AI_Social_Platform.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AI_Social_Platform.Data.Migrations
 {
     [DbContext(typeof(ASPDbContext))]
-    partial class ASPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231130172840_mediaPublicationSetToNull")]
+    partial class mediaPublicationSetToNull
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,7 +113,7 @@ namespace AI_Social_Platform.Data.Migrations
                         {
                             Id = new Guid("6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2f870b1d-f6b4-4533-b557-54163c041b54",
+                            ConcurrencyStamp = "9b05d953-19d9-4ca5-9d25-53f227db279c",
                             Email = "user@user.com",
                             EmailConfirmed = false,
                             FirstName = "Georgi",
@@ -119,9 +121,9 @@ namespace AI_Social_Platform.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "user@user.com",
                             NormalizedUserName = "USER@USER.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOiPf5PEmsHvUV+pmjdA/AgbY9bwoFKB6LlagiCZzu1CWfdOpd51y25fAhh6M8Rffw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOkHSF1FfrbK4T93h0x33wLUoImg1PH47+tZutIX9MztZLZ9CHS3RhXRcJX6LzvzQg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5ae03fe2-94e4-4501-bf6e-ca04eafff18a",
+                            SecurityStamp = "c6ca99f6-8c7c-41fc-b524-07f214556a3a",
                             TwoFactorEnabled = false,
                             UserName = "user@user.com"
                         },
@@ -129,7 +131,7 @@ namespace AI_Social_Platform.Data.Migrations
                         {
                             Id = new Guid("949a14ed-2e82-4f5a-a684-a9c7e3ccb52e"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1f42b186-bbf8-4db4-a8d9-1ce53140ee9e",
+                            ConcurrencyStamp = "fb026b94-8655-4181-a0dc-a174b1194164",
                             Email = "admin@admin.com",
                             EmailConfirmed = false,
                             FirstName = "Ivan",
@@ -137,9 +139,9 @@ namespace AI_Social_Platform.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.com",
                             NormalizedUserName = "ADMIN@ADMIN.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIY3VQU7YV+vPkFe5btG31QKza27DuKLISkenbYqXxHg7StqbhetamhNEjjvax8OQQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJW/FKzExSsF+uVRCAScoFV6PeFGEM9aEQF9ZcvwiI1KJ/ULTlrXnLTHsP7bHPie+w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2063e480-0d27-4468-8581-272b7ea920d2",
+                            SecurityStamp = "df9c8039-cd5e-4732-ac1c-5739323a4622",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         });
@@ -158,7 +160,7 @@ namespace AI_Social_Platform.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("PublicationId")
+                    b.Property<Guid>("PublicationId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Title")
@@ -232,17 +234,17 @@ namespace AI_Social_Platform.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d529d306-afb9-4922-8899-ae34490d1e40"),
+                            Id = new Guid("a9aa5a5d-fc74-471e-aa77-44800de8cbd5"),
                             AuthorId = new Guid("949a14ed-2e82-4f5a-a684-a9c7e3ccb52e"),
                             Content = "This is the first seeded publication Content from Ivan",
-                            DateCreated = new DateTime(2023, 11, 30, 17, 31, 56, 169, DateTimeKind.Utc).AddTicks(4086)
+                            DateCreated = new DateTime(2023, 11, 30, 17, 28, 39, 776, DateTimeKind.Utc).AddTicks(2087)
                         },
                         new
                         {
-                            Id = new Guid("4c6f2908-ee71-495e-b855-ff2eb4fe8d63"),
+                            Id = new Guid("b1f46acb-3591-4489-80ef-dc02670f5dd1"),
                             AuthorId = new Guid("6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"),
                             Content = "This is the second seeded publication Content from Georgi",
-                            DateCreated = new DateTime(2023, 11, 30, 17, 31, 56, 169, DateTimeKind.Utc).AddTicks(4114)
+                            DateCreated = new DateTime(2023, 11, 30, 17, 28, 39, 776, DateTimeKind.Utc).AddTicks(2114)
                         });
                 });
 
@@ -388,7 +390,9 @@ namespace AI_Social_Platform.Data.Migrations
                 {
                     b.HasOne("AI_Social_Platform.Data.Models.Publication.Publication", "Publication")
                         .WithMany("MediaFiles")
-                        .HasForeignKey("PublicationId");
+                        .HasForeignKey("PublicationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("AI_Social_Platform.Data.Models.ApplicationUser", "User")
                         .WithMany()

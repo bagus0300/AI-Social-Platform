@@ -59,6 +59,16 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     .AddRoles<IdentityRole<Guid>>()
     .AddEntityFrameworkStores<ASPDbContext>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AISocialPlatform", builder =>
+    {
+        builder.WithOrigins("https://localhost:5173")
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -87,6 +97,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AISocialPlatform");
 
 app.UseAuthentication();
 app.UseAuthorization();
