@@ -30,7 +30,7 @@ export default function PostItem() {
                     </div>
                 </div>
                 <div className={styles['edit']}>
-                    <i class="fa-solid fa-pen-to-square"></i>
+                    <i className="fa-solid fa-pen-to-square"></i>
                 </div>
             </section>
             <section className={styles['content-description']}>

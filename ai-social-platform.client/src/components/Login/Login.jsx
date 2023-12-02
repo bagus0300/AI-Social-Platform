@@ -1,32 +1,67 @@
 import { Link } from 'react-router-dom';
+import { useFormik } from 'formik';
 
+import { LoginFormKeys } from '../../core/environments/costants';
 import styles from './Login.module.css';
+import { useContext } from 'react';
+import AuthContext from '../../contexts/authContext';
+
+const initialValues = {
+    [LoginFormKeys.Email]: '',
+    [LoginFormKeys.Password]: '',
+};
 
 export default function Login() {
+    const { values, handleSubmit, handleChange, handleBlur } = useFormik({
+        initialValues,
+        onSubmit,
+    });
+
+    const { loginSubmitHandler } = useContext(AuthContext);
+
+    async function onSubmit(values) {
+        try {
+            await loginSubmitHandler(values);
+        } catch (error) {
+            console.log('Error is', error);
+        }
+    }
+
     return (
         <section className={styles['section-wrapper']}>
             <div className={styles['login-wrapper']}>
                 <div className={styles['login-form-wrapper']}>
                     <h2>Log in to your Account</h2>
                     <p>Welcome back!</p>
-                    <form className={styles['login-form']}>
+                    <form
+                        onSubmit={handleSubmit}
+                        className={styles['login-form']}
+                    >
                         <section className={styles['email-wrapper']}>
+                            <label htmlFor={LoginFormKeys.Email}></label>
                             <input
                                 className={styles['input-field']}
                                 type="email"
-                                name="email"
-                                id="email"
+                                name={LoginFormKeys.Email}
+                                id={LoginFormKeys.Email}
                                 placeholder="Email"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values[LoginFormKeys.Email]}
                             />
                             <i className="fa-regular fa-envelope"></i>
                         </section>
                         <section className={styles['password-wrapper']}>
+                            <label htmlFor={LoginFormKeys.Password}></label>
                             <input
                                 className={styles['input-field']}
                                 type="password"
-                                name="password"
-                                id="password"
+                                name={LoginFormKeys.Password}
+                                id={LoginFormKeys.Password}
                                 placeholder="Password"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values[LoginFormKeys.Password]}
                             />
                             <i className="fa-solid fa-key"></i>
                         </section>
@@ -39,7 +74,10 @@ export default function Login() {
                                 Forgot Password?
                             </Link>
                         </section>
-                        <button className={styles['login-button']}>
+                        <button
+                            type="submit"
+                            className={styles['login-button']}
+                        >
                             Log in
                         </button>
                     </form>

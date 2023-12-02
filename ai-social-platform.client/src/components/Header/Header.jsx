@@ -1,20 +1,36 @@
 import { Link } from 'react-router-dom';
 
+import { PATH } from '../../core/environments/costants';
 import styles from './Header.module.css';
+import { useContext } from 'react';
+import AuthContext from '../../contexts/authContext';
 
 export default function Header() {
+    const { isAuthenticated } = useContext(AuthContext);
+
     return (
         <header className={styles['app-header']}>
-            <Link to={'/'}>
-                <h2>AI-Social-Platform</h2>
-            </Link>
+            <h1 className={styles['logo-heading']}>
+                <Link className={styles['logo-text']} to={PATH.home}>
+                    AI-Social-Platform
+                </Link>
+            </h1>
             <form className={styles['search-form']}>
                 <input type="search" placeholder="Search..." />
                 <button>Search</button>
             </form>
             <section className={styles['profile']}>
-                <Link to={'/login'}>Login</Link>
-                <Link to={'/register'}>Register</Link>
+                {!isAuthenticated ? (
+                    <div className={styles['guest']}>
+                        <Link to={PATH.login}>Login</Link>
+                        <Link to={PATH.register}>Register</Link>
+                    </div>
+                ) : (
+                    <div className={styles['user']}>
+                        <p>Profile</p>
+                        <p>Logout</p>
+                    </div>
+                )}
             </section>
         </header>
     );

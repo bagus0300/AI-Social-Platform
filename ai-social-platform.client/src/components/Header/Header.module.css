@@ -1,3 +1,7 @@
+.app-header a:visited {
+    color: #fff;
+}
+
 .app-header {
     background-color: #004aad;
     padding: 0.5em 1em;
@@ -8,16 +12,16 @@
     align-items: center;
 }
 
-.app-header a {
-    text-decoration: none;
-    color: #fff;
+.logo-heading {
+    font-size: 1.5em;
 }
 
-.app-header a:hover {
+.logo-heading:hover .logo-text {
     text-decoration: underline;
 }
 
-.app-header a:visited {
+.logo-heading .logo-text {
+    text-decoration: none;
     color: #fff;
 }
 
@@ -32,9 +36,23 @@
     margin-right: 0.5em;
 }
 
+.user {
+    display: flex;
+    gap: 0.5em;
+}
+
+.guest {
+    display: flex;
+    gap: 0.5em;
+}
+
 .profile {
     display: flex;
     gap: 1em;
+}
+
+.guest > * {
+    text-decoration: none;
 }
 
 .profile a:hover {
