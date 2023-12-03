@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AI_Social_Platform.Common
+﻿namespace AI_Social_Platform.Common
 {
     public static class NotificationMessagesConstants
     {
@@ -26,5 +20,13 @@ namespace AI_Social_Platform.Common
         public const string CommentSuccessfullyCreated = "Successfully created comment!";
         public const string CommentSuccessfullyEdited = "Successfully edited comment!";
         public const string CommentSuccessfullyDeleted = "Successfully deleted comment!";
+
+        //Like
+        public const string LikeSuccessfullyCreated = "Successfully created like!";
+        public const string LikeSuccessfullyDeletedFromPublication = "Successfully deleted like from publication!";
+
+        //Share
+        public const string ShareSuccessfullyCreated = "Successfully created share!";
+        public const string ShareSuccessfullyDeletedFromPublication = "Successfully deleted share from publication!";
     }
 }

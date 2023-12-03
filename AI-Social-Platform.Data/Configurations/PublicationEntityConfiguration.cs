@@ -17,6 +17,18 @@
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder
+                .HasMany(x => x.Likes)
+                .WithOne(x => x.Publication)
+                .HasForeignKey(x => x.PublicationId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .HasMany(x => x.Shares)
+                .WithOne(x => x.Publication)
+                .HasForeignKey(x => x.PublicationId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder
                 .HasOne(x => x.Author)
                 .WithMany(x => x.Publications)
                 .HasForeignKey(x => x.AuthorId)

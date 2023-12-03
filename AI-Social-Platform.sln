@@ -27,9 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI-Social-Platform.FormMode
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI-Social-Platform.Services.Data", "AI-Social-Platform.Services.Data\AI-Social-Platform.Services.Data.csproj", "{13581442-0426-438D-8427-5BA3C78B5509}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI-Social-Platform.Extensions", "AI-Social-Platform.Extensions\AI-Social-Platform.Extensions.csproj", "{AD30F7A0-9775-4159-80EC-A550078F2DDA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI-Social-Platform.Extensions", "AI-Social-Platform.Extensions\AI-Social-Platform.Extensions.csproj", "{AD30F7A0-9775-4159-80EC-A550078F2DDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ai-Social-Platform.Tests", "Ai-Social-Platform.Tests\Ai-Social-Platform.Tests.csproj", "{F560607F-025A-4323-B84D-39E2D0039A1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ai-Social-Platform.Tests", "Ai-Social-Platform.Tests\Ai-Social-Platform.Tests.csproj", "{F560607F-025A-4323-B84D-39E2D0039A1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

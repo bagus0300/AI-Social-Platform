@@ -123,12 +123,12 @@ public class PublicationController : ControllerBase
         }
     }
 
-    [HttpPost("comment/{publicationId}", Name = "createComment")]
-    public async Task<IActionResult> CreateComment(CommentFormDto dto, Guid publicationId)
+    [HttpPost("comment", Name = "createComment")]
+    public async Task<IActionResult> CreateComment(CommentFormDto dto)
     {
         try
         {
-            await publicationService.CreateCommentAsync(dto, publicationId);
+            await publicationService.CreateCommentAsync(dto);
             return CreatedAtAction(nameof(CreateComment), new { message = CommentSuccessfullyCreated});
         }
         catch (NullReferenceException ex)
@@ -186,4 +186,113 @@ public class PublicationController : ControllerBase
         }
     }
 
+    //Likes
+    [HttpGet("like/{publicationId}", Name = "getLikes")]
+    public async Task<IEnumerable<LikeDto>> GetLikes(Guid publicationId)
+    {
+        try
+        {
+            var likes = await publicationService.GetLikesOnPublicationAsync(publicationId);
+            return likes;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    [HttpPost("like/{publicationId}", Name = "createLike")]
+    public async Task<IActionResult> CreateLike(Guid publicationId)
+    {
+        try
+        {
+            await publicationService.CreateLikesOnPublicationAsync(publicationId);
+            return CreatedAtAction(nameof(CreateLike), new { message = LikeSuccessfullyCreated });
+        }
+        catch (NullReferenceException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpDelete("like/{likeId}", Name = "deleteLike")]
+    public async Task<IActionResult> DeleteLike(Guid likeId)
+    {
+        try
+        {
+            await publicationService.DeleteLikeOnPublicationAsync(likeId);
+            return Ok(LikeSuccessfullyDeletedFromPublication);
+        }
+        catch (NullReferenceException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (AccessViolationException ex)
+        {
+            return StatusCode(403, ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    //Shares
+    [HttpGet("share/{publicationId}", Name = "getShares")]
+    public async Task<IEnumerable<ShareDto>> GetShares(Guid publicationId)
+    {
+        try
+        {
+            var shares = await publicationService.GetSharesOnPublicationAsync(publicationId);
+            return shares;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
+    [HttpPost("share/{publicationId}", Name = "createShare")]
+    public async Task<IActionResult> CreateShare(Guid publicationId)
+    {
+        try
+        {
+            await publicationService.CreateSharesOnPublicationAsync(publicationId);
+            return CreatedAtAction(nameof(CreateShare), new { message = ShareSuccessfullyCreated });
+        }
+        catch (NullReferenceException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpDelete("share/{shareId}", Name = "deleteShare")]
+    public async Task<IActionResult> DeleteShare(Guid shareId)
+    {
+        try
+        {
+            await publicationService.DeleteShareOnPublicationAsync(shareId);
+            return Ok(ShareSuccessfullyDeletedFromPublication);
+        }
+        catch (NullReferenceException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (AccessViolationException ex)
+        {
+            return StatusCode(403, ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 }

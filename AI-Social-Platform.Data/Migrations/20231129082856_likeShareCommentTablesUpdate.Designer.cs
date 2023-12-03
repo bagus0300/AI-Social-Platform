@@ -4,6 +4,7 @@ using AI_Social_Platform.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AI_Social_Platform.Data.Migrations
 {
     [DbContext(typeof(ASPDbContext))]
-    partial class ASPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231129082856_likeShareCommentTablesUpdate")]
+    partial class likeShareCommentTablesUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,7 +113,7 @@ namespace AI_Social_Platform.Data.Migrations
                         {
                             Id = new Guid("6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7379b240-22d6-4813-901b-59fed7bd7884",
+                            ConcurrencyStamp = "db291e0a-8910-45dd-9646-def503e85d73",
                             Email = "user@user.com",
                             EmailConfirmed = false,
                             FirstName = "Georgi",
@@ -119,9 +121,9 @@ namespace AI_Social_Platform.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "user@user.com",
                             NormalizedUserName = "USER@USER.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEM2XYvGz8xx3ybRJJszczgz9P5DyVweBLAPZKYNudRhgsfNxSeN8y9xXFjBr8FL/Wg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELC5sYjyoudIOC4AiJZezzLJJwDpMK1PkAAqZ4ZLOwbrNPIIcfpHzhfraQnYjroMUA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "29841d63-34b3-4df8-b2b0-d8d2724dd541",
+                            SecurityStamp = "b4ac60e1-14f6-4760-98ba-d7276ef7fade",
                             TwoFactorEnabled = false,
                             UserName = "user@user.com"
                         },
@@ -129,7 +131,7 @@ namespace AI_Social_Platform.Data.Migrations
                         {
                             Id = new Guid("949a14ed-2e82-4f5a-a684-a9c7e3ccb52e"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "dbb4c8a9-8075-4d3d-a62b-3a7b1fd3a0f7",
+                            ConcurrencyStamp = "b7552257-772c-4ff2-b9cc-540619800b54",
                             Email = "admin@admin.com",
                             EmailConfirmed = false,
                             FirstName = "Ivan",
@@ -137,9 +139,9 @@ namespace AI_Social_Platform.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.com",
                             NormalizedUserName = "ADMIN@ADMIN.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJ/9sq0sjf2aTaitiaBXydGQMm5HnT4VqxHUfMBfQWoyRjEJck0Yy/JTIyawiTK8VQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELP2cmvzSlU0U29EjpvY2C2TCFh+8TMsvG8v05xXBqPnfzY3SuAiLibMHZog9FeTMg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0561d8cf-6588-4626-9952-ae8d767a9031",
+                            SecurityStamp = "93c78611-779e-4baf-a8c3-6c76508e02f9",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         });
@@ -158,9 +160,6 @@ namespace AI_Social_Platform.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("PublicationId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Title")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -169,8 +168,6 @@ namespace AI_Social_Platform.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PublicationId");
 
                     b.HasIndex("UserId");
 
@@ -256,17 +253,17 @@ namespace AI_Social_Platform.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("16d55b18-b0fb-4cb0-9de5-4b31abb950f1"),
+                            Id = new Guid("58ecfd47-6537-409c-ac31-b14d2e1ef519"),
                             AuthorId = new Guid("949a14ed-2e82-4f5a-a684-a9c7e3ccb52e"),
                             Content = "This is the first seeded publication Content from Ivan",
-                            DateCreated = new DateTime(2023, 12, 2, 5, 28, 43, 853, DateTimeKind.Utc).AddTicks(1453)
+                            DateCreated = new DateTime(2023, 11, 29, 8, 28, 56, 282, DateTimeKind.Utc).AddTicks(2864)
                         },
                         new
                         {
-                            Id = new Guid("ac1ec86e-ec94-48bf-9630-44c09fd6b21d"),
+                            Id = new Guid("6705e20f-91b0-4343-921e-a40cf87ee2c2"),
                             AuthorId = new Guid("6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"),
                             Content = "This is the second seeded publication Content from Georgi",
-                            DateCreated = new DateTime(2023, 12, 2, 5, 28, 43, 853, DateTimeKind.Utc).AddTicks(1482)
+                            DateCreated = new DateTime(2023, 11, 29, 8, 28, 56, 282, DateTimeKind.Utc).AddTicks(2880)
                         });
                 });
 
@@ -434,17 +431,11 @@ namespace AI_Social_Platform.Data.Migrations
 
             modelBuilder.Entity("AI_Social_Platform.Data.Models.Media", b =>
                 {
-                    b.HasOne("AI_Social_Platform.Data.Models.Publication.Publication", "Publication")
-                        .WithMany("MediaFiles")
-                        .HasForeignKey("PublicationId");
-
                     b.HasOne("AI_Social_Platform.Data.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Publication");
 
                     b.Navigation("User");
                 });
@@ -503,7 +494,7 @@ namespace AI_Social_Platform.Data.Migrations
                     b.HasOne("AI_Social_Platform.Data.Models.Publication.Publication", "Publication")
                         .WithMany("Shares")
                         .HasForeignKey("PublicationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("AI_Social_Platform.Data.Models.ApplicationUser", "User")
@@ -586,8 +577,6 @@ namespace AI_Social_Platform.Data.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Likes");
-
-                    b.Navigation("MediaFiles");
 
                     b.Navigation("Shares");
                 });

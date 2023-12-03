@@ -13,6 +13,8 @@ public class Publication
         Id = Guid.NewGuid();
         DateCreated = DateTime.UtcNow;
         Comments = new HashSet<Comment>();
+        Likes = new HashSet<Like>();
+        Shares = new HashSet<Share>();
         MediaFiles = new HashSet<Media>();
     }
 
@@ -27,7 +29,6 @@ public class Publication
     public DateTime DateCreated { get; set; }
 
     //Relations
-
     [Required]
     [ForeignKey(nameof(Author))]
     public Guid AuthorId { get; set; }
@@ -35,6 +36,10 @@ public class Publication
     public ApplicationUser Author { get; set; } = null!;
 
     public ICollection<Comment> Comments { get; set; }
+
+    public ICollection<Like> Likes { get; set; }
+
+    public ICollection<Share> Shares { get; set; }
 
     public ICollection<Media> MediaFiles{ get; set; } 
 }
