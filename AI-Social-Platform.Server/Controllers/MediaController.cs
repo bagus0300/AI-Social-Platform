@@ -6,7 +6,7 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Mvc;    
+    using Microsoft.AspNetCore.Mvc;
 
     using static Extensions.ClaimsPrincipalExtensions;
 
@@ -24,18 +24,20 @@
         }
 
         [HttpPost("upload")]
-        public async Task<IActionResult> Post(IFormFile file)
+        public async Task<IActionResult> Post(IFormFileCollection files)
         {
-            if (file == null || file.Length <= 0)
+            var filesToUpload = Request.Form.Files;
+
+            if (filesToUpload.Count == 0)
             {
-                return BadRequest("No file uploaded");
+                return BadRequest("No files to upload");
             }
 
             try
             {
                 var userId = HttpContext.User.GetUserId();
 
-                await mediaService.UploadMediaAsync(file, userId!);
+                await mediaService.UploadMediaAsync(filesToUpload, userId!);
                 return Ok("Successfully upload media");
 
             }
@@ -43,6 +45,19 @@
             {
                 return BadRequest("Something went wrong");
             }
+        }
+
+        [HttpGet("{mediaId}")]
+        public async Task<IActionResult> GetMedia(string mediaId)
+        {
+            Media media = await mediaService.GetMediaAync(mediaId);
+
+            if (media == null)
+            {
+                return NotFound();
+            }
+
+            return File(media.DataFile, "image/png");
         }
 
         [HttpPut("edit/{id}")]
@@ -98,7 +113,7 @@
                 await mediaService.DeleteMediaAsync(id);
                 return Ok("The media was deleted succsessfully");
             }
-             catch (Exception)
+            catch (Exception)
             {
                 return BadRequest("Something went wrong!");
             }
