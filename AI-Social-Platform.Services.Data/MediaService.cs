@@ -36,8 +36,6 @@
                 }
             }
             await dbContext.SaveChangesAsync();
-
-
         }
 
         public async Task<Media> ReplaceOrEditMediaAsync(string id, MediaFormModel updatedMedia)
@@ -120,18 +118,24 @@
             return mediaFiles;
         }
 
-        public async Task<ICollection<Media>> GetAllMediaFilesByPublicationIdAsync(string publicationId)
+        public async Task<ICollection<Media>> GetAllMediaByPublicationIdAsync(string publicationId)
         {
+            var publicationIdGuid = Guid.Parse(publicationId);
             List<Media> mediaFiles = await dbContext.MediaFiles
-                .Where(m => m.PublicationId.ToString() == publicationId && m.IsDeleted ==false)
+                .Where(m => m.PublicationId == publicationIdGuid && m.IsDeleted == false)
                 .ToListAsync();
+
+            return mediaFiles;
+        }
+
+        public async Task<ICollection<Media>> GetAllMediaByUserIdAsync(string userId)
+        {
+            var userIdGuid = Guid.Parse(userId);
+            var mediaFiles = await dbContext.MediaFiles
+                .Where(m => m.UserId == userIdGuid)
+                .ToArrayAsync();
 
             return mediaFiles;
         }
     }
 }
-
-
-
-
-

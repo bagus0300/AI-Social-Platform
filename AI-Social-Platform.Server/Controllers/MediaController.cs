@@ -3,6 +3,7 @@
     using AI_Social_Platform.Data.Models;
     using AI_Social_Platform.FormModels;
     using AI_Social_Platform.Services.Data.Interfaces;
+    using AI_Social_Platform.Services.Data.Models.MediaDtos;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
@@ -47,7 +48,7 @@
             }
         }
 
-        [HttpGet("{mediaId}")]
+        [HttpGet("serve/{mediaId}")]
         public async Task<IActionResult> GetMedia(string mediaId)
         {
             Media media = await mediaService.GetMediaAync(mediaId);
@@ -59,6 +60,52 @@
 
             return File(media.DataFile, "image/png");
         }
+
+        [HttpGet("get/{userId}")]
+        public async Task<IActionResult> GetAllMediaByUserId(string userId)
+        {
+            try
+            {
+                var userMediaFiles = await mediaService.GetAllMediaByUserIdAsync(userId);
+
+
+                var mediaFilesWithUrls = userMediaFiles.Select(mediaFile => new MediaWithUrl
+                {
+                    FileId = mediaFile.Id,
+                    FileName = mediaFile.Title,
+                    Url = GetImageUrl(mediaFile.Id)
+                }).ToList();
+
+                return Ok(mediaFilesWithUrls);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+            }
+        }
+
+        [HttpGet("{publicationId}")]
+        public async Task<IActionResult> GetAllMediaByPublicationId(string publicationId)
+        {
+            try
+            {
+                var userMediaFiles = await mediaService.GetAllMediaByPublicationIdAsync(publicationId);
+
+                var mediaFilesWithUrls = userMediaFiles.Select(mediaFile => new MediaWithUrl
+                {
+                    FileId = mediaFile.Id,
+                    FileName = mediaFile.Title,
+                    Url = GetImageUrl(mediaFile.Id)
+                }).ToList();
+
+                return Ok(mediaFilesWithUrls);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+            }
+        }
+
 
         [HttpPut("edit/{id}")]
         public async Task<IActionResult> ReplaceMedia(string id, [FromForm] MediaFormModel updatedMedia)
@@ -118,6 +165,12 @@
                 return BadRequest("Something went wrong!");
             }
         }
+        private string GetImageUrl(Guid fileId)
+        {
+            var request = HttpContext.Request;
+            var baseUrl = $"{request.Scheme}://{request.Host}{request.PathBase}";
 
+            return $"{baseUrl}/api/Media/serve/{fileId}";
+        }
     }
 }

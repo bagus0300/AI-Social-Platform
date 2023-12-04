@@ -18,10 +18,8 @@
 
         Task<ICollection<Media>> GetAllMediaFilesByUserIdAsync(string userId);
 
-        Task<ICollection<Media>> GetAllMediaFilesByPublicationIdAsync(string publicationId);
+        Task<ICollection<Media>> GetAllMediaByPublicationIdAsync(string publicationId);
+
+        Task<ICollection<Media>> GetAllMediaByUserIdAsync(string userId);
     }
 }
-
-
-
-
