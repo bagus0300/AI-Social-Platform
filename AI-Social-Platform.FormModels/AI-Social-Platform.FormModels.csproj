@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AI-Social-Platform.Common\AI-Social-Platform.Common.csproj" />
+    <ProjectReference Include="..\AI-Social-Platform.Data.Models\AI-Social-Platform.Data.Models.csproj" />
   </ItemGroup>
 
 </Project>

@@ -13,13 +13,16 @@
             : base(options)
         {
         }
-
+        public DbSet<Country> Countries { get; set; } = null!;
+        public DbSet<State> States { get; set; } = null!;
+        public DbSet<School> Schools { get; set; } = null!;
         public DbSet<ApplicationUser> ApplicationUsers { get; set; } = null!;
         public DbSet<Publication> Publications { get; set; } = null!;
         public DbSet<Comment> Comments { get; set; } = null!;
         public DbSet<Like> Likes { get; set; } = null!;
         public DbSet<Share> Shares { get; set; } = null!;
         public DbSet<Media> MediaFiles { get; set; } = null!;
+        public DbSet<UserSchool> UserSchools { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

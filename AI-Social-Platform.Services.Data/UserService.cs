@@ -14,7 +14,7 @@
     using FormModels;
     using Interfaces;
     using UserDto;
-    using Common;
+    using PublicationDtos;
 
     public class UserService : IUserService
     {
@@ -29,7 +29,6 @@
             this.configuration = configuration;
             this.userManager = userManager;
         }
-
 
         public string BuildToken(string userId)
         {
@@ -65,8 +64,51 @@
 
         }
 
+        public async Task<UserDetailsDto?> GetUserDetailsByIdAsync(string id)
+        {
+            ApplicationUser user = await this.dbContext
+                .ApplicationUsers
+                .Include(u => u.Country)
+                .Include(u => u.State)
+                .Include(u => u.UserSchools)
+                .Include(u => u.Friends)
+                .FirstAsync(u => u.IsActive && u.Id.ToString() == id);
 
-        public async Task<bool> EditUserDataAsync(string id, UpdateUserFormModel updatedUserData)
+            List<FriendDetailsDto> friends = await GetUserFriends(user);
+
+            List<SchoolDto> schools = GetUserSchools(user);
+
+            List<PublicationDto> publications = GetUserPublications(user);
+
+            UserDetailsDto userDetailModel = new()
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                Country = user.Country.Name,
+                State = user.State.Name,
+                Gender = user.Gender.ToString(),
+                Birthday = user.Birthday,
+                Relationship = user.Relationship.ToString(),
+                ProfilePictureBase64 = Convert.ToBase64String(user.ProfilePicture!) ?? null,
+                CoverPhotoBase64 = Convert.ToBase64String(user.CoverPhoto!) ?? null,
+                Friends = friends,
+                UserSchools = schools,
+                Publications = publications
+            };
+
+            return userDetailModel;
+        }
+
+
+        public Task<UserFormModel> GetUserDetailsForEditAsync(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> EditUserDataAsync(string id, UserFormModel updatedUserData)
         {
             Guid userId = Guid.Parse(id);
 
@@ -74,9 +116,41 @@
 
             if (user != null)
             {
+                string? newStateName = updatedUserData.State;
+                State? oldState = await dbContext.States.FirstOrDefaultAsync(s => s.Name == newStateName);
+
+                if (newStateName != null && oldState == null)
+                {
+                    State state = new State
+                    {
+                        Name = newStateName
+                    };
+
+                    dbContext.States.Add(state);
+                    await dbContext!.SaveChangesAsync();
+                }
+
+                string? newCountryName = updatedUserData.Country;
+                Country? oldCountry = await dbContext.Countries.FirstOrDefaultAsync(c => c.Name == newCountryName);
+
+                if (newCountryName != null && oldCountry == null)
+                {
+                    Country country = new Country
+                    {
+                        Name = newCountryName
+                    };
+                    dbContext.Countries.Add(country);
+                    await dbContext!.SaveChangesAsync();
+                }
+
+                user.State = await dbContext.States.FirstAsync(s => s.Name == newStateName);
+                user.Country = await dbContext.Countries.FirstAsync(c => c.Name == newCountryName);
                 user.FirstName = updatedUserData.FirstName;
                 user.LastName = updatedUserData.LastName;
                 user.PhoneNumber = updatedUserData.PhoneNumber;
+                user.Gender = updatedUserData.Gender;
+                user.Birthday = updatedUserData.Birthday;
+                user.Relationship = updatedUserData.Relationship;
 
                 await this.dbContext.SaveChangesAsync();
                 return true;
@@ -141,7 +215,7 @@
             return true;
         }
 
-        public async Task<ICollection<FriendDto>> GetFriendsAsync(string userId)
+        public async Task<ICollection<FriendDetailsDto>> GetFriendsAsync(string userId)
         {
             var user = await dbContext.ApplicationUsers
                 .Include(u => u.Friends)
@@ -153,11 +227,13 @@
             }
 
             var friends = user.Friends
-                .Select(friend => new FriendDto
+                .Select(friend => new FriendDetailsDto
                 {
                     UserName = friend.UserName,
                     FirstName = friend.FirstName,
-                    LastName = friend.LastName
+                    LastName = friend.LastName,
+                    Id = friend.Id,
+                    ProfilePictureBase64 = Convert.ToBase64String(friend.ProfilePicture!) ?? null,
                 })
                 .ToArray();
 
@@ -165,5 +241,62 @@
         }
 
 
+        private static List<SchoolDto> GetUserSchools(ApplicationUser user)
+        {
+            List<SchoolDto> schools = new List<SchoolDto>();
+
+            foreach (var school in user.UserSchools)
+            {
+                SchoolDto schoolDto = new SchoolDto()
+                {
+                    Id = school.School.Id,
+                    Name = school.School.Name,
+                    State = school.School.State.Name
+                };
+                schools.Add(schoolDto);
+            }
+
+            return schools;
+        }
+
+        private async Task<List<FriendDetailsDto>> GetUserFriends(ApplicationUser user)
+        {
+            List<FriendDetailsDto> friends = new List<FriendDetailsDto>();
+
+            foreach (var itemFriend in user.Friends)
+            {
+                var myFriend = await this.dbContext.ApplicationUsers.FindAsync(itemFriend.Id);
+                string userName = myFriend?.UserName ?? string.Empty;
+
+                FriendDetailsDto friend = new FriendDetailsDto()
+                {
+                    FirstName = user.FirstName ?? string.Empty,
+                    LastName = user.LastName ?? string.Empty,
+                    UserName = userName
+                };
+                friends.Add(friend);
+            }
+
+            return friends;
+        }
+
+        private static List<PublicationDto> GetUserPublications(ApplicationUser user)
+        {
+            List<PublicationDto> publications = new List<PublicationDto>();
+
+            foreach (var publication in user.Publications)
+            {
+                PublicationDto publicationDto = new PublicationDto()
+                {
+                    Id = publication.Id,
+                    Content = publication.Content,
+                    DateCreated = publication.DateCreated,
+                    AuthorId = publication.AuthorId
+                };
+                publications.Add(publicationDto);
+            }
+
+            return publications;
+        }
     }
 }

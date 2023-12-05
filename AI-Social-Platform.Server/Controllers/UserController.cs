@@ -28,6 +28,7 @@
         private readonly IUserService userService;
         private readonly IMemoryCache memoryCache;
 
+
         public UserController(IUserService userService, SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager, IMemoryCache memoryCache)
         {
@@ -107,8 +108,59 @@
         }
 
 
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+
+            return Ok(new { message = "Logged out successfully." });
+        }
+
+
+        [HttpGet("userDetails")]
+        public async Task<IActionResult> GetUserDetails()
+        {
+            var userId = HttpContext.User.GetUserId();
+
+            try
+            {
+                var currentUser = await userService.GetUserDetailsByIdAsync(userId);
+                if (currentUser == null)
+                {
+                    return NotFound("Current user not found!");
+                }
+                return Ok(currentUser);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
+
+        [HttpGet("getUserForEdit")]
+        public async Task<IActionResult> GetUserForEdit()
+        {
+            var userId = HttpContext.User.GetUserId();
+            try
+            {
+                var currentUser = await userService.GetUserDetailsForEditAsync(userId);
+                if (currentUser == null)
+                {
+                    return NotFound("Current user not found!");
+                }
+                return Ok(currentUser);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
+
         [HttpPut("updateUser")]
-        public async Task<IActionResult> UpdateUserData([FromBody] UpdateUserFormModel model)
+        public async Task<IActionResult> UpdateUserData([FromBody] UserFormModel model)
         {
             var userId = HttpContext.User.GetUserId();
 
@@ -163,6 +215,7 @@
             }
         }
 
+
         [HttpPost("removeFriend/{friendId}")]
         public async Task<IActionResult> RemoveFriend(string friendId)
         {
@@ -189,6 +242,7 @@
                 return StatusCode(500, $"An error occurred: {ex.Message}");
             }
         }
+
 
         [HttpGet("allFriends")]
         public async Task<IActionResult> GetAllFriends()
