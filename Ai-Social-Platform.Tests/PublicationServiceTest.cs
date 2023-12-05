@@ -75,7 +75,7 @@ namespace Ai_Social_Platform.Tests
         public async Task GetPublicationsAsync_ReturnsPublications()
         {
             // Act
-            var result = await publicationService.GetPublicationsAsync();
+            var result = await publicationService.GetPublicationsAsync(1);
 
             // Assert
             Assert.IsNotNull(result);
@@ -493,7 +493,7 @@ namespace Ai_Social_Platform.Tests
         public async Task LikePublicationAsync_ValidPublicationId_LikesPublication()
         {
             // Arrange
-            var publicationId = Guid.Parse("a0a0a6a0-0b1e-4b9e-9b0a-0b9b9b9b9b9b");
+            var publicationId = Guid.Parse("b0b0b6b0-0b1e-4b9e-9b0a-0b9b9b9b9b9b");
             var countBefore = dbContext.Likes.Count(l => l.PublicationId == publicationId);
 
             // Act
@@ -523,7 +523,7 @@ namespace Ai_Social_Platform.Tests
         public async Task LikePublicationAsync_ValidPublicationIdAndUserId_LikesPublication()
         {
             // Arrange
-            var publicationId = Guid.Parse("a0a0a6a0-0b1e-4b9e-9b0a-0b9b9b9b9b9b");
+            var publicationId = Guid.Parse("b0b0b6b0-0b1e-4b9e-9b0a-0b9b9b9b9b9b");
             var userId = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
             var countBefore = dbContext.Likes.Count(l => l.PublicationId == publicationId);
 

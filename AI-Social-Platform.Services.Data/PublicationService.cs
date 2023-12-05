@@ -23,10 +23,20 @@ public class PublicationService : IPublicationService
         this.dbContext = dbContext;
         httpContext = accessor.HttpContext!;
     }
-    public async Task<IEnumerable<PublicationDto>> GetPublicationsAsync()
+    public async Task<IEnumerable<PublicationDto>> GetPublicationsAsync(int pageNum)
     {
-       return await mapper.ProjectTo<PublicationDto>(dbContext.Publications.AsQueryable())
-           .OrderByDescending(p => p.DateCreated).ToListAsync();
+        int pageSize = 10;
+        if (pageNum <= 0) pageNum = 1;
+        int skip = (pageNum - 1) * pageSize;
+
+        return await mapper.ProjectTo<PublicationDto>
+            (dbContext.Publications
+                .AsQueryable()
+                .OrderByDescending(p => p.LatestActivity)
+                .Skip(skip)
+                .Take(pageSize)
+            )
+            .ToArrayAsync();
     }
 
     public async Task<PublicationDto> GetPublicationAsync(Guid id)
@@ -67,6 +77,8 @@ public class PublicationService : IPublicationService
         }
 
         publication.Content = dto.Content;
+        publication.DateModified = DateTime.UtcNow;
+        publication.LatestActivity = DateTime.UtcNow;
         await dbContext.SaveChangesAsync();
     }
     
@@ -104,7 +116,8 @@ public class PublicationService : IPublicationService
         
         var comment = mapper.Map<Comment>(dto);
         comment.UserId = userId;
-
+        publication.LastCommented = DateTime.UtcNow;
+        publication.LatestActivity = DateTime.UtcNow;
         await dbContext.Comments.AddAsync(comment);
         await dbContext.SaveChangesAsync();
     }

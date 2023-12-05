@@ -4,6 +4,7 @@ using AI_Social_Platform.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AI_Social_Platform.Data.Migrations
 {
     [DbContext(typeof(ASPDbContext))]
-    partial class ASPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231204225008_publicationDatesExtend")]
+    partial class publicationDatesExtend
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,7 +113,7 @@ namespace AI_Social_Platform.Data.Migrations
                         {
                             Id = new Guid("6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4f5aa852-1bf6-4675-90c3-3dd34c219c74",
+                            ConcurrencyStamp = "72e4aca8-e4cb-4f92-b36a-b2db3f9b74ac",
                             Email = "user@user.com",
                             EmailConfirmed = false,
                             FirstName = "Georgi",
@@ -119,9 +121,9 @@ namespace AI_Social_Platform.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "user@user.com",
                             NormalizedUserName = "USER@USER.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMUELlyPwHHHxl0mfl6+43GJ560Qe+q+r+QKlO7U17rlHaiGGPZcJKALrh3F2OYtvw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIAkDSw4gA1pzVXqL3tfd0HaOEcahC9oypuAD58W4f89Hpogcj7x5IQz2Qz+JElFsA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "383a5741-488d-4d37-9577-cc91177d5e9a",
+                            SecurityStamp = "a047c1a6-fda1-4f4f-90ca-fb9e81844ff0",
                             TwoFactorEnabled = false,
                             UserName = "user@user.com"
                         },
@@ -129,7 +131,7 @@ namespace AI_Social_Platform.Data.Migrations
                         {
                             Id = new Guid("949a14ed-2e82-4f5a-a684-a9c7e3ccb52e"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c334a97d-eb15-4243-998c-ffe2cd3f3815",
+                            ConcurrencyStamp = "4a4f573f-087a-4654-9dba-ed14bfb4301d",
                             Email = "admin@admin.com",
                             EmailConfirmed = false,
                             FirstName = "Ivan",
@@ -137,9 +139,9 @@ namespace AI_Social_Platform.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.com",
                             NormalizedUserName = "ADMIN@ADMIN.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEF7+NLhX1m/eSCGmPGThhdXC1E9DU5vp89CvFfPX+1fh+kQt3WAqFZLHeq6tYSDuqA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEABS1bRfIhl+tSKyLWrodL1RasMutv2kE22N3TUHpZ4sZKuGU8oe0Mva9tPPF9Lrbw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2bfd45cf-9db9-4aae-bb11-37ad33aeed3e",
+                            SecurityStamp = "cd044a54-1374-4d18-9c29-e2857ef77b95",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         });
@@ -253,9 +255,6 @@ namespace AI_Social_Platform.Data.Migrations
                     b.Property<DateTime?>("LastCommented")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("LatestActivity")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
@@ -265,19 +264,17 @@ namespace AI_Social_Platform.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e2611d6c-8bb0-4ce1-9be7-bfdce8541bc8"),
+                            Id = new Guid("e0b2de99-fe73-4f36-ae7f-d70b496b27d9"),
                             AuthorId = new Guid("949a14ed-2e82-4f5a-a684-a9c7e3ccb52e"),
                             Content = "This is the first seeded publication Content from Ivan",
-                            DateCreated = new DateTime(2023, 12, 5, 1, 20, 55, 230, DateTimeKind.Utc).AddTicks(7121),
-                            LatestActivity = new DateTime(2023, 12, 5, 1, 20, 55, 230, DateTimeKind.Utc).AddTicks(7123)
+                            DateCreated = new DateTime(2023, 12, 4, 22, 50, 7, 889, DateTimeKind.Utc).AddTicks(7578)
                         },
                         new
                         {
-                            Id = new Guid("140548e3-2cf6-4dee-84d8-92e766851a51"),
+                            Id = new Guid("8f82ff0f-1d2b-4362-80dd-e79daddfadd4"),
                             AuthorId = new Guid("6d5800ce-d726-4fc8-83d9-d6b3ac1f591e"),
                             Content = "This is the second seeded publication Content from Georgi",
-                            DateCreated = new DateTime(2023, 12, 5, 1, 20, 55, 230, DateTimeKind.Utc).AddTicks(7155),
-                            LatestActivity = new DateTime(2023, 12, 5, 1, 20, 55, 230, DateTimeKind.Utc).AddTicks(7155)
+                            DateCreated = new DateTime(2023, 12, 4, 22, 50, 7, 889, DateTimeKind.Utc).AddTicks(7592)
                         });
                 });
 

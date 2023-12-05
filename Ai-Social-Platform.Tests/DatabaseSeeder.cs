@@ -61,6 +61,12 @@ namespace Ai_Social_Platform.Tests
                     Id = Guid.Parse("a0a0a6a0-0b1e-4b9e-9b0a-0b9b9b9b9b9b"),
                     Content = "This is the second seeded publication Content from Georgi",
                     AuthorId = Guid.Parse("123400ce-d726-4fc8-83d9-d6b3ac1f591e"),
+                },
+                new()
+                {
+                    Id = Guid.Parse("b0b0b6b0-0b1e-4b9e-9b0a-0b9b9b9b9b9b"),
+                    Content = "This is the third seeded publication Content from Georgi",
+                    AuthorId = Guid.Parse("123400ce-d726-4fc8-83d9-d6b3ac1f591e"),
                 }
             };
 

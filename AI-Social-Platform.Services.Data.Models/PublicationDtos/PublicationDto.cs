@@ -8,6 +8,12 @@
 
         public DateTime DateCreated { get; set; }
 
+        public DateTime? DateModified { get; set; }
+
+        public DateTime? LastCommented { get; set; }
+
+        public DateTime LatestActivity { get; set; }
+
         //Relations
         public Guid AuthorId { get; set; }
     }

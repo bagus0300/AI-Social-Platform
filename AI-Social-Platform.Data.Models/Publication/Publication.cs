@@ -12,6 +12,7 @@ public class Publication
     {
         Id = Guid.NewGuid();
         DateCreated = DateTime.UtcNow;
+        LatestActivity = DateTime.UtcNow;
         Comments = new HashSet<Comment>();
         Likes = new HashSet<Like>();
         Shares = new HashSet<Share>();
@@ -27,6 +28,14 @@ public class Publication
 
     [Required] 
     public DateTime DateCreated { get; set; }
+
+    public DateTime? DateModified { get; set; }
+
+    public DateTime? LastCommented { get; set; }
+
+    [Required]
+    public DateTime LatestActivity { get; set; }
+       
 
     //Relations
     [Required]

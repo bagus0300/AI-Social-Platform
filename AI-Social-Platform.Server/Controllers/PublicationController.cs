@@ -20,11 +20,11 @@ public class PublicationController : ControllerBase
     }
 
     [HttpGet(Name = "all")]
-    public async Task<IEnumerable<PublicationDto>> All()
+    public async Task<IEnumerable<PublicationDto>> All(int page)
     {
         try
         {
-            var publications = await publicationService.GetPublicationsAsync();
+            var publications = await publicationService.GetPublicationsAsync(page);
             return publications;
         }
         catch (Exception ex)
