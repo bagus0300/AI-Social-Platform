@@ -38,12 +38,12 @@
 
         [ForeignKey(nameof(Country))]
         public int? CountryId { get; set; }
-        public virtual Country Country { get; set; } = null!;
+        public virtual Country? Country { get; set; }
 
 
         [ForeignKey(nameof(State))]
         public int? StateId { get; set; }
-        public virtual State State { get; set; } = null!;
+        public virtual State? State { get; set; }
 
 
         public Gender? Gender { get; set; }
