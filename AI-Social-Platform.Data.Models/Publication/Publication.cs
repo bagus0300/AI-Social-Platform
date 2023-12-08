@@ -44,6 +44,11 @@ public class Publication
 
     public ApplicationUser Author { get; set; } = null!;
 
+    public Topic.Topic? Topic { get; set; }
+
+    [ForeignKey(nameof(Topic))]
+    public Guid? TopicId { get; set; }
+
     public ICollection<Comment> Comments { get; set; }
 
     public ICollection<Like> Likes { get; set; }

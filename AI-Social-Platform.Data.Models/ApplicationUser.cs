@@ -7,6 +7,7 @@
     using static Common.EntityValidationConstants.User;
     using Enums;
     using System.ComponentModel.DataAnnotations.Schema;
+    using AI_Social_Platform.Data.Models.Topic;
 
     public class ApplicationUser : IdentityUser<Guid>
     {
@@ -19,6 +20,7 @@
             this.Likes = new HashSet<Like>();
             this.Shares = new HashSet<Share>();
             this.UserSchools = new HashSet<UserSchool>();
+            this.FollowedTopics = new HashSet<UserTopic>();
         }
 
         [Required]
@@ -58,5 +60,6 @@
         public ICollection<Share> Shares { get; set; }
         public ICollection<ApplicationUser> Friends { get; set; }
         public virtual ICollection<UserSchool> UserSchools { get; set; }
+        public ICollection<UserTopic> FollowedTopics { get; set; }
     }
 }

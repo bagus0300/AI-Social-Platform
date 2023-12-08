@@ -76,6 +76,7 @@ builder.Services.AddAutoMapper(typeof(MapperProfiles));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPublicationService, PublicationService>();
 builder.Services.AddScoped<IMediaService, MediaService>();
+builder.Services.AddScoped<ITopicService, TopicService>();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
