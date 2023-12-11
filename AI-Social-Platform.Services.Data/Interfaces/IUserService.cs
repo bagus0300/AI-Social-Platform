@@ -24,5 +24,7 @@
 
         Task<ICollection<FriendDetailsDto>> GetFriendsAsync(string userId);
 
+        Task<bool> CheckIfUserExistsAsync(string userEmail);
+
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace AI_Social_Platform.Server.Models
+﻿namespace AI_Social_Platform.FormModels
 {
     using System.ComponentModel.DataAnnotations;
 

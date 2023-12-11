@@ -10,6 +10,7 @@
         public const string InvalidLoginData = "Invalid login data!";
         public const string LoginSuccessful = "Login successful!";
         public const string LoginFailed = "Login failed!";
+        public const string UserAlreadyExists = "User with this email already exists!";
 
         //Publication
         public const string PublicationSuccessfullyCreated = "Successfully created publication!";

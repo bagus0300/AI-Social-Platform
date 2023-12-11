@@ -14,6 +14,7 @@ using AI_Social_Platform.Services.Data.MappingProfiles;
 using AI_Social_Platform.Services.Data.Models;
 using Microsoft.OpenApi.Models;
 using static AI_Social_Platform.Common.GeneralApplicationConstants;
+using Microsoft.AspNetCore.Authentication.Certificate;
 
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -44,8 +45,8 @@ builder.Services.AddAuthentication(options =>
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         };
-    });
-
+    })
+    .AddCertificate(CertificateAuthenticationDefaults.AuthenticationScheme);
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 {

@@ -47,6 +47,11 @@
                 return BadRequest(new { Message = ErrorMessage });
             }
 
+            if (await userService.CheckIfUserExistsAsync(model.Email))
+            {
+                return BadRequest(new { Message = UserAlreadyExists });
+            }
+            
             ApplicationUser user = new ApplicationUser()
             {
                 FirstName = model.FirstName,
@@ -54,8 +59,8 @@
                 PhoneNumber = model.PhoneNumber,
             };
 
-            await this.userManager.SetEmailAsync(user, model.Email);
-            await this.userManager.SetUserNameAsync(user, model.Email);
+            await userManager.SetEmailAsync(user, model.Email);
+            await userManager.SetUserNameAsync(user, model.Email);
 
             IdentityResult result = await userManager.CreateAsync(user, model.Password);
 
@@ -76,17 +81,17 @@
 
         [HttpPost("login")]
         [AllowAnonymous]
-        public async Task<LoginResponse> Login(LoginFormModel model)
+        public async Task<IActionResult> Login(LoginFormModel model)
         {
             if (!ModelState.IsValid)
             {
-                return new LoginResponse { Succeeded = false, ErrorMessage = InvalidLoginData };
+                return BadRequest(new LoginResponse { Succeeded = false, ErrorMessage = InvalidLoginData });
             }
 
             var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: false, lockoutOnFailure: false);
 
             if (!result.Succeeded)
-                return new LoginResponse { Succeeded = false, ErrorMessage = LoginFailed };
+                return BadRequest(new {message = InvalidLoginData});
 
             var user = await userManager.FindByEmailAsync(model.Email);
 
@@ -104,7 +109,7 @@
 
             string userId = user.Id.ToString();
 
-            return new LoginResponse { Succeeded = true, Token = userService.BuildToken(userId) };
+            return Ok(new LoginResponse { Succeeded = true, Token = userService.BuildToken(userId) });
         }
 
 

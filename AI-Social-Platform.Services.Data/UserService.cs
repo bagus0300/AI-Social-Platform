@@ -240,6 +240,12 @@
             return friends;
         }
 
+        public async Task<bool> CheckIfUserExistsAsync(string userEmail) //returns true if user exists
+        {
+            var user = await dbContext.ApplicationUsers.FirstOrDefaultAsync(u => u.Email == userEmail);
+            return user != null;
+        }
+
 
         private static List<SchoolDto> GetUserSchools(ApplicationUser user)
         {
