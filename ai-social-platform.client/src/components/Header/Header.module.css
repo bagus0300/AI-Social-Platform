@@ -1,3 +1,13 @@
+.backdrop {
+    background-color: rgba(0, 0, 0, 0.3);
+    height: 100vh;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+}
+
 .app-header a:visited {
     color: #fff;
 }
@@ -38,17 +48,36 @@
 
 .user {
     display: flex;
-    gap: 0.5em;
+    gap: 0.8em;
+}
+
+.user .menu {
+    list-style: none;
+}
+
+.user .menu:hover {
+    filter: brightness(90%);
+    cursor: pointer;
+}
+
+.user .menu img {
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
 }
 
 .guest {
     display: flex;
     gap: 0.5em;
+    font-size: 0.8em;
 }
 
 .profile {
     display: flex;
     gap: 1em;
+    font-size: 1.5em;
 }
 
 .guest > * {
@@ -57,4 +86,62 @@
 
 .profile a:hover {
     text-decoration: underline;
+}
+
+.user-menu {
+    padding: 0.5em 0.8em;
+    width: 15em;
+    position: absolute;
+    top: 3em;
+    right: 1em;
+    background-color: #fff;
+    color: #000;
+    border-radius: 0.5em;
+    box-shadow: 0 0 0.2em 0.1em #ccc;
+    z-index: 50;
+}
+
+.user-info,
+.logout {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 0.5em;
+    margin-bottom: 0.5em;
+    padding: 0.5em 0.8em;
+    border-radius: 0.3em;
+}
+
+.logout > * {
+    color: #000;
+}
+
+.user-info,
+.logout a {
+    text-decoration: none;
+}
+
+.user-menu .user-info:visited,
+.user-menu .logout a:visited {
+    color: #000;
+}
+
+.user-info:hover,
+.logout:hover {
+    background-color: #eee;
+}
+
+.user-menu img {
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+}
+
+.logout {
+    cursor: pointer;
+}
+
+.logout i {
+    width: 1.5em;
 }

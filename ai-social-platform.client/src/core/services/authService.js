@@ -6,3 +6,10 @@ export const login = async (email, password) => {
 
     return result;
 };
+
+export const register = async (values) =>
+    await api.post(endpoints.register, values);
+
+export const logout = async () => {
+    await api.post(endpoints.logout);
+};

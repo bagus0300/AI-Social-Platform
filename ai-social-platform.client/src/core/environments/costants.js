@@ -8,9 +8,13 @@ export const PATH = {
 };
 
 export const endpoints = {
+    // AUTH
     login: 'User/login',
     register: 'User/register',
     logout: 'User/logout',
+
+    // USER
+    getLoggedUserDetails: 'User/userDetails',
 };
 
 export const LoginFormKeys = {
@@ -22,6 +26,7 @@ export const RegisterFormKeys = {
     FirstName: 'firstName',
     LastName: 'lastName',
     Email: 'email',
+    PhoneNumber: 'phoneNumber',
     Password: 'password',
     ConfirmPassword: 'confirmPassword',
 };

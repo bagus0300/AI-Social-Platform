@@ -1,14 +1,17 @@
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 
-import { RegisterFormKeys } from '../../core/environments/costants';
+import { PATH, RegisterFormKeys } from '../../core/environments/costants';
 import styles from './Register.module.css';
 import registerValidation from './registerValidation';
+import AuthContext from '../../contexts/authContext';
 
 const initialValues = {
     [RegisterFormKeys.FirstName]: '',
     [RegisterFormKeys.LastName]: '',
     [RegisterFormKeys.Email]: '',
+    [RegisterFormKeys.PhoneNumber]: '',
     [RegisterFormKeys.Password]: '',
     [RegisterFormKeys.ConfirmPassword]: '',
 };
@@ -28,8 +31,14 @@ export default function Register() {
         validationSchema: registerValidation,
     });
 
-    function onSubmit(values) {
-        console.log(values);
+    const { registerSubmitHandler } = useContext(AuthContext);
+
+    async function onSubmit(values) {
+        try {
+            await registerSubmitHandler(values);
+        } catch (error) {
+            console.log('Error:', error);
+        }
     }
 
     return (
@@ -123,6 +132,33 @@ export default function Register() {
                                     </p>
                                 )}
                         </section>
+
+                        <section className={styles['phone-number-wrapper']}>
+                            <label htmlFor={RegisterFormKeys.Email}></label>
+                            <input
+                                className={
+                                    errors[RegisterFormKeys.Email] &&
+                                    touched[RegisterFormKeys.Email]
+                                        ? styles['input-field-error']
+                                        : styles['input-field']
+                                }
+                                type="text"
+                                name={RegisterFormKeys.PhoneNumber}
+                                id={RegisterFormKeys.PhoneNumber}
+                                placeholder="Phone number"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values[RegisterFormKeys.PhoneNumber]}
+                            />
+                            <i className="fa-solid fa-phone"></i>
+                            {errors[RegisterFormKeys.Email] &&
+                                touched[RegisterFormKeys.Email] && (
+                                    <p className={styles['error-message']}>
+                                        {errors[RegisterFormKeys.Email]}
+                                    </p>
+                                )}
+                        </section>
+
                         <section className={styles['password-wrapper']}>
                             <label htmlFor={RegisterFormKeys.Password}></label>
                             <input
@@ -190,7 +226,7 @@ export default function Register() {
                     </form>
                     <section className={styles['sign-in']}>
                         <p>Already have an account?</p>
-                        <Link to={'/login'}>Sign In</Link>
+                        <Link to={PATH.login}>Sign In</Link>
                     </section>
                 </div>
                 <div className={styles['media-content']}>

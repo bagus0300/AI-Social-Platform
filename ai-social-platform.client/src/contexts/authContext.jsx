@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { PATH } from '../core/environments/costants';
 import * as authService from '../core/services/authService';
+import * as userService from '../core/services/userService';
 import usePersistedState from '../hooks/usePersistedState';
 
 const AuthContext = createContext();
@@ -14,16 +15,54 @@ export const AuthProvider = ({ children }) => {
     const loginSubmitHandler = async (values) => {
         const result = await authService.login(values.email, values.password);
 
-        setAuth(result);
-
         localStorage.setItem('accessToken', result.token);
+
+        const userData = await userService.getLoggedUserDetails();
+        userData.token = result.token;
+
+        setAuth(userData);
+
+        navigate(PATH.home);
+    };
+
+    const registerSubmitHandler = async ({
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        password,
+        confirmPassword,
+    }) => {
+        await authService.register({
+            firstName,
+            lastName,
+            email,
+            phoneNumber,
+            password,
+            confirmPassword,
+        });
+
+        // setAuth(result);
+
+        // localStorage.setItem('accessToken', result.token);
+
+        navigate(PATH.login);
+    };
+
+    const logoutHandler = () => {
+        setAuth({});
+
+        localStorage.removeItem('accessToken');
 
         navigate(PATH.home);
     };
 
     const values = {
         loginSubmitHandler,
-        email: auth.email,
+        registerSubmitHandler,
+        logoutHandler,
+        firstName: auth?.firstName,
+        lastName: auth?.lastName,
         isAuthenticated: !!auth.token,
     };
 

@@ -7,7 +7,6 @@ const buildOptions = (data) => {
         options.body = JSON.stringify(data);
         options.headers = {
             'Content-Type': 'application/json',
-            // 'Access-Control-Allow-Origin': '*',
         };
     }
 
@@ -16,7 +15,7 @@ const buildOptions = (data) => {
     if (token) {
         options.headers = {
             ...options.headers,
-            Authorization: token,
+            Authorization: `Bearer ${token}`,
         };
     }
 
@@ -36,9 +35,10 @@ const api = async (method, url, data) => {
     const result = await response.json();
 
     if (!response.ok) {
-        // if (response.status === 403) {
-        //     localStorage.removeItem(tokenName);
-        // }
+        if (response.status === 403) {
+            localStorage.removeItem('accessToken');
+        }
+
         throw result;
     }
 

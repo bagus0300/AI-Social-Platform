@@ -1,10 +1,11 @@
+import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 
-import { LoginFormKeys } from '../../core/environments/costants';
+import { LoginFormKeys, PATH } from '../../core/environments/costants';
 import styles from './Login.module.css';
-import { useContext } from 'react';
 import AuthContext from '../../contexts/authContext';
+import loginValidation from './loginValidation';
 
 const initialValues = {
     [LoginFormKeys.Email]: '',
@@ -12,10 +13,13 @@ const initialValues = {
 };
 
 export default function Login() {
-    const { values, handleSubmit, handleChange, handleBlur } = useFormik({
-        initialValues,
-        onSubmit,
-    });
+    const [serverError, setServerError] = useState({});
+    const { values, errors, touched, handleSubmit, handleChange, handleBlur } =
+        useFormik({
+            initialValues,
+            onSubmit,
+            validationSchema: loginValidation,
+        });
 
     const { loginSubmitHandler } = useContext(AuthContext);
 
@@ -23,7 +27,7 @@ export default function Login() {
         try {
             await loginSubmitHandler(values);
         } catch (error) {
-            console.log('Error is', error);
+            setServerError(error);
         }
     }
 
@@ -33,6 +37,13 @@ export default function Login() {
                 <div className={styles['login-form-wrapper']}>
                     <h2>Log in to your Account</h2>
                     <p>Welcome back!</p>
+                    {serverError ? (
+                        <p className={styles['error-message']}>
+                            {serverError.message}
+                        </p>
+                    ) : (
+                        ''
+                    )}
                     <form
                         onSubmit={handleSubmit}
                         className={styles['login-form']}
@@ -40,7 +51,12 @@ export default function Login() {
                         <section className={styles['email-wrapper']}>
                             <label htmlFor={LoginFormKeys.Email}></label>
                             <input
-                                className={styles['input-field']}
+                                className={
+                                    errors[LoginFormKeys.Email] &&
+                                    touched[LoginFormKeys.Email]
+                                        ? styles['input-field-error']
+                                        : styles['input-field']
+                                }
                                 type="email"
                                 name={LoginFormKeys.Email}
                                 id={LoginFormKeys.Email}
@@ -54,7 +70,12 @@ export default function Login() {
                         <section className={styles['password-wrapper']}>
                             <label htmlFor={LoginFormKeys.Password}></label>
                             <input
-                                className={styles['input-field']}
+                                className={
+                                    errors[LoginFormKeys.Password] &&
+                                    touched[LoginFormKeys.Password]
+                                        ? styles['input-field-error']
+                                        : styles['input-field']
+                                }
                                 type="password"
                                 name={LoginFormKeys.Password}
                                 id={LoginFormKeys.Password}
@@ -83,7 +104,7 @@ export default function Login() {
                     </form>
                     <section className={styles['create-account']}>
                         <p>Don't have an account?</p>
-                        <Link to={'/register'}>Create an account</Link>
+                        <Link to={PATH.register}>Create an account</Link>
                     </section>
                 </div>
                 <div className={styles['media-content']}>

@@ -9,6 +9,7 @@ import Register from './components/Register/Register';
 import Home from './components/Home/Home';
 import { AuthProvider } from './contexts/authContext';
 import { PATH } from './core/environments/costants';
+import Logout from './components/Logout/Logout';
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                         <Route path={PATH.home} element={<Home />} />
                         <Route path={PATH.login} element={<Login />} />
                         <Route path={PATH.register} element={<Register />} />
+                        <Route path={PATH.logout} element={<Logout />} />
                     </Routes>
                 </main>
 

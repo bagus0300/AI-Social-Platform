@@ -39,6 +39,12 @@ a:visited {
     width: auto;
 }
 
+.login-form-wrapper .error-message {
+    color: #ad0000;
+    text-align: center;
+    margin-top: 0.5em;
+}
+
 .login-form {
     margin-top: 1em;
 }
@@ -55,6 +61,14 @@ a:visited {
 .input-field {
     padding: 0.2em 0.5em 0.2em 2em;
     border: 1px solid #aaa;
+    border-radius: 0.3em;
+    font-size: 1em;
+    width: 90%;
+}
+
+.input-field-error {
+    padding: 0.2em 0.5em 0.2em 2em;
+    border: 1px solid #ad0000;
     border-radius: 0.3em;
     font-size: 1em;
     width: 90%;
@@ -134,7 +148,6 @@ a:visited {
 } */
 
 @media screen and (width < 900px) {
-
     .login-wrapper {
         flex-direction: column-reverse;
     }

@@ -81,13 +81,15 @@ a:visited {
 .password-wrapper,
 .first-name,
 .last-name,
-.confirm-password-wrapper {
+.confirm-password-wrapper,
+.phone-number-wrapper {
     position: relative;
 }
 
 .names-wrapper,
 .email-wrapper,
-.password-wrapper {
+.password-wrapper,
+.phone-number-wrapper {
     padding-bottom: 1em;
 }
 
@@ -111,7 +113,8 @@ a:visited {
 .password-wrapper i,
 .first-name i,
 .last-name i,
-.confirm-password-wrapper i {
+.confirm-password-wrapper i,
+.phone-number-wrapper i {
     position: absolute;
     left: 0.5em;
     top: 0.3em;
