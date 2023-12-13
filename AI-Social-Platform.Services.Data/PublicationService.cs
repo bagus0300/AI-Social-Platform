@@ -5,6 +5,7 @@ using AI_Social_Platform.Services.Data.Models.PublicationDtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using AI_Social_Platform.Data.Models.Enums;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using static AI_Social_Platform.Common.ExceptionMessages.PublicationExceptionMessages;
@@ -15,12 +16,17 @@ public class PublicationService : IPublicationService
 {
     private readonly ASPDbContext dbContext;
     private readonly HttpContext httpContext;
+    private readonly IBaseSocialService baseSocialService;
     private readonly IMapper mapper;
 
-    public PublicationService(ASPDbContext dbContext, IHttpContextAccessor accessor, IMapper mapper)
+    public PublicationService(ASPDbContext dbContext, 
+        IHttpContextAccessor accessor,
+        IMapper mapper,
+        IBaseSocialService baseSocialService)
     {
         this.mapper = mapper;
         this.dbContext = dbContext;
+        this.baseSocialService = baseSocialService;
         httpContext = accessor.HttpContext!;
     }
     public async Task<IEnumerable<PublicationDto>> GetPublicationsAsync(int pageNum)
@@ -118,6 +124,9 @@ public class PublicationService : IPublicationService
         comment.UserId = userId;
         publication.LastCommented = DateTime.UtcNow;
         publication.LatestActivity = DateTime.UtcNow;
+
+       await baseSocialService.CreateNotificationAsync(publication.AuthorId, userId, NotificationType.Comment,publication.Id);
+
         await dbContext.Comments.AddAsync(comment);
         await dbContext.SaveChangesAsync();
     }
@@ -190,6 +199,12 @@ public class PublicationService : IPublicationService
             UserId = userId
         };
 
+        await baseSocialService
+            .CreateNotificationAsync(
+            publication.AuthorId, 
+            userId, 
+            NotificationType.Like,
+            publication.Id);
 
         await dbContext.Likes.AddAsync(like);
         await dbContext.SaveChangesAsync();
@@ -240,6 +255,12 @@ public class PublicationService : IPublicationService
             PublicationId = publicationId,
             UserId = userId
         };
+
+        await baseSocialService.CreateNotificationAsync(
+                       publication.AuthorId, 
+                                  userId, 
+                                  NotificationType.Share,
+                                  publicationId);
 
         await dbContext.Shares.AddAsync(share);
         await dbContext.SaveChangesAsync();

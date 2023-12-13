@@ -4,6 +4,7 @@ using AI_Social_Platform.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AI_Social_Platform.Data.Migrations
 {
     [DbContext(typeof(ASPDbContext))]
-    partial class ASPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231212100024_NotificationsTable")]
+    partial class NotificationsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,7 +155,7 @@ namespace AI_Social_Platform.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "user@user.com",
                             NormalizedUserName = "USER@USER.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBczom69OStP7fAse8CjlW3f18CsS9RW8HeDEPagbwvi2TJYl5ENXFYxo6Q07HLejw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECftDHa5fLq9in+EUSckuUe96HWXAIqBB0WX4WiiK8MFGSU6OY9BNHtgGxKOBhPrlg==",
                             PhoneNumber = "0888555666",
                             PhoneNumberConfirmed = false,
                             Relationship = 1,
@@ -178,7 +180,7 @@ namespace AI_Social_Platform.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.com",
                             NormalizedUserName = "ADMIN@ADMIN.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOnWr5fteQfYNXOt1Mx1X3L7uZy6QDCl9eawgd8+zxwYg0OYzAnJSUq50XphIDorpQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKJY9poqjwGD5seDjsYxi9a+zBp6W0709xiBXHYHgf2kAoJnznvM0phu5BBjH9dXJQ==",
                             PhoneNumberConfirmed = false,
                             Relationship = 0,
                             SecurityStamp = "cfb5501d-596e-4bd5-b3e0-763e303fe980",
@@ -289,10 +291,6 @@ namespace AI_Social_Platform.Data.Migrations
 
                     b.Property<Guid>("ReceivingUserId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("RedirectUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

@@ -20,6 +20,7 @@ namespace Ai_Social_Platform.Tests
         private PublicationService publicationService;
         private HttpContextAccessor httpContextAccessor;
         private IMapper mapper;
+        private BaseSocialService baseSocialService;
 
         [SetUp]
         public void Setup()
@@ -62,7 +63,8 @@ namespace Ai_Social_Platform.Tests
                 x.CreateMap<PublicationFormDto, Publication>().ReverseMap();
             });
             mapper = config.CreateMapper();
-            publicationService = new PublicationService(dbContext, httpContextAccessor, mapper);
+            baseSocialService = new BaseSocialService(dbContext);
+            publicationService = new PublicationService(dbContext, httpContextAccessor, mapper, baseSocialService);
         }
 
         [TearDown]

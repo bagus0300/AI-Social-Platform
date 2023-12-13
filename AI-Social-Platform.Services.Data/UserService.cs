@@ -1,4 +1,6 @@
-﻿namespace AI_Social_Platform.Services.Data.Models
+﻿using AI_Social_Platform.Data.Models.Enums;
+
+namespace AI_Social_Platform.Services.Data.Models
 {
     using System.IdentityModel.Tokens.Jwt;
     using System.Security.Claims;
@@ -21,13 +23,15 @@
         private readonly ASPDbContext dbContext;
         private readonly IConfiguration configuration;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IBaseSocialService baseSocialService;
 
         public UserService(ASPDbContext dbContext, IConfiguration configuration,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager, IBaseSocialService baseSocialService)
         {
             this.dbContext = dbContext;
             this.configuration = configuration;
             this.userManager = userManager;
+            this.baseSocialService = baseSocialService;
         }
 
         public string BuildToken(string userId)
@@ -180,6 +184,9 @@
             currentUser.Friends.Add(friendUser);
 
             friendUser.Friends.Add(currentUser);
+
+            await baseSocialService.CreateNotificationAsync(friendUser.Id, 
+                currentUser.Id, NotificationType.Follow, null);
 
             await userManager.UpdateAsync(currentUser);
             await userManager.UpdateAsync(friendUser);

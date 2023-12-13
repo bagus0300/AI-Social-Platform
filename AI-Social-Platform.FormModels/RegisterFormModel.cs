@@ -33,11 +33,5 @@
         [Required]
         [StringLength(LastNameMaxLength, MinimumLength = LastNameMinLength)]
         public string LastName { get; set; } = null!;
-
-
-        [StringLength(PhoneNumberMaxLength, MinimumLength = PhoneNumberMinLength)]
-        [Phone]
-        [Display(Name = "Phone")]
-        public string PhoneNumber { get; set; } = null!;
     }
 }

@@ -21,6 +21,8 @@
             this.Shares = new HashSet<Share>();
             this.UserSchools = new HashSet<UserSchool>();
             this.FollowedTopics = new HashSet<UserTopic>();
+            this.CreatingNotifications = new HashSet<Notification>();
+            this.ReceivingNotifications = new HashSet<Notification>();
         }
 
         [Required]
@@ -61,5 +63,7 @@
         public ICollection<ApplicationUser> Friends { get; set; }
         public virtual ICollection<UserSchool> UserSchools { get; set; }
         public ICollection<UserTopic> FollowedTopics { get; set; }
+        public ICollection<Notification> CreatingNotifications { get; set; }
+        public ICollection<Notification> ReceivingNotifications { get; set; }
     }
 }
