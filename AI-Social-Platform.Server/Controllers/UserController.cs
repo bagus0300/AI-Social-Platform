@@ -1,4 +1,6 @@
-﻿namespace AI_Social_Platform.Server.Controllers
+﻿using AI_Social_Platform.Services.Data.Models.UserDto;
+
+namespace AI_Social_Platform.Server.Controllers
 {
     using System.Security.Claims;
 
@@ -16,6 +18,7 @@
     using static Common.NotificationMessagesConstants;
     using static Common.GeneralApplicationConstants;
     using static Extensions.ClaimsPrincipalExtensions;
+    using static AI_Social_Platform.Common.EntityValidationConstants;
 
 
     [ApiController]
@@ -51,7 +54,7 @@
             {
                 return BadRequest(new { Message = UserAlreadyExists });
             }
-            
+
             ApplicationUser user = new ApplicationUser()
             {
                 FirstName = model.FirstName,
@@ -72,8 +75,34 @@
                 return BadRequest(new { Message = RegistrationFailed, result.Errors });
             }
             await signInManager.SignInAsync(user, isPersistent: false);
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, "ApplicationCookie");
+            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+            await HttpContext.SignInAsync(claimsPrincipal);
+
+            await signInManager.SignInAsync(user, true);
+
+            string userId = user.Id.ToString();
+
             this.memoryCache.Remove(UserCacheKey);
-            return Ok(new { Message = SuccessMessage });
+
+            return Ok(new LoginResponse
+            {
+                Succeeded = true,
+                UserId = userId,
+                Username = user.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                ProfilePicture = user.ProfilePicture,
+                Token = userService.BuildToken(userId)
+            });
+
 
         }
 
@@ -90,7 +119,7 @@
             var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: false, lockoutOnFailure: false);
 
             if (!result.Succeeded)
-                return BadRequest(new {message = InvalidLoginData});
+                return BadRequest(new { message = InvalidLoginData });
 
             var user = await userManager.FindByEmailAsync(model.Email);
 
@@ -108,7 +137,16 @@
 
             string userId = user.Id.ToString();
 
-            return Ok(new LoginResponse { Succeeded = true, Token = userService.BuildToken(userId) });
+            return Ok(new LoginResponse
+            {
+                Succeeded = true,
+                UserId = userId,
+                Username = user.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                ProfilePicture = user.ProfilePicture,
+                Token = userService.BuildToken(userId)
+            });
         }
 
 
@@ -121,19 +159,18 @@
         }
 
 
-        [HttpGet("userDetails")]
-        public async Task<IActionResult> GetUserDetails()
+        [HttpGet("userDetails/{userId}")]
+        public async Task<IActionResult> GetUserDetails(string userId)
         {
-            var userId = HttpContext.User.GetUserId();
-
+            
             try
             {
-                var currentUser = await userService.GetUserDetailsByIdAsync(userId);
-                if (currentUser == null)
+                var user = await userService.GetUserDetailsByIdAsync(userId);
+                if (user == null)
                 {
                     return NotFound("Current user not found!");
                 }
-                return Ok(currentUser);
+                return Ok(user);
 
             }
             catch (Exception ex)
@@ -141,26 +178,7 @@
                 return StatusCode(500, $"An error occurred: {ex.Message}");
             }
         }
-
-
-        [HttpGet("getUserForEdit")]
-        public async Task<IActionResult> GetUserForEdit()
-        {
-            var userId = HttpContext.User.GetUserId();
-            try
-            {
-                var currentUser = await userService.GetUserDetailsForEditAsync(userId);
-                if (currentUser == null)
-                {
-                    return NotFound("Current user not found!");
-                }
-                return Ok(currentUser);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"An error occurred: {ex.Message}");
-            }
-        }
+        
 
 
         [HttpPut("updateUser")]
@@ -212,6 +230,29 @@
                 }
 
                 return BadRequest("Failed to add friend.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpPost("addUserSchool")]
+        public async Task<IActionResult> AddUserSchool(SchoolFormModel model)
+        {
+            try
+            {
+                var currentUser = await userManager.GetUserAsync(User);
+                if (currentUser == null)
+                {
+                    return NotFound("Current user not found!");
+                }
+                var success = await userService.AddUserSchool(currentUser, model);
+                if (success)
+                {
+                    return Ok("School added successfully.");
+                }
+                return BadRequest("Failed to added school.");
             }
             catch (Exception ex)
             {

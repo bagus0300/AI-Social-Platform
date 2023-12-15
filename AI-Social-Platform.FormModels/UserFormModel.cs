@@ -2,11 +2,12 @@
 {
     using System.ComponentModel.DataAnnotations;
     
+    using Data.Models.Enums;
+
     using static Common.EntityValidationConstants.User;
     using static Common.EntityValidationConstants.State;
     using static Common.EntityValidationConstants.Country;
     using static Common.EntityValidationConstants.School;
-    using Data.Models.Enums;
 
     public class UserFormModel
     {
@@ -57,6 +58,6 @@
 
         public RelationshipStatus? Relationship { get; set; }
 
-        public IEnumerable<SelectSchoolFormModel> Schools { get; set; }
+        public ICollection<SelectSchoolFormModel> Schools { get; set; }
     }
 }

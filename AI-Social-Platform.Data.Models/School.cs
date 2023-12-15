@@ -8,7 +8,7 @@
     {
         public School()
         {
-            this.UserSchools = new HashSet<UserSchool>();
+            this.UserInThisSchool = new HashSet<ApplicationUser>();
         }
         
         [Key]
@@ -21,6 +21,6 @@
         public int StateId { get; set; }
         public virtual State State { get; set; } = null!;
 
-        public ICollection<UserSchool> UserSchools { get; set; }
+        public ICollection<ApplicationUser> UserInThisSchool { get; set; }
     }
 }

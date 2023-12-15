@@ -19,10 +19,11 @@
         public DateTime? Birthday { get; set; }
 
         public string? Relationship { get; set; }
+
+        public string? School { get; set; }
         
         public List<FriendDetailsDto> Friends { get; set; } = new List<FriendDetailsDto>();
-        public List<PublicationDto> Publications { get; set; } = new List<PublicationDto>();
-        public List<SchoolDto> UserSchools { get; set; } = new List<SchoolDto>();
+        
 
     }
 }

@@ -62,7 +62,7 @@ namespace AI_Social_Platform.Services.Data.Models
                 throw new ArgumentException("Invalid user data!");
             }
 
-            ApplicationUser user = await this.dbContext.ApplicationUsers.FindAsync(userId);
+            ApplicationUser user = (await this.dbContext.ApplicationUsers.FindAsync(userId))!;
 
             return user;
 
@@ -74,43 +74,34 @@ namespace AI_Social_Platform.Services.Data.Models
                 .ApplicationUsers
                 .Include(u => u.Country)
                 .Include(u => u.State)
-                .Include(u => u.UserSchools)
+                .Include(u => u.School)
                 .Include(u => u.Friends)
                 .FirstAsync(u => u.IsActive && u.Id.ToString() == id);
 
-            List<FriendDetailsDto> friends = await GetUserFriends(user);
+            List<FriendDetailsDto> friends = await GetUserFriendsAsync(user);
 
-            List<SchoolDto> schools = GetUserSchools(user);
-
-            List<PublicationDto> publications = GetUserPublications(user);
-
+            
             UserDetailsDto userDetailModel = new()
             {
                 Id = user.Id,
                 UserName = user.UserName,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                PhoneNumber = user.PhoneNumber,
-                Country = user.Country.Name,
-                State = user.State.Name,
-                Gender = user.Gender.ToString(),
-                Birthday = user.Birthday,
-                Relationship = user.Relationship.ToString(),
-                ProfilePictureBase64 = Convert.ToBase64String(user.ProfilePicture!) ?? null,
-                CoverPhotoBase64 = Convert.ToBase64String(user.CoverPhoto!) ?? null,
+                PhoneNumber = user.PhoneNumber ?? null,
+                Country = user.Country?.Name ?? null,
+                State = user.State?.Name ?? null,
+                Gender = user.Gender?.ToString() ?? null,
+                Birthday = user.Birthday?.Date ?? null,
+                Relationship = user.Relationship?.ToString() ?? null,
+                ProfilePictureBase64 = user.ProfilePicture != null ? Convert.ToBase64String(user.ProfilePicture) : null,
+                CoverPhotoBase64 = user.CoverPhoto != null ? Convert.ToBase64String(user.CoverPhoto) : null,
                 Friends = friends,
-                UserSchools = schools,
-                Publications = publications
+                School = user.School?.Name ?? null
             };
 
             return userDetailModel;
         }
-
-
-        public Task<UserFormModel> GetUserDetailsForEditAsync(string id)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public async Task<bool> EditUserDataAsync(string id, UserFormModel updatedUserData)
         {
@@ -222,7 +213,7 @@ namespace AI_Social_Platform.Services.Data.Models
             return true;
         }
 
-        public async Task<ICollection<FriendDetailsDto>> GetFriendsAsync(string userId)
+        public async Task<ICollection<FriendDetailsDto>?> GetFriendsAsync(string userId)
         {
             var user = await dbContext.ApplicationUsers
                 .Include(u => u.Friends)
@@ -253,26 +244,29 @@ namespace AI_Social_Platform.Services.Data.Models
             return user != null;
         }
 
-
-        private static List<SchoolDto> GetUserSchools(ApplicationUser user)
+        public async Task<bool> AddUserSchool(ApplicationUser currentUser, SchoolFormModel model)
         {
-            List<SchoolDto> schools = new List<SchoolDto>();
-
-            foreach (var school in user.UserSchools)
+            var state = await dbContext.States.FirstOrDefaultAsync(s => s.Name == model.Name);
+            if (state == null)
             {
-                SchoolDto schoolDto = new SchoolDto()
+                state = new State
                 {
-                    Id = school.School.Id,
-                    Name = school.School.Name,
-                    State = school.School.State.Name
+                    Name = model.Name
                 };
-                schools.Add(schoolDto);
             }
 
-            return schools;
+            var school = new School
+            {
+                Name = model.Name,
+                StateId = state.Id
+            };
+
+            currentUser.School = school;
+            await dbContext.SaveChangesAsync();
+            return true;
         }
 
-        private async Task<List<FriendDetailsDto>> GetUserFriends(ApplicationUser user)
+        private async Task<List<FriendDetailsDto>> GetUserFriendsAsync(ApplicationUser user)
         {
             List<FriendDetailsDto> friends = new List<FriendDetailsDto>();
 

@@ -6,6 +6,16 @@
 
         public bool Succeeded { get; set; }
 
+        public string? UserId { get; set; }
+
+        public string? Username { get; set; }
+
+        public string? FirstName { get; set; }
+
+        public string? LastName { get; set; }
+
         public string? ErrorMessage { get; set; }
+
+        public byte[]? ProfilePicture { get; set; }
     }
 }

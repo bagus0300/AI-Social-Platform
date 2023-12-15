@@ -1,13 +1,15 @@
 ﻿namespace AI_Social_Platform.Data.Models
 {
-    using Microsoft.AspNetCore.Identity;
+    using System.ComponentModel.DataAnnotations.Schema;
     using System.ComponentModel.DataAnnotations;
+
+    using Microsoft.AspNetCore.Identity;
+
     using Publication;
+    using Enums;
+    using Topic;
 
     using static Common.EntityValidationConstants.User;
-    using Enums;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using AI_Social_Platform.Data.Models.Topic;
 
     public class ApplicationUser : IdentityUser<Guid>
     {
@@ -19,7 +21,6 @@
             this.Comments = new HashSet<Comment>();
             this.Likes = new HashSet<Like>();
             this.Shares = new HashSet<Share>();
-            this.UserSchools = new HashSet<UserSchool>();
             this.FollowedTopics = new HashSet<UserTopic>();
             this.CreatingNotifications = new HashSet<Notification>();
             this.ReceivingNotifications = new HashSet<Notification>();
@@ -49,6 +50,9 @@
         public int? StateId { get; set; }
         public virtual State? State { get; set; }
 
+        [ForeignKey(nameof(School))]
+        public int? SchoolId { get; set; }
+        public virtual School? School { get; set; }
 
         public Gender? Gender { get; set; }
 
@@ -56,12 +60,12 @@
 
         public RelationshipStatus? Relationship { get; set; }
 
+
         public ICollection<Publication.Publication> Publications { get; set; }
         public ICollection<Comment> Comments { get; set; }
         public ICollection<Like> Likes { get; set; }
         public ICollection<Share> Shares { get; set; }
         public ICollection<ApplicationUser> Friends { get; set; }
-        public virtual ICollection<UserSchool> UserSchools { get; set; }
         public ICollection<UserTopic> FollowedTopics { get; set; }
         public ICollection<Notification> CreatingNotifications { get; set; }
         public ICollection<Notification> ReceivingNotifications { get; set; }

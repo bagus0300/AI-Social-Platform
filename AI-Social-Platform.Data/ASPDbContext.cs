@@ -23,7 +23,6 @@
         public DbSet<Like> Likes { get; set; } = null!;
         public DbSet<Share> Shares { get; set; } = null!;
         public DbSet<Media> MediaFiles { get; set; } = null!;
-        public DbSet<UserSchool> UserSchools { get; set; } = null!;
         public DbSet<Topic> Topics { get; set; } = null!;
         public DbSet<UserTopic> UsersTopics { get; set; } = null!;
         public DbSet<Notification> Notifications { get; set; } = null!;

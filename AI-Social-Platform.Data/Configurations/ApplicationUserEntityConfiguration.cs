@@ -38,11 +38,10 @@
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
-                .HasMany(u => u.UserSchools)
-                .WithOne(us => us.User)
-                .HasForeignKey(us => us.UserId)
+                .HasOne(u => u.School)
+                .WithMany(s => s.UserInThisSchool)
+                .HasForeignKey(u => u.SchoolId)
                 .OnDelete(DeleteBehavior.Restrict);
-
 
         }
 

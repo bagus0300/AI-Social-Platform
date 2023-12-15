@@ -11,11 +11,11 @@
         {
             builder
                 .HasData(this.GenerateSchools());
-            
+
             builder
-                .HasMany(s => s.UserSchools)
-                .WithOne(us => us.School)
-                .HasForeignKey(us => us.SchoolId)
+                .HasMany(s => s.UserInThisSchool)
+                .WithOne(u => u.School)
+                .HasForeignKey(s => s.SchoolId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
 

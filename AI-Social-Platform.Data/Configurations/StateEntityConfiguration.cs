@@ -15,7 +15,7 @@
             builder
                 .HasMany(s => s.UsersInThisState)
                 .WithOne(u => u.State)
-                .HasForeignKey(s => s.StateId)
+                .HasForeignKey(u => u.StateId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
 
