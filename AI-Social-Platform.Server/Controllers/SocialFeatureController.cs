@@ -30,5 +30,21 @@ namespace AI_Social_Platform.Server.Controllers
                 throw new Exception(ex.Message);
             }
         }
+
+        [HttpGet("search", Name = "search")]
+        public async Task<IActionResult> Search(string type, string query)
+        {
+            try
+            {
+                var result = await baseSocialService.SearchAsync(type, query);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 }
+

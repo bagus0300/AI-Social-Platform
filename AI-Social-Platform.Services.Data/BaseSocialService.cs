@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using AutoMapper;
+using System.Collections;
+using AI_Social_Platform.Services.Data.Models.PublicationDtos;
+using AI_Social_Platform.Services.Data.Models.UserDto;
 
 namespace AI_Social_Platform.Services.Data
 {
@@ -72,6 +75,55 @@ namespace AI_Social_Platform.Services.Data
                 .OrderByDescending(n => n.DateCreated)
                 .Take(notificationListSize))
                 .ToArrayAsync();
+        }
+
+        public async Task<IEnumerable> SearchAsync(string type, string query)
+        {
+            int take = 20;
+            type = type.ToLower();
+
+            var result = type switch
+            {
+                "user" => await SearchUsersAsync(query, take),
+                "publication" => await SearchPublicationsAsync(query, take),
+                "topic" => await SearchTopicsAsync(query, take),
+                _ => throw new ArgumentException("Invalid search type"),
+            };
+            return result;
+        }
+
+        private async Task<IEnumerable> SearchUsersAsync(string query, int take)
+        {
+            return await mapper.ProjectTo<UserDto>
+            (dbContext.Users
+                           .AsQueryable()
+                           .Where(u => u.FirstName.Contains(query) || u.LastName.Contains(query))
+                           .Take(take))
+                .ToArrayAsync();
+        }
+
+        private async Task<IEnumerable> SearchPublicationsAsync(string query, int take)
+        {
+            return await mapper.ProjectTo<PublicationDto>
+                (dbContext.Publications
+                .AsQueryable()
+                .Where(p => p.Content.Contains(query))
+                .OrderByDescending(p => p.LatestActivity)
+                .Take(take))
+                .ToArrayAsync();
+        }
+
+        private async Task<IEnumerable> SearchTopicsAsync(string query, int take)
+        {
+            return 
+                await mapper.ProjectTo<SearchTopicDto>(dbContext.Topics
+                        .Include(t => t.Followers)
+                        .Include(t => t.Publications)
+                        .AsQueryable()
+                        .Where(t => t.Title.Contains(query))
+                        .OrderByDescending(t => t.Followers.Count)
+                        .Take(take))
+                        .ToArrayAsync();
         }
 
         private Guid GetUserId()
