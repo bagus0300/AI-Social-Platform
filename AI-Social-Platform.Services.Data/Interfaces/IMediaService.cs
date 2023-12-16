@@ -6,7 +6,7 @@
 
     public interface IMediaService
     {
-        Task UploadMediaAsync(IFormFileCollection files, string userId);
+        Task UploadMediaAsync(IFormFileCollection files, string userId, bool? isItPublication);
 
         Task DeleteMediaAsync(string id);
 
@@ -14,7 +14,7 @@
 
         Task<bool> IsUserOwnThedMedia(string userId, string mediaId);
 
-        Task<Media> GetMediaAync(string mediaId);
+        Task<Media> GetMediaAsync(string mediaId);
 
         Task<ICollection<Media>> GetAllMediaFilesByUserIdAsync(string userId);
 

@@ -16,8 +16,18 @@
             this.dbContext = dbContext;
         }
 
-        public async Task UploadMediaAsync(IFormFileCollection files, string userId)
+        public async Task UploadMediaAsync(IFormFileCollection files, string userId, bool? isItPublication)
         {
+            var publicationId = Guid.Empty;
+            if (isItPublication == true)
+            {
+                publicationId = await dbContext.Publications
+                    .Where(p => p.AuthorId.ToString() == userId)
+                    .OrderByDescending(p => p.DateCreated)
+                    .Select(p => p.Id)
+                    .FirstOrDefaultAsync();
+            }
+            
             foreach (var file in files)
             {
                 using (MemoryStream memoryStream = new MemoryStream())
@@ -29,7 +39,8 @@
                     Media fileToUpload = new Media()
                     {
                         UserId = Guid.Parse(userId),
-                        DataFile = fileBytes
+                        DataFile = fileBytes,
+                        PublicationId = publicationId == Guid.Empty ? null : publicationId,
                     };
 
                     await dbContext.MediaFiles.AddAsync(fileToUpload);
@@ -96,17 +107,17 @@
             return false;
         }
 
-        public async Task<Media> GetMediaAync(string mediaId)
+        public async Task<Media> GetMediaAsync(string mediaId)
         {
-            Media? mediaToRerutn = await dbContext.MediaFiles
+            Media? mediaToReturn = await dbContext.MediaFiles
                 .FirstOrDefaultAsync(m => m.Id.ToString() == mediaId);
 
-            if (mediaToRerutn == null)
+            if (mediaToReturn == null)
             {
                 return null;
             }
 
-            return mediaToRerutn;
+            return mediaToReturn;
         }
 
         public async Task<ICollection<Media>> GetAllMediaFilesByUserIdAsync(string userId)

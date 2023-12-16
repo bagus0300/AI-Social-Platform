@@ -25,7 +25,7 @@
         }
 
         [HttpPost("upload")]
-        public async Task<IActionResult> Post(IFormFileCollection files)
+        public async Task<IActionResult> Post(IFormFileCollection files, bool? isItPublication)
         {
             var filesToUpload = Request.Form.Files;
 
@@ -38,7 +38,7 @@
             {
                 var userId = HttpContext.User.GetUserId();
 
-                await mediaService.UploadMediaAsync(filesToUpload, userId!);
+                await mediaService.UploadMediaAsync(filesToUpload, userId!, isItPublication);
                 return Ok("Successfully upload media");
 
             }
@@ -51,7 +51,7 @@
         [HttpGet("serve/{mediaId}")]
         public async Task<IActionResult> GetMedia(string mediaId)
         {
-            Media media = await mediaService.GetMediaAync(mediaId);
+            Media media = await mediaService.GetMediaAsync(mediaId);
 
             if (media == null)
             {
