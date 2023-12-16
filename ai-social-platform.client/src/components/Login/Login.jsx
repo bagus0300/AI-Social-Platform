@@ -14,12 +14,19 @@ const initialValues = {
 
 export default function Login() {
     const [serverError, setServerError] = useState({});
-    const { values, errors, touched, handleSubmit, handleChange, handleBlur } =
-        useFormik({
-            initialValues,
-            onSubmit,
-            validationSchema: loginValidation,
-        });
+    const {
+        values,
+        errors,
+        touched,
+        isSubmitting,
+        handleSubmit,
+        handleChange,
+        handleBlur,
+    } = useFormik({
+        initialValues,
+        onSubmit,
+        validationSchema: loginValidation,
+    });
 
     const { loginSubmitHandler } = useContext(AuthContext);
 
@@ -98,6 +105,7 @@ export default function Login() {
                         <button
                             type="submit"
                             className={styles['login-button']}
+                            disabled={isSubmitting}
                         >
                             Log in
                         </button>

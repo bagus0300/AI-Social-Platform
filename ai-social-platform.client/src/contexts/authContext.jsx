@@ -17,10 +17,7 @@ export const AuthProvider = ({ children }) => {
 
         localStorage.setItem('accessToken', result.token);
 
-        const userData = await userService.getLoggedUserDetails();
-        userData.token = result.token;
-
-        setAuth(userData);
+        setAuth(result);
 
         navigate(PATH.home);
     };
@@ -33,7 +30,7 @@ export const AuthProvider = ({ children }) => {
         password,
         confirmPassword,
     }) => {
-        await authService.register({
+        const result = await authService.register({
             firstName,
             lastName,
             email,
@@ -42,11 +39,11 @@ export const AuthProvider = ({ children }) => {
             confirmPassword,
         });
 
-        // setAuth(result);
+        setAuth(result);
 
-        // localStorage.setItem('accessToken', result.token);
+        localStorage.setItem('accessToken', result.token);
 
-        navigate(PATH.login);
+        navigate(PATH.home);
     };
 
     const logoutHandler = () => {
@@ -63,6 +60,8 @@ export const AuthProvider = ({ children }) => {
         logoutHandler,
         firstName: auth?.firstName,
         lastName: auth?.lastName,
+        profilePicture: auth?.profilePicture,
+        userId: auth?.userId,
         isAuthenticated: !!auth.token,
     };
 

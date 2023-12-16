@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 
@@ -17,6 +17,8 @@ const initialValues = {
 };
 
 export default function Register() {
+    const [serverError, setServerError] = useState({});
+
     const {
         values,
         errors,
@@ -37,7 +39,7 @@ export default function Register() {
         try {
             await registerSubmitHandler(values);
         } catch (error) {
-            console.log('Error:', error);
+            setServerError(error);
         }
     }
 
@@ -47,6 +49,13 @@ export default function Register() {
                 <div className={styles['register-form-wrapper']}>
                     <h2>Create Account</h2>
                     <p>It's quick and easy</p>
+                    {serverError.message && (
+                        <div className={styles['error-wrapper']}>
+                            <p className={styles['error-message']}>
+                                {serverError.message}
+                            </p>
+                        </div>
+                    )}
                     <form
                         onSubmit={handleSubmit}
                         className={styles['register-form']}
