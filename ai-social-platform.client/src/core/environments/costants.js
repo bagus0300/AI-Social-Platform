@@ -5,6 +5,8 @@ export const PATH = {
     login: '/users/login',
     register: '/users/register',
     logout: '/users/logout',
+    profile: '/profile/:userId',
+    profileedit: '/profileedit/:userId',
 };
 
 export const endpoints = {
@@ -15,6 +17,8 @@ export const endpoints = {
 
     // USER
     getLoggedUserDetails: 'User/userDetails',
+    userDetails: 'User/userDetails',
+    updateUser: 'User/updateUser',
 };
 
 export const LoginFormKeys = {
@@ -30,3 +34,19 @@ export const RegisterFormKeys = {
     Password: 'password',
     ConfirmPassword: 'confirmPassword',
 };
+
+export const ProfileFormKeys = {
+    FirstName: 'firstName',
+    LastName: 'lastName',
+    Email: 'email',
+    PhoneNumber: 'phoneNumber',
+    Password: 'password',
+    ConfirmPassword: 'confirmPassword',
+    Country: 'country',
+    State: 'state',
+    Gender: 0,
+    School: "school",
+    Birthday: 'birthday',
+    Relationship: 0,
+    Schools: [{}],
+  };
