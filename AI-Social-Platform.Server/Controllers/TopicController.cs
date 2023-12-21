@@ -2,6 +2,7 @@
 {
     using AI_Social_Platform.Data.Models.Publication;
     using AI_Social_Platform.Extensions;
+    using AI_Social_Platform.FormModels;
     using AI_Social_Platform.Services.Data.Interfaces;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -18,42 +19,91 @@
                 this.topicService = topicService;
         }
 
+        [HttpPost("Create")]
+        public async Task<IActionResult> CreateTopic(CreateTopicFormModel model)
+        {
+            var creatorId = HttpContext.User.GetUserId();
+            try
+            {
+                await topicService.CreateTopicAsync(creatorId, model);
+                return Ok($"Successfully created topic: {model.Title}");
+            }
+            catch (Exception)
+            {
+                return BadRequest("Sorry! Something went wrong");
+            }
+        }
+
         [HttpPost("Follow")]
         public async Task<IActionResult> FollowTopic(string topicId)
         {
             var userId = HttpContext.User.GetUserId();
-            var result = await topicService.FollowTopicAsync(userId, topicId);
-            return Ok(result);
+
+            try
+            {
+                var result = await topicService.FollowTopicAsync(userId, topicId);
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Something went wrong!");
+            }
         }
 
         [HttpPost("Unfollow")]
         public async Task<IActionResult> UnfollowTopic(string topicId)
         {
             var userId = HttpContext.User.GetUserId();
-            var action = await topicService.UnfollowTopicAsync(userId, topicId);
+            try
+            {
+                var action = await topicService.UnfollowTopicAsync(userId, topicId);
 
-            return Ok(action);
+                return Ok(action);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Something went wrong!");
+            }
         }
 
-        [HttpGet("GetTopics")]
+        [HttpGet("GetFollowedTopics")]
         public async Task<IActionResult> GetFollowedTopics()
         {
             var userId = HttpContext.User.GetUserId();
 
-            var result = await topicService.GetFollowedTopicsAsync(userId);
-            return Ok(result);
+            try
+            {
+                var topics = await topicService.GetFollowedTopicsAsync(userId);
+                if (!topics.Any())
+                {
+                    return BadRequest("You don't have followed topics!");
+                }
+                return Ok(topics);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Something went wrong!");
+            }
+            
         }
 
         [HttpGet("topics/{topicId}/posts")]
         public async Task<IActionResult> GetPublicationsByTopicId(string topicId)
         {
-            ICollection<Publication> publications = await topicService.GetPublicationsByTopicIdAsync(topicId);
-            if (!publications.Any())
+            try
             {
-                return Ok("No publications for this topic yet");
-            }
+                ICollection<Publication> publications = await topicService.GetPublicationsByTopicIdAsync(topicId);
+                if (!publications.Any())
+                {
+                    return BadRequest("No publications for this topic yet");
+                }
 
-            return Ok(publications);
+                return Ok(publications);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Something went wrong!");
+            }
         }
 
     }

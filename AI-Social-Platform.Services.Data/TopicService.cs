@@ -4,6 +4,7 @@
     using AI_Social_Platform.Data.Models;
     using AI_Social_Platform.Data.Models.Publication;
     using AI_Social_Platform.Data.Models.Topic;
+    using AI_Social_Platform.FormModels;
     using AI_Social_Platform.Services.Data.Interfaces;
     using Microsoft.EntityFrameworkCore;
     using System;
@@ -18,6 +19,22 @@
         {
                 this.dbContext = dbContext;
         }
+
+        public async Task CreateTopicAsync(string creatorId, CreateTopicFormModel model)
+        {
+            var creator = await dbContext.Users.FirstAsync(u => u.Id.ToString() == creatorId);
+
+            Topic topic = new Topic()
+            {
+                Title = model.Title,
+                Creator = creator,
+                DateCreate = DateTime.UtcNow
+            };
+
+            await dbContext.Topics.AddAsync(topic);
+            await dbContext.SaveChangesAsync();
+        }
+
         public async Task<string> FollowTopicAsync(string userId, string topicId)
         {
             ApplicationUser? user = await dbContext.Users

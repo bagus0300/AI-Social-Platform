@@ -4,6 +4,7 @@ using AI_Social_Platform.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AI_Social_Platform.Data.Migrations
 {
     [DbContext(typeof(ASPDbContext))]
-    partial class ASPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231220123718_addCreatorAndDataCreatedToTheTopic")]
+    partial class addCreatorAndDataCreatedToTheTopic
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,7 +160,7 @@ namespace AI_Social_Platform.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "user@user.com",
                             NormalizedUserName = "USER@USER.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFwaDDcjzewOCSQ/d9U8lx5tlotMAvLoliVhfbFw7CMp6/DqBVw38KVVH2QO1eSRJg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEO+k5gpOSjALJ8hzTym7E0shsoInpLL1rXHq7Fzpv3nuqeXZOFAXaTAPW+EqC/vjQQ==",
                             PhoneNumber = "0888555666",
                             PhoneNumberConfirmed = false,
                             Relationship = 1,
@@ -183,7 +185,7 @@ namespace AI_Social_Platform.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.com",
                             NormalizedUserName = "ADMIN@ADMIN.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBXUlfHEXGDgs1Sq6pvf3IXI+1hqtc+3Zop45jzSDMVzo8dxZGx8InIPN3rR4BORqg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENbA3Wci6EwhEOsokfr9BE/S3HHhc4DnSSHAvKIMHr/+inPrzKMeQsvmtEufQBPWZg==",
                             PhoneNumberConfirmed = false,
                             Relationship = 0,
                             SecurityStamp = "cfb5501d-596e-4bd5-b3e0-763e303fe980",
@@ -519,6 +521,7 @@ namespace AI_Social_Platform.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("topicUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
