@@ -1,15 +1,21 @@
-﻿using AI_Social_Platform.Data;
+﻿using System.Collections;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+
+using AI_Social_Platform.Data;
 using AI_Social_Platform.Data.Models;
 using AI_Social_Platform.Data.Models.Enums;
 using AI_Social_Platform.Services.Data.Interfaces;
 using AI_Social_Platform.Services.Data.Models.SocialFeature;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
-using AutoMapper;
-using System.Collections;
+using AI_Social_Platform.Data.Models.Publication;
 using AI_Social_Platform.Services.Data.Models.PublicationDtos;
 using AI_Social_Platform.Services.Data.Models.UserDto;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
+using static AI_Social_Platform.Common.ExceptionMessages.PublicationExceptionMessages;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace AI_Social_Platform.Services.Data
 {
@@ -124,6 +130,229 @@ namespace AI_Social_Platform.Services.Data
                         .OrderByDescending(t => t.Followers.Count)
                         .Take(take))
                         .ToArrayAsync();
+        }
+
+        //Comment
+        public async Task<CommentDto> CreateCommentAsync(CommentFormDto dto)
+        {
+            var publication = await dbContext.Publications
+                .FirstOrDefaultAsync(p => p.Id == dto.PublicationId);
+            var userId = GetUserId();
+
+            if (publication == null)
+            {
+                throw new NullReferenceException(PublicationNotFound);
+            }
+
+            var comment = mapper.Map<Comment>(dto);
+            comment.UserId = userId;
+            publication.LastCommented = DateTime.UtcNow;
+            publication.LatestActivity = DateTime.UtcNow;
+
+            await CreateNotificationAsync(publication.AuthorId, userId, NotificationType.Comment, publication.Id);
+
+            await dbContext.Comments.AddAsync(comment);
+            await dbContext.SaveChangesAsync();
+
+            var user = await dbContext.Users
+                .Where(u => u.Id == userId)
+                .Select(u => new UserDto()
+                {
+                    Id = u.Id,
+                    UserName = u.UserName,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    ProfilePictureBase64 = null,
+                })
+                .FirstOrDefaultAsync();
+            var dtoReturn = mapper.Map<CommentDto>(comment);
+            dtoReturn.User = user!;
+
+            return dtoReturn;
+        }
+
+        public async Task UpdateCommentAsync(CommentEditDto dto, Guid id)
+        {
+            var comment = await dbContext.Comments.FindAsync(id);
+            var userId = GetUserId();
+
+            if (comment == null)
+            {
+                throw new NullReferenceException(CommentNotFound);
+            }
+
+            if (comment.UserId != userId)
+            {
+                throw new AccessViolationException(NotAuthorizedToEditComment);
+            }
+            comment.Content = dto.Content;
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteCommentAsync(Guid id)
+        {
+            var comment = await dbContext.Comments.FirstOrDefaultAsync(c => c.Id == id);
+            var userId = GetUserId();
+
+            if (comment == null)
+            {
+                throw new NullReferenceException(CommentNotFound);
+            }
+
+            if (comment.UserId != userId)
+            {
+                throw new AccessViolationException(NotAuthorizedToDeleteComment);
+            }
+            dbContext.Comments.Remove(comment);
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<IndexCommentDto> GetCommentsOnPublicationAsync(Guid publicationId, int pageNum)
+        {
+            int pageSize = 5;
+            int take = pageNum == 1 ? 2 : 5;
+            int skip = (pageNum - 1) * pageSize;
+            int totalComments = await dbContext.Comments.Where(p => p.PublicationId == publicationId).CountAsync();
+            int commentsLeft = totalComments - skip - take < 0 ? 0 : totalComments - skip - take;
+            switch (take)
+            {
+                case 2: skip = 0; break;
+                case 5 when pageNum == 2: skip = 2; break;
+                case 5 when pageNum > 2: skip += 2; break;
+            }
+
+            var comments = await dbContext.Comments
+                .Where(c => c.PublicationId == publicationId)
+                .ProjectTo<CommentDto>(mapper.ConfigurationProvider)
+                .OrderByDescending(c => c.DateCreated)
+                .Skip(skip)
+                .Take(take)
+                .ToListAsync();
+
+            return new IndexCommentDto()
+            {
+                Comments = comments,
+                CurrentPage = pageNum,
+                TotalPages = (int)Math.Ceiling((double)totalComments / pageSize),
+                CommentsLeft = commentsLeft
+            };
+        }
+
+        //Like
+        public async Task CreateLikesOnPublicationAsync(Guid publicationId)
+        {
+            var publication = await dbContext.Publications
+                .FirstOrDefaultAsync(p => p.Id == publicationId);
+            var userId = GetUserId();
+
+            if (publication == null)
+            {
+                throw new NullReferenceException(PublicationNotFound);
+            }
+
+            if (await dbContext.Likes.AnyAsync(l => l.PublicationId == publicationId && l.UserId == userId))
+            {
+                throw new InvalidOperationException(AlreadyLiked);
+            }
+
+            var like = new Like
+            {
+                PublicationId = publicationId,
+                UserId = userId
+            };
+
+            await CreateNotificationAsync(
+                    publication.AuthorId,
+                    userId,
+                    NotificationType.Like,
+                    publication.Id);
+
+            await dbContext.Likes.AddAsync(like);
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteLikeOnPublicationAsync(Guid likeId)
+        {
+            var like = await dbContext.Likes.FirstOrDefaultAsync(l => l.Id == likeId);
+            var userId = GetUserId();
+
+            if (like == null)
+            {
+                throw new NullReferenceException(LikeNotFound);
+            }
+
+            if (like.UserId != userId)
+            {
+                throw new AccessViolationException(NotAuthorizedToDeleteLike);
+            }
+
+            dbContext.Likes.Remove(like);
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<LikeDto>> GetLikesOnPublicationAsync(Guid publicationId)
+        {
+            return await dbContext.Likes
+                .Where(l => l.PublicationId == publicationId)
+                .ProjectTo<LikeDto>(mapper.ConfigurationProvider)
+                .OrderByDescending(l => l.DateCreated)
+                .ToListAsync();
+        }
+
+        //Share
+        public async Task CreateSharesOnPublicationAsync(Guid publicationId)
+        {
+            var publication = await dbContext.Publications
+                .FirstOrDefaultAsync(p => p.Id == publicationId);
+            var userId = GetUserId();
+
+            if (publication == null)
+            {
+                throw new NullReferenceException(PublicationNotFound);
+            }
+
+            var share = new Share
+            {
+                PublicationId = publicationId,
+                UserId = userId
+            };
+
+            await CreateNotificationAsync(
+                publication.AuthorId,
+                userId,
+                NotificationType.Share,
+                publicationId);
+
+            await dbContext.Shares.AddAsync(share);
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteShareOnPublicationAsync(Guid shareId)
+        {
+            var share = await dbContext.Shares.FirstOrDefaultAsync(s => s.Id == shareId);
+            var userId = GetUserId();
+
+            if (share == null)
+            {
+                throw new NullReferenceException(ShareNotFound);
+            }
+
+            if (share.UserId != userId)
+            {
+                throw new AccessViolationException(NotAuthorizedToDeleteShare);
+            }
+
+            dbContext.Shares.Remove(share);
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<ShareDto>> GetSharesOnPublicationAsync(Guid publicationId)
+        {
+            return await dbContext.Shares
+                .Where(s => s.PublicationId == publicationId)
+                .ProjectTo<ShareDto>(mapper.ConfigurationProvider)
+                .OrderByDescending(s => s.DateCreated)
+                .ToListAsync();
         }
 
         private Guid GetUserId()

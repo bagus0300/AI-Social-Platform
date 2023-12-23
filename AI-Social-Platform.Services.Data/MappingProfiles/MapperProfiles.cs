@@ -29,9 +29,14 @@ namespace AI_Social_Platform.Services.Data.MappingProfiles
 
             CreateMap<SearchTopicDto, Topic>().ReverseMap()
                 .ForMember(n => n.FollowersCount, opt => { opt.MapFrom(n => n.Followers.Count); })
-                .ForMember(p => p.PublicationsCount, opt => { opt.MapFrom(p => p.Publications.Count); });
+                .ForMember(p => p.PublicationsCount, opt => { opt.MapFrom(p => p.Publications.Count); })
+                .ForMember(t => t.Followers, opt =>
+                {
+                    opt.MapFrom(t => t.Followers.Select(f => f.UserId).ToArray());
+                });
 
             this.CreateMap<UserDto, ApplicationUser>().ReverseMap();
+            this.CreateMap<TopicDto, Topic>().ReverseMap();
         }
 
     }

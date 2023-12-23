@@ -1,4 +1,4 @@
-﻿namespace AI_Social_Platform.Services.Data.Models.PublicationDtos
+﻿namespace AI_Social_Platform.Services.Data.Models.SocialFeature
 {
     public class BaseSocialDto
     {
@@ -8,6 +8,6 @@
 
         public Guid PublicationId { get; set; }
 
-        public Guid UserId { get; set; }
+        public UserDto.UserDto User { get; set; } = null!;
     }
 }

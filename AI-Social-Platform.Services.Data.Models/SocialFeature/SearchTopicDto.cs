@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AI_Social_Platform.Services.Data.Models.PublicationDtos;
 
 namespace AI_Social_Platform.Services.Data.Models.SocialFeature
 {
@@ -15,5 +11,9 @@ namespace AI_Social_Platform.Services.Data.Models.SocialFeature
         public int PublicationsCount { get; set; }
 
         public int FollowersCount { get; set; }
+
+        public PublicationDto[] Publications { get; set; } = null!;
+
+        public Guid[] Followers { get; set; } = null!;
     }
 }

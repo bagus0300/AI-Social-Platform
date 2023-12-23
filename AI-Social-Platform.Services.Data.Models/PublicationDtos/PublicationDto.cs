@@ -1,4 +1,6 @@
-﻿namespace AI_Social_Platform.Services.Data.Models.PublicationDtos
+﻿using AI_Social_Platform.Services.Data.Models.SocialFeature;
+
+namespace AI_Social_Platform.Services.Data.Models.PublicationDtos
 {
     public class PublicationDto
     {
@@ -15,6 +17,9 @@
         public DateTime LatestActivity { get; set; }
 
         //Relations
+        public TopicDto Topic { get; set; } = null!;
         public Guid AuthorId { get; set; }
+        public UserDto.UserDto Author { get; set; } = null!;
+      
     }
 }
