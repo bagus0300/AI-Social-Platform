@@ -182,7 +182,7 @@ namespace AI_Social_Platform.Server.Controllers
 
 
         [HttpPut("updateUser")]
-        public async Task<IActionResult> UpdateUserData([FromBody] UserFormModel model)
+        public async Task<IActionResult> UpdateUserData([FromForm] UserFormModel model)
         {
             var userId = HttpContext.User.GetUserId();
 

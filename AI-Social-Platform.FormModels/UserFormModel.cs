@@ -8,6 +8,7 @@
     using static Common.EntityValidationConstants.State;
     using static Common.EntityValidationConstants.Country;
     using static Common.EntityValidationConstants.School;
+    using Microsoft.AspNetCore.Http;
 
     public class UserFormModel
     {
@@ -34,9 +35,9 @@
         [Display(Name = "Phone")]
         public string? PhoneNumber { get; set; }
 
-        public byte[]? ProfilePicture { get; set; }
+        public IFormFile? ProfilePicture { get; set; }
 
-        public byte[]? CoverPhoto { get; set; }
+        public IFormFile? CoverPhoto { get; set; }
 
         [StringLength(CountryMaxLength, MinimumLength = CountryMinLength)]
         public string? Country { get; set; }

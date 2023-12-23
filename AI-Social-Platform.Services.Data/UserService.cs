@@ -147,6 +147,23 @@ namespace AI_Social_Platform.Services.Data.Models
                 user.Birthday = updatedUserData.Birthday;
                 user.Relationship = updatedUserData.Relationship;
 
+                if (updatedUserData.ProfilePicture != null)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await updatedUserData.ProfilePicture.CopyToAsync(memoryStream);
+                        user.ProfilePicture = memoryStream.ToArray();
+                    }
+                }
+                if (updatedUserData.CoverPhoto != null)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await updatedUserData.CoverPhoto.CopyToAsync(memoryStream);
+                        user.CoverPhoto = memoryStream.ToArray();
+                    }
+                }
+
                 await this.dbContext.SaveChangesAsync();
                 return true;
             }
