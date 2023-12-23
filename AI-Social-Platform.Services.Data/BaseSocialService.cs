@@ -13,9 +13,8 @@ using AI_Social_Platform.Services.Data.Models.SocialFeature;
 using AI_Social_Platform.Data.Models.Publication;
 using AI_Social_Platform.Services.Data.Models.PublicationDtos;
 using AI_Social_Platform.Services.Data.Models.UserDto;
-using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using static AI_Social_Platform.Common.ExceptionMessages.PublicationExceptionMessages;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+
 
 namespace AI_Social_Platform.Services.Data
 {

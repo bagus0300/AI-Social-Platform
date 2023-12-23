@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using AI_Social_Platform.Data.Models;
+using AI_Social_Platform.Data.Models.Topic;
 using AI_Social_Platform.Services.Data.Models.UserDto;
 using static AI_Social_Platform.Common.ExceptionMessages.PublicationExceptionMessages;
 
@@ -63,7 +64,23 @@ namespace Ai_Social_Platform.Tests
                 x.CreateMap<ShareDto, Share>().ReverseMap();
                 x.CreateMap<PublicationDto, Publication>().ReverseMap();
                 x.CreateMap<PublicationFormDto, Publication>().ReverseMap();
+                x.CreateMap<Notification, NotificationDto>().ReverseMap()
+                    .ForMember(n => n.NotificationType,
+                        opt =>
+                        {
+                            opt.MapFrom(n => n.NotificationType.ToString());
+                        });
+
+                x.CreateMap<SearchTopicDto, Topic>().ReverseMap()
+                    .ForMember(n => n.FollowersCount, opt => { opt.MapFrom(n => n.Followers.Count); })
+                    .ForMember(p => p.PublicationsCount, opt => { opt.MapFrom(p => p.Publications.Count); })
+                    .ForMember(t => t.Followers, opt =>
+                    {
+                        opt.MapFrom(t => t.Followers.Select(f => f.UserId).ToArray());
+                    });
+
                 x.CreateMap<UserDto, ApplicationUser>().ReverseMap();
+                x.CreateMap<TopicDto, Topic>().ReverseMap();
             });
             mapper = config.CreateMapper();
             baseSocialService = new BaseSocialService(dbContext, httpContextAccessor, mapper);
@@ -483,14 +500,14 @@ namespace Ai_Social_Platform.Tests
             var publicationId = Guid.Parse("a0a0a6a0-0b1e-4b9e-9b0a-0b9b9b9b9b9b");
 
             // Act
-            var result = await baseSocialService.GetCommentsOnPublicationAsync(publicationId);
+            var result = await baseSocialService.GetCommentsOnPublicationAsync(publicationId, 1);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<IEnumerable<CommentDto>>(result);
+            Assert.IsInstanceOf<IndexCommentDto>(result);
 
             // Assuming some comments were seeded during setup
-            Assert.IsTrue(result.Any());
+            Assert.IsTrue(result.Comments.Any());
         }
 
         //Like Tests
