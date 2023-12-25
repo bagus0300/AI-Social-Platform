@@ -1,6 +1,59 @@
 .home-page {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 1em;
+    background-color: #eee;
+}
+
+.create-post-banner {
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 3em;
+    padding: 1.3em 1em;
+    border-radius: 0.2em;
+    gap: 0.5em;
+    width: 28em;
+    box-shadow: 0 0 0.2em 0.1em #ddd;
+}
+
+.create-post-banner a {
+    width: 2em;
+    height: 2em;
+}
+
+.profile-pic-wrapper:hover {
+    filter: brightness(120%);
+}
+
+.user-profile-pic {
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+}
+
+.placeholder {
+    background-color: #ddd;
+    padding: 0.3rem 0.6rem;
+    border-radius: 1rem;
+    width: 100%;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.placeholder .text {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    text-decoration: none;
+    color: #5c5c5c;
+}
+
+.placeholder:hover {
+    filter: brightness(102%);
+    color: #686868;
 }

@@ -1,0 +1,147 @@
+::-webkit-file-upload-button {
+    display: none;
+}
+
+.backdrop {
+    background-color: rgba(0, 0, 0, 0.8);
+    height: 100vh;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+}
+
+.create-post-section {
+    background-color: #fff;
+    padding: 1.5em 1em;
+    width: 22em;
+    z-index: 20;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.section-header {
+    position: relative;
+    border-bottom: 1px solid #aaa;
+    width: 100%;
+    padding-bottom: 0.5em;
+}
+
+.section-heading {
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.close-button {
+    position: absolute;
+    top: 0.2em;
+    right: 1em;
+    background-color: #ddd;
+    color: #505050;
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    text-align: center;
+    cursor: pointer;
+}
+
+.close-button:hover {
+    filter: brightness(103%);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.5em 0;
+}
+
+.user-names {
+    font-size: 0.8em;
+}
+
+.profile-pic-wrapper {
+    width: 2em;
+    height: 2em;
+}
+
+.profile-picture {
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+}
+
+.create-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.post-description {
+    padding: 1em;
+    resize: none;
+    border: 0;
+}
+
+.post-description:focus {
+    outline: 0;
+}
+
+.media-input {
+    padding: 0.5em;
+    box-shadow: 0 0 0.2em 0.1em #ddd;
+    margin-bottom: 1em;
+    position: relative;
+    border-radius: 0.5em;
+}
+
+.media-label {
+    display: block;
+    text-align: center;
+    padding: 4em 0;
+    box-shadow: 0 0 0.2em 0.1em #aaa;
+    background-color: #ddd;
+    border-radius: 0.5em;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.media-label:hover {
+    filter: brightness(105%);
+}
+
+.drag-drop {
+    display: block;
+    font-size: 0.7em;
+    margin-top: 0.5em;
+    font-weight: normal;
+}
+
+.submit-button-disabled {
+    padding: 0.5em 0;
+    border: 0;
+    background-color: #ccc;
+    color: #747474;
+    border-radius: 0.5em;
+    cursor: not-allowed;
+    font-size: 0.8em;
+    font-weight: 600;
+}
+
+.submit-button {
+    padding: 0.5em 0;
+    border: 0;
+    background-color: #369;
+    color: #fff;
+    border-radius: 0.5em;
+    cursor: pointer;
+    font-size: 0.8em;
+    font-weight: 600;
+}
+
+.submit-button:hover {
+    filter: brightness(110%);
+}

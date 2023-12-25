@@ -8,11 +8,13 @@ export const getLoggedUserDetails = async () => {
 };
 
 export const getUserData = async (userId) => {
-    
-    const result = await api.get(`${endpoints.userDetails}/${userId}`, );
+    const result = await api.get(`${endpoints.userDetails}/${userId}`);
 
     return result;
 };
 
 export const update = async (values) =>
     await api.put(endpoints.updateUser, values);
+
+export const getUserDetails = async (userId) =>
+    await api.get(endpoints.userDetails(userId));

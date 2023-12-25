@@ -1,0 +1,38 @@
+.backdrop {
+    background-color: rgba(0, 0, 0, 0.3);
+    height: 100vh;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+}
+
+.delete-comment {
+    position: absolute;
+    z-index: 100;
+    max-width: 25em;
+    background-color: #fff;
+    padding: 0.5em 1.2em;
+    border-radius: 0.3em;
+    top: 0;
+    right: 1em;
+    font-size: 0.8em;
+    display: flex;
+    gap: 0.5em;
+}
+
+.delete-button,
+.cancel-button {
+    cursor: pointer;
+    color: #585858;
+}
+
+.delete-button:hover,
+.cancel-button:hover {
+    transform: scale(1.1);
+}
+
+.delete-button:hover {
+    color: red;
+}

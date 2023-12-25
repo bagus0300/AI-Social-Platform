@@ -1,16 +1,18 @@
-import { host } from '../environments/costants';
+import { ContentType, tokenName, host } from '../environments/costants';
 
-const buildOptions = (data) => {
+const buildOptions = (data, requestType) => {
     const options = {};
 
-    if (data) {
+    if (requestType === ContentType.ApplicationJSON) {
         options.body = JSON.stringify(data);
         options.headers = {
-            'Content-Type': 'application/json',
+            'Content-Type': ContentType.ApplicationJSON,
         };
+    } else if (requestType === ContentType.MulitpartFormData) {
+        options.body = data;
     }
 
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem(tokenName);
 
     if (token) {
         options.headers = {
@@ -22,9 +24,9 @@ const buildOptions = (data) => {
     return options;
 };
 
-const api = async (method, url, data) => {
+const api = async (method, url, data, requestType) => {
     const response = await fetch(host + url, {
-        ...buildOptions(data),
+        ...buildOptions(data, requestType),
         method,
     });
 
@@ -35,8 +37,9 @@ const api = async (method, url, data) => {
     const result = await response.json();
 
     if (!response.ok) {
+        debugger;
         if (response.status === 403) {
-            localStorage.removeItem('accessToken');
+            localStorage.removeItem(tokenName);
         }
 
         throw result;

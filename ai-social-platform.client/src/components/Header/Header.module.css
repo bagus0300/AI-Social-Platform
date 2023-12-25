@@ -112,6 +112,10 @@
     border-radius: 0.3em;
 }
 
+.user-info {
+    color: #000;
+}
+
 .logout > * {
     color: #000;
 }

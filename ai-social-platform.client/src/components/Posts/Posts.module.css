@@ -5,7 +5,7 @@
 
 .posts-section {
     background-color: #eee;
-    padding: 2em 0;
+    padding-bottom: 2em;
     width: 100%;
     scroll-behavior: smooth;
 }

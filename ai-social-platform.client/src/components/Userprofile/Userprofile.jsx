@@ -13,12 +13,11 @@ export default function Userprofile() {
 
   useEffect(() => {
     userService
-      .getUserData(userId)
+      .getUserDetails(userId)
       .then((result) => {
-        console.log(result);
         setUserData(result);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => setError(error));
   }, []);
 
   if (error) {
@@ -49,7 +48,7 @@ export default function Userprofile() {
             </p>
             <p className="posted-user">
               E-mail:
-              <a href="mailto: {userData?.email}"> {userData?.email}</a>
+              <a href="mailto: {userData?.email}"> {userData?.userName}</a>
             </p>
             <p>GSM: {userData.phoneNumber}</p>
           </div>

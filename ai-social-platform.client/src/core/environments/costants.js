@@ -5,8 +5,10 @@ export const PATH = {
     login: '/users/login',
     register: '/users/register',
     logout: '/users/logout',
+    create: '/create-post',
     profile: '/profile/:userId',
     profileedit: '/profileedit/:userId',
+    userProfile: (userId) => `/profile/${userId}`,
 };
 
 export const endpoints = {
@@ -19,6 +21,21 @@ export const endpoints = {
     getLoggedUserDetails: 'User/userDetails',
     userDetails: 'User/userDetails',
     updateUser: 'User/updateUser',
+    userDetails: (userId) => `User/userDetails/${userId}`,
+
+    // POSTS
+    createPost: 'Publication',
+    getAllPosts: 'Publication',
+
+    // MEDIA
+    addMedia: 'Media/upload?isItPublication=true',
+    getPostMedia: (postId) => `Media/${postId}`,
+    getMediaById: (mediaId) => `Media/serve/${mediaId}`,
+
+    // COMMENTS
+    createComment: 'SocialFeature/comment',
+    getAllComments: (postId) => `SocialFeature/comment/${postId}`,
+    deleteComment: (commentId) => `SocialFeature/comment/${commentId}`,
 };
 
 export const LoginFormKeys = {
@@ -45,8 +62,31 @@ export const ProfileFormKeys = {
     Country: 'country',
     State: 'state',
     Gender: 0,
-    School: "school",
+    School: 'school',
     Birthday: 'birthday',
     Relationship: 0,
     Schools: [{}],
-  };
+};
+
+export const CreateFormKeys = {
+    PostDescription: 'postDescription',
+    PostMedia: 'postMedia',
+};
+
+export const CommentFormKeys = {
+    CommentText: 'commentText',
+};
+
+export const ContentType = {
+    ApplicationJSON: 'application/json',
+    MulitpartFormData: 'multipart/form-data',
+};
+
+export const CommentActions = {
+    CreateComment: 'createComment',
+    GetAllComments: 'getAllComments',
+    EditComment: 'editComment',
+    DeleteComment: 'deleteComment',
+};
+
+export const tokenName = 'accessToken';
