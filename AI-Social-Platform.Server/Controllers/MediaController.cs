@@ -48,6 +48,7 @@
             }
         }
 
+        [AllowAnonymous]
         [HttpGet("serve/{mediaId}")]
         public async Task<IActionResult> GetMedia(string mediaId)
         {

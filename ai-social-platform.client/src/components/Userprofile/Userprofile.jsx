@@ -18,7 +18,7 @@ export default function Userprofile() {
         setUserData(result);
       })
       .catch((error) => setError(error));
-  }, []);
+  }, [userId]);
 
   if (error) {
     return <div>{error}</div>;

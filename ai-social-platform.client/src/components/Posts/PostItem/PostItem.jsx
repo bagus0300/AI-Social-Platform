@@ -90,7 +90,7 @@ export default function PostItem({ post }) {
         <article className={styles['post-item']}>
             <section className={styles['user-info']}>
                 <div className={styles['user-info-wrapper']}>
-                    <Link to={PATH.userProfile(userId)}>
+                    <Link to={PATH.userProfile(post.authorId)}>
                         <img
                             className={styles['user-img']}
                             src={
@@ -103,7 +103,7 @@ export default function PostItem({ post }) {
                     <div className={styles['post-info']}>
                         <p className={styles['username-wrapper']}>
                             <Link
-                                to={PATH.userProfile(userId)}
+                                to={PATH.userProfile(post.authorId)}
                                 className={styles['username']}
                             >
                                 {post.author.firstName} {post.author.lastName}
