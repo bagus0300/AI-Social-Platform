@@ -1,10 +1,9 @@
-
 // ON CREATE POST WE NEED RESPONSE TO BE POST DATA
 
 const postReducer = (state, action) => {
     switch (action?.type) {
         case 'GET_ALL_POSTS':
-            return [...action.payload];
+            return [...state, ...action.payload];
         case 'CREATE_POST':
             return [...state, action.payload.content];
         case 'EDIT_POST':

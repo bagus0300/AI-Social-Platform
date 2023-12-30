@@ -37,7 +37,6 @@ const api = async (method, url, data, requestType) => {
     const result = await response.json();
 
     if (!response.ok) {
-        debugger;
         if (response.status === 403) {
             localStorage.removeItem(tokenName);
         }
