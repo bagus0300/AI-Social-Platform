@@ -76,11 +76,11 @@ namespace AI_Social_Platform.Server.Controllers
             }
             catch (NullReferenceException ex)
             {
-                return NotFound(ex.Message);
+                return NotFound(new { message = ex.Message});
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -94,15 +94,15 @@ namespace AI_Social_Platform.Server.Controllers
             }
             catch (NullReferenceException ex)
             {
-                return NotFound(ex.Message);
+                return NotFound(new { message = ex.Message });
             }
             catch (AccessViolationException ex)
             {
-                return StatusCode(403, ex.Message);
+                return StatusCode(403, new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -113,19 +113,19 @@ namespace AI_Social_Platform.Server.Controllers
             try
             {
                 await baseSocialService.UpdateCommentAsync(dto, commentId);
-                return Ok(new {Message = CommentSuccessfullyEdited });
+                return Ok(new {message = CommentSuccessfullyEdited });
             }
             catch (NullReferenceException ex)
             {
-                return NotFound(ex.Message);
+                return NotFound(new { message = ex.Message });
             }
             catch (AccessViolationException ex)
             {
-                return StatusCode(403, ex.Message);
+                return StatusCode(403, new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -150,15 +150,15 @@ namespace AI_Social_Platform.Server.Controllers
             try
             {
                 await baseSocialService.CreateLikesOnPublicationAsync(publicationId);
-                return CreatedAtAction(nameof(CreateLike), new { Message = LikeSuccessfullyCreated });
+                return CreatedAtAction(nameof(CreateLike), new { message = LikeSuccessfullyCreated });
             }
             catch (NullReferenceException ex)
             {
-                return NotFound(ex.Message);
+                return NotFound(new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -172,15 +172,15 @@ namespace AI_Social_Platform.Server.Controllers
             }
             catch (NullReferenceException ex)
             {
-                return NotFound(ex.Message);
+                return NotFound(new { message = ex.Message });
             }
             catch (AccessViolationException ex)
             {
-                return StatusCode(403, ex.Message);
+                return StatusCode(403, new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -205,15 +205,15 @@ namespace AI_Social_Platform.Server.Controllers
             try
             {
                 await baseSocialService.CreateSharesOnPublicationAsync(publicationId);
-                return CreatedAtAction(nameof(CreateShare), new { Message = ShareSuccessfullyCreated });
+                return CreatedAtAction(nameof(CreateShare), new { message = ShareSuccessfullyCreated });
             }
             catch (NullReferenceException ex)
             {
-                return NotFound(ex.Message);
+                return NotFound(new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -227,15 +227,15 @@ namespace AI_Social_Platform.Server.Controllers
             }
             catch (NullReferenceException ex)
             {
-                return NotFound(ex.Message);
+                return NotFound(new { message = ex.Message });
             }
             catch (AccessViolationException ex)
             {
-                return StatusCode(403, ex.Message);
+                return StatusCode(403, new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 

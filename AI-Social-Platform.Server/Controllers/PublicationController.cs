@@ -38,10 +38,11 @@ public class PublicationController : ControllerBase
     {
         try
         {
-            await publicationService.CreatePublicationAsync(dto);
+            var publication = await publicationService.CreatePublicationAsync(dto);
             return CreatedAtAction(nameof(Create), new
             {
-                message = PublicationSuccessfullyCreated
+                message = PublicationSuccessfullyCreated,
+                publication
             });
         }
         catch (Exception ex)
@@ -60,11 +61,11 @@ public class PublicationController : ControllerBase
         }
         catch (NullReferenceException ex)
         {
-            return NotFound(ex.Message);
+            return NotFound(new { message = ex.Message });
         }
         catch(Exception ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(new { message = ex.Message });
         }
     }
 
@@ -78,15 +79,15 @@ public class PublicationController : ControllerBase
         }
         catch (NullReferenceException ex)
         {
-            return NotFound(ex.Message);
+            return NotFound(new { message = ex.Message});
         }
         catch (AccessViolationException ex)
         {
-            return StatusCode(403,ex.Message);
+            return StatusCode(403, new { message = ex.Message });
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(new { message = ex.Message });
         }
     }
 
@@ -100,15 +101,15 @@ public class PublicationController : ControllerBase
         }
         catch (NullReferenceException ex)
         {
-            return NotFound(ex.Message);
+            return NotFound(new { message = ex.Message });
         }
         catch (AccessViolationException ex)
         {
-            return StatusCode(403, ex.Message);
+            return StatusCode(403, new { message = ex.Message });
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(new { message = ex.Message });
         }
     }
 }

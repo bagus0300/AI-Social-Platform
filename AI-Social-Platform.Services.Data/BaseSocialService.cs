@@ -209,29 +209,24 @@ namespace AI_Social_Platform.Services.Data
         public async Task<IndexCommentDto> GetCommentsOnPublicationAsync(Guid publicationId, int pageNum)
         {
             int pageSize = 5;
-            int take = pageNum == 1 ? 2 : 5;
-            int skip = (pageNum - 1) * pageSize;
+            int skip = 5;
+            skip += (pageNum - 1) * pageSize;
             int totalComments = await dbContext.Comments.Where(p => p.PublicationId == publicationId).CountAsync();
-            int commentsLeft = totalComments - skip - take < 0 ? 0 : totalComments - skip - take;
-            switch (take)
-            {
-                case 2: skip = 0; break;
-                case 5 when pageNum == 2: skip = 2; break;
-                case 5 when pageNum > 2: skip += 2; break;
-            }
+            int commentsLeft = totalComments - skip - pageSize < 0 ? 0 : totalComments - skip - pageSize;
 
             var comments = await dbContext.Comments
                 .Where(c => c.PublicationId == publicationId)
                 .ProjectTo<CommentDto>(mapper.ConfigurationProvider)
                 .OrderByDescending(c => c.DateCreated)
                 .Skip(skip)
-                .Take(take)
+                .Take(pageSize)
                 .ToListAsync();
 
             return new IndexCommentDto()
             {
                 Comments = comments,
                 CurrentPage = pageNum,
+                TotalComments = totalComments,
                 TotalPages = (int)Math.Ceiling((double)totalComments / pageSize),
                 CommentsLeft = commentsLeft
             };

@@ -8,6 +8,7 @@ using System.Security.Claims;
 using AI_Social_Platform.Services.Data.Models.SocialFeature;
 using AI_Social_Platform.Services.Data.Models.UserDto;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using static AI_Social_Platform.Common.ExceptionMessages.PublicationExceptionMessages;
 
 namespace AI_Social_Platform.Services.Data;
@@ -26,27 +27,38 @@ public class PublicationService : IPublicationService
         this.dbContext = dbContext;
         httpContext = accessor.HttpContext!;
     }
+
     public async Task<IndexPublicationDto> GetPublicationsAsync(int pageNum)
     {
         int pageSize = 10;
         if (pageNum <= 0) pageNum = 1;
         int skip = (pageNum - 1) * pageSize;
-        int totalPublications = await dbContext.Publications.CountAsync();
+
+        var userFriends = dbContext.Users
+            .Where(u => u.Id == GetUserId())
+            .Include(u => u.Friends)
+            .ThenInclude(f => f.Publications);
+
+        var publications = await userFriends
+            .SelectMany(u => u.Friends.SelectMany(f => f.Publications))
+            .OrderByDescending(p => p.LatestActivity)
+            .Skip(skip)
+            .Take(pageSize)
+            .ProjectTo<PublicationDto>(mapper.ConfigurationProvider)
+            .ToListAsync();
+
+        int totalPublications = await userFriends.SelectMany(u => u.Friends.SelectMany(f => f.Publications)).CountAsync();
         int publicationsLeft = totalPublications - (pageNum * pageSize) < 0 ? 0 : totalPublications - (pageNum * pageSize);
+
 
         var indexPublicationDto = new IndexPublicationDto
         {
-            Publications = await mapper.ProjectTo<PublicationDto>
-            (dbContext.Publications
-                .AsQueryable()
-                .OrderByDescending(p => p.LatestActivity)
-                .Skip(skip)
-                .Take(pageSize)
-            ).ToArrayAsync(),
+            Publications = publications.OrderByDescending(p => p.LatestActivity),
             CurrentPage = pageNum,
-            TotalPages = (int)Math.Ceiling((double)totalPublications / pageSize),
+            TotalPages = (int)Math.Ceiling(totalPublications / (double)pageSize),
+            TotalPublications = totalPublications,
             PublicationsLeft = publicationsLeft
-    };
+        };
         return indexPublicationDto;
     }
 
@@ -59,10 +71,31 @@ public class PublicationService : IPublicationService
         {
             throw new NullReferenceException(PublicationNotFound);
         }
-        return mapper.Map<PublicationDto>(publication);
+        var publicationDto = mapper.Map<PublicationDto>(publication);
+
+        publicationDto.Author = mapper.Map<UserDto>
+            (await dbContext.Users.FirstOrDefaultAsync(u => u.Id == publication.AuthorId));
+
+        publicationDto.Topic = mapper.Map<TopicDto>
+            (await dbContext.Topics.FirstOrDefaultAsync(t => t.Id == publication.TopicId));
+
+        publicationDto.Comments = await dbContext.Comments
+            .Where(c => c.PublicationId == publication.Id)
+            .OrderByDescending(c => c.DateCreated)
+            .Take(5)
+            .ProjectTo<CommentDto>(mapper.ConfigurationProvider)
+            .ToListAsync();
+
+        publicationDto.CommentsCount = await dbContext.Comments
+            .Where(c => c.PublicationId == publication.Id)
+            .CountAsync();
+
+        publicationDto.LikesCount = await dbContext.Likes.Where(l => l.PublicationId == publication.Id).CountAsync();
+
+        return publicationDto;
     }
     
-    public async Task CreatePublicationAsync(PublicationFormDto dto)
+    public async Task<PublicationDto> CreatePublicationAsync(PublicationFormDto dto)
     {
         var userId = GetUserId();
         var publication = mapper.Map<Publication>(dto);
@@ -70,6 +103,12 @@ public class PublicationService : IPublicationService
 
        await dbContext.AddAsync(publication);
        await dbContext.SaveChangesAsync();
+
+       var publicationDto = mapper.Map<PublicationDto>(publication);
+       publicationDto.Author = mapper.Map<UserDto>(await dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId));
+       publicationDto.Topic = mapper.Map<TopicDto>(await dbContext.Topics.FirstOrDefaultAsync(t => t.Id == publication.TopicId));
+
+       return publicationDto;
     }
     
     public async Task UpdatePublicationAsync(PublicationFormDto dto, Guid id)

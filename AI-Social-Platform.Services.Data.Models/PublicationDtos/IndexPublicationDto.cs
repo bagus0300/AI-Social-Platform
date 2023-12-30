@@ -6,6 +6,7 @@
 
         public int TotalPages { get; set; }
 
+        public int TotalPublications { get; set; }
         public int PublicationsLeft { get; set; }
 
         public IEnumerable<PublicationDto> Publications { get; set; } = null!;

@@ -39,12 +39,12 @@
                 var userId = HttpContext.User.GetUserId();
 
                 await mediaService.UploadMediaAsync(filesToUpload, userId!, isItPublication);
-                return Ok("Successfully upload media");
+                return Ok(new { message = "Successfully upload media"});
 
             }
             catch (Exception)
             {
-                return BadRequest("Something went wrong");
+                return BadRequest(new {message = "Something went wrong" });
             }
         }
 
@@ -81,7 +81,7 @@
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+                return StatusCode(500, new{message = $"Internal Server Error: {ex.Message}" });
             }
         }
 
@@ -103,7 +103,7 @@
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+                return StatusCode(500, new { message = $"Internal Server Error: {ex.Message}" });
             }
         }
 
@@ -117,7 +117,7 @@
 
             if (!isUserOwner)
             {
-                return BadRequest("You don't have permission over this file");
+                return BadRequest(new { message = "You don't have permission over this file" });
             }
 
             try
@@ -129,11 +129,11 @@
                     return NotFound();
                 }
 
-                return Ok("Successfully edited!");
+                return Ok(new {message = "Successfully edited!"});
             }
             catch (Exception)
             {
-                return BadRequest("Something went wrong!");
+                return BadRequest(new { message = "Something went wrong!"});
             }
 
         }
@@ -144,7 +144,7 @@
 
             if (id == null)
             {
-                return BadRequest("Media is not selected");
+                return BadRequest(new { message = "Media is not selected"});
             }
 
             var userId = HttpContext.User.GetUserId();
@@ -153,17 +153,17 @@
 
             if (!isUserOwner)
             {
-                return BadRequest("You don't have permission over this file");
+                return BadRequest(new { message = "You don't have permission over this file"});
             }
 
             try
             {
                 await mediaService.DeleteMediaAsync(id);
-                return Ok("The media was deleted succsessfully");
+                return Ok(new { message = "The media was deleted succsessfully"});
             }
             catch (Exception)
             {
-                return BadRequest("Something went wrong!");
+                return BadRequest(new { message = "Something went wrong!"});
             }
         }
         private string GetImageUrl(Guid fileId)

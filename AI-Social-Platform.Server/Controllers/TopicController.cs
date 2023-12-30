@@ -26,11 +26,11 @@
             try
             {
                 await topicService.CreateTopicAsync(creatorId, model);
-                return Ok($"Successfully created topic: {model.Title}");
+                return Ok( new { message = $"Successfully created topic: {model.Title}" });
             }
             catch (Exception)
             {
-                return BadRequest("Sorry! Something went wrong");
+                return BadRequest(new { message = "Sorry! Something went wrong"});
             }
         }
 
@@ -46,7 +46,7 @@
             }
             catch (Exception)
             {
-                return BadRequest("Something went wrong!");
+                return BadRequest(new { message = "Something went wrong!"});
             }
         }
 
@@ -58,11 +58,11 @@
             {
                 var action = await topicService.UnfollowTopicAsync(userId, topicId);
 
-                return Ok(action);
+                return Ok(new { message = action});
             }
             catch (Exception)
             {
-                return BadRequest("Something went wrong!");
+                return BadRequest(new { message = "Something went wrong!"});
             }
         }
 
@@ -76,13 +76,13 @@
                 var topics = await topicService.GetFollowedTopicsAsync(userId);
                 if (!topics.Any())
                 {
-                    return BadRequest("You don't have followed topics!");
+                    return BadRequest(new { message = "You don't have followed topics!"});
                 }
                 return Ok(topics);
             }
             catch (Exception)
             {
-                return BadRequest("Something went wrong!");
+                return BadRequest(new { message = "Something went wrong!"});
             }
             
         }

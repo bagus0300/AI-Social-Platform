@@ -95,8 +95,38 @@ namespace Ai_Social_Platform.Tests
                     Content = "This is the second seeded comment Content from Georgi",
                     UserId = Guid.Parse("123400ce-d726-4fc8-83d9-d6b3ac1f591e"),
                     PublicationId = Guid.Parse("a0a0a6a0-0b1e-4b9e-9b0a-0b9b9b9b9b9b")
+                },
+                new()
+                {
+                    Content = "This is the third seeded comment Content from Georgi",
+                    UserId = Guid.Parse("123400ce-d726-4fc8-83d9-d6b3ac1f591e"),
+                    PublicationId = Guid.Parse("a0a0a6a0-0b1e-4b9e-9b0a-0b9b9b9b9b9b")
+                },
+                new()
+                {
+                    Content = "This is the fourth seeded comment Content from Georgi",
+                    UserId = Guid.Parse("123400ce-d726-4fc8-83d9-d6b3ac1f591e"),
+                    PublicationId = Guid.Parse("a0a0a6a0-0b1e-4b9e-9b0a-0b9b9b9b9b9b")
+                },
+                new()
+                {
+                    Content = "This is the fifth seeded comment Content from Georgi",
+                    UserId = Guid.Parse("123400ce-d726-4fc8-83d9-d6b3ac1f591e"),
+                    PublicationId = Guid.Parse("a0a0a6a0-0b1e-4b9e-9b0a-0b9b9b9b9b9b")
+                },
+                new()
+                {
+                    Content = "This is the sixth seeded comment Content from Georgi",
+                    UserId = Guid.Parse("123400ce-d726-4fc8-83d9-d6b3ac1f591e"),
+                    PublicationId = Guid.Parse("a0a0a6a0-0b1e-4b9e-9b0a-0b9b9b9b9b9b")
+                },
+                new()
+                {
+                    Content = "This is the seventh seeded comment Content from Georgi",
+                    UserId = Guid.Parse("123400ce-d726-4fc8-83d9-d6b3ac1f591e"),
+                    PublicationId = Guid.Parse("a0a0a6a0-0b1e-4b9e-9b0a-0b9b9b9b9b9b")
                 }
-              
+
             };
 
             Likes = new List<Like>()

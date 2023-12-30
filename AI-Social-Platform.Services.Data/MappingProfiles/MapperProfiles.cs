@@ -18,7 +18,12 @@ namespace AI_Social_Platform.Services.Data.MappingProfiles
             this.CreateMap<CommentDto, Comment>().ReverseMap();
             this.CreateMap<CommentFormDto, Comment>().ReverseMap();
             this.CreateMap<ShareDto, Share>().ReverseMap();
-            this.CreateMap<PublicationDto, Publication>().ReverseMap();
+
+            this.CreateMap<PublicationDto, Publication>().ReverseMap()
+                .ForMember(p => p.Comments, opt => { opt.MapFrom(p => p.Comments.OrderByDescending(c => c.DateCreated).Take(2));})
+                .ForMember(p => p.CommentsCount, opt => opt.MapFrom(p => p.Comments.Count))
+                .ForMember(p => p.LikesCount, opt => opt.MapFrom(p => p.Likes.Count));
+
             this.CreateMap<PublicationFormDto, Publication>().ReverseMap();
             this.CreateMap<Notification, NotificationDto>().ReverseMap()
                 .ForMember(n => n.NotificationType,

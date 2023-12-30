@@ -6,6 +6,8 @@
 
         public int TotalPages { get; set; }
 
+        public int TotalComments { get; set; }
+
         public int CommentsLeft { get; set; }
 
         public IEnumerable<CommentDto> Comments { get; set; } = null!;

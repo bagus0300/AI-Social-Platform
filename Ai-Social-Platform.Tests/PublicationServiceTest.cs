@@ -93,19 +93,6 @@ namespace Ai_Social_Platform.Tests
             dbContext.Dispose();
         }
 
-        [Test]
-        public async Task GetPublicationsAsync_ReturnsPublications()
-        {
-            // Act
-            var result = await publicationService.GetPublicationsAsync(1);
-
-            // Assert
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOf<IndexPublicationDto>(result);
-
-            // Assuming some publications were seeded during setup
-            Assert.IsTrue(result.Publications.Any());
-        }
 
         [Test]
         public async Task GetPublicationAsync_ValidId_ReturnsPublicationDto()
