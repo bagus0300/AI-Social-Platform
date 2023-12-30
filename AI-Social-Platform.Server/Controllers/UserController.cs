@@ -99,7 +99,7 @@ namespace AI_Social_Platform.Server.Controllers
                 Username = user.UserName,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                ProfilePicture = user.ProfilePicture,
+                ProfilePicture = GetProfilImageUrl(user.Id),
                 Token = userService.BuildToken(userId)
             });
 
@@ -144,7 +144,7 @@ namespace AI_Social_Platform.Server.Controllers
                 Username = user.UserName,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                ProfilePicture = user.ProfilePicture,
+                ProfilePicture = GetProfilImageUrl(user.Id),
                 Token = userService.BuildToken(userId)
             });
         }
@@ -159,6 +159,31 @@ namespace AI_Social_Platform.Server.Controllers
         }
 
 
+        [HttpGet("ProfilPicture/{userId}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetUserProfilPicture(string userId)
+        {
+            var user = await userService.GetUserDetailsByIdAsync(userId);
+            if (user.ProfilePictureData != null)
+            {
+                return File(user.ProfilePictureData, "image/png");
+            }
+            return BadRequest("No profil picture found!");
+        }
+
+        [HttpGet("CoverPicture/{userId}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetUserCoverPicture(string userId)
+        {
+            var user = await userService.GetUserDetailsByIdAsync(userId);
+            if (user.CoverPhotoData != null)
+            {
+                return File(user.CoverPhotoData, "image/png");
+            }
+
+            return BadRequest("No cover photo found!");
+        }
+
         [HttpGet("userDetails/{userId}")]
         public async Task<IActionResult> GetUserDetails(string userId)
         {
@@ -170,6 +195,18 @@ namespace AI_Social_Platform.Server.Controllers
                 {
                     return NotFound("Current user not found!");
                 }
+
+                if (user.ProfilePictureData != null)
+                {
+                    user.ProfilPictureUrl = GetProfilImageUrl(user.Id);
+                    user.ProfilePictureData = null;
+                }
+                if (user.CoverPhotoData != null)
+                {
+                    user.CoverPhotoUrl = GetCoverImageUrl(user.Id);
+                    user.CoverPhotoData = null;
+                }
+
                 return Ok(user);
 
             }
@@ -311,7 +348,20 @@ namespace AI_Social_Platform.Server.Controllers
             }
         }
 
+        private string GetProfilImageUrl(Guid userId)
+        {
+            var request = HttpContext.Request;
+            var baseUrl = $"{request.Scheme}://{request.Host}{request.PathBase}";
 
+            return $"{baseUrl}/api/User/ProfilPicture/{userId}";
+        }
+        private string GetCoverImageUrl(Guid userId)
+        {
+            var request = HttpContext.Request;
+            var baseUrl = $"{request.Scheme}://{request.Host}{request.PathBase}";
+
+            return $"{baseUrl}/api/User/CoverPicture/{userId}";
+        }
     }
 
 }

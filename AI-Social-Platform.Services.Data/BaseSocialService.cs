@@ -161,7 +161,7 @@ namespace AI_Social_Platform.Services.Data
                     UserName = u.UserName,
                     FirstName = u.FirstName,
                     LastName = u.LastName,
-                    ProfilePictureBase64 = null,
+                    ProfilePictureData = null,
                 })
                 .FirstOrDefaultAsync();
             var dtoReturn = mapper.Map<CommentDto>(comment);

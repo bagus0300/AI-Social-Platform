@@ -6,7 +6,9 @@
     {
         public string Email { get; set; } = null!;
 
-        public string? CoverPhotoBase64 { get; set; }
+        public byte[]? CoverPhotoData { get; set; }
+
+        public string? CoverPhotoUrl { get; set; }
 
         public string? Country { get; set; }
 

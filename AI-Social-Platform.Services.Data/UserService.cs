@@ -80,7 +80,7 @@ namespace AI_Social_Platform.Services.Data.Models
 
             List<FriendDetailsDto> friends = await GetUserFriendsAsync(user);
 
-            
+
             UserDetailsDto userDetailModel = new()
             {
                 Id = user.Id,
@@ -93,10 +93,12 @@ namespace AI_Social_Platform.Services.Data.Models
                 Gender = user.Gender?.ToString() ?? null,
                 Birthday = user.Birthday?.Date ?? null,
                 Relationship = user.Relationship?.ToString() ?? null,
-                ProfilePictureBase64 = user.ProfilePicture != null ? Convert.ToBase64String(user.ProfilePicture) : null,
-                CoverPhotoBase64 = user.CoverPhoto != null ? Convert.ToBase64String(user.CoverPhoto) : null,
+                ProfilePictureData = user.ProfilePicture != null ? user.ProfilePicture : null,
+                CoverPhotoData = user.CoverPhoto != null ? user.CoverPhoto : null,
                 Friends = friends,
-                School = user.School?.Name ?? null
+                School = user.School?.Name ?? null,
+                ProfilPictureUrl = null,
+                CoverPhotoUrl = null
             };
 
             return userDetailModel;
@@ -248,7 +250,7 @@ namespace AI_Social_Platform.Services.Data.Models
                     FirstName = friend.FirstName,
                     LastName = friend.LastName,
                     Id = friend.Id,
-                    ProfilePictureBase64 = Convert.ToBase64String(friend.ProfilePicture!) ?? null,
+                    ProfilePictureData = friend.ProfilePicture
                 })
                 .ToArray();
 

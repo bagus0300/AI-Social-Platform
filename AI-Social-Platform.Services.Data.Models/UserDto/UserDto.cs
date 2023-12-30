@@ -10,6 +10,8 @@
 
         public string LastName { get; set; } = null!;
 
-        public string? ProfilePictureBase64 { get; set; }
+        public byte[]? ProfilePictureData { get; set; }
+
+        public string? ProfilPictureUrl { get; set; }
     }
 }
