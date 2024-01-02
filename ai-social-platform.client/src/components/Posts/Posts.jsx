@@ -64,7 +64,8 @@ export default function Posts() {
                         <PaginationSpinner />
                     </div>
                 )}
-                {!hasMore && <div>There are no more posts</div>}
+                {posts.length > 0 && !hasMore && <div>There are no more posts</div>}
+                {posts.length === 0 && <p>Add friends or follow topics of your choice to fill your feed.</p>}
             </div>
         </section>
     );

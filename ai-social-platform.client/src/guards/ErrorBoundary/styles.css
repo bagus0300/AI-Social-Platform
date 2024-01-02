@@ -1,0 +1,31 @@
+.error-boundary {
+    background-color: #fff;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 4em;
+}
+
+.section-heading {
+    font-size: 4em;
+    padding-bottom: 1.5rem;
+}
+
+.section-text {
+    font-size: 1.5em;
+    padding-bottom: 1em;
+}
+
+.home-button {
+    font-size: 1.2em;
+    background-color: #369;
+    color: #fff;
+    text-decoration: none;
+    padding: 0.5em 2em;
+    border-radius: 0.3em;
+}
+
+.home-button:visited {
+    color: #fff;
+}

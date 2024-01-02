@@ -1,0 +1,31 @@
+.not-found-section {
+    height: 100vh;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 2em;
+}
+
+.section-heading {
+    font-size: 5em;
+    padding-bottom: 0.5rem;
+}
+
+.text {
+    font-size: 1.5em;
+    padding-bottom: 1em;
+}
+
+.home-button {
+    font-size: 1.2em;
+    background-color: #369;
+    color: #fff;
+    text-decoration: none;
+    padding: 0.5em 2em;
+    border-radius: 0.3em;
+}
+
+.home-button:visited {
+    color: #fff;
+}
