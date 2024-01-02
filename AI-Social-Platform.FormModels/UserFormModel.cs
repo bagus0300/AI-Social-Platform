@@ -12,12 +12,6 @@
 
     public class UserFormModel
     {
-        public UserFormModel()
-        {
-            this.Schools = new HashSet<SelectSchoolFormModel>();
-        }
-
-
         [Required]
         [StringLength(FirstNameMaxLength, MinimumLength = FirstNameMinLength)]
         [Display(Name = "First Name")]
@@ -59,6 +53,6 @@
 
         public RelationshipStatus? Relationship { get; set; }
 
-        public ICollection<SelectSchoolFormModel> Schools { get; set; }
+        
     }
 }

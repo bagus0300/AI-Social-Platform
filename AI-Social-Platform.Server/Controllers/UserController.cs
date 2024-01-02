@@ -1,6 +1,4 @@
-﻿using AI_Social_Platform.Services.Data.Models.UserDto;
-
-namespace AI_Social_Platform.Server.Controllers
+﻿namespace AI_Social_Platform.Server.Controllers
 {
     using System.Security.Claims;
 
@@ -171,11 +169,16 @@ namespace AI_Social_Platform.Server.Controllers
             return BadRequest("No profil picture found!");
         }
 
+
         [HttpGet("CoverPicture/{userId}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetUserCoverPicture(string userId)
         {
             var user = await userService.GetUserDetailsByIdAsync(userId);
+            if (user == null)
+            {
+                return BadRequest("User not found!");
+            }
             if (user.CoverPhotoData != null)
             {
                 return File(user.CoverPhotoData, "image/png");
@@ -183,6 +186,7 @@ namespace AI_Social_Platform.Server.Controllers
 
             return BadRequest("No cover photo found!");
         }
+
 
         [HttpGet("userDetails/{userId}")]
         public async Task<IActionResult> GetUserDetails(string userId)
@@ -215,9 +219,8 @@ namespace AI_Social_Platform.Server.Controllers
                 return StatusCode(500, new { message = $"An error occurred: {ex.Message}"});
             }
         }
+
         
-
-
         [HttpPut("updateUser")]
         public async Task<IActionResult> UpdateUserData([FromForm] UserFormModel model)
         {
@@ -241,6 +244,7 @@ namespace AI_Social_Platform.Server.Controllers
                 return StatusCode(500, new { message = $"Internal server error: {ex.Message}"});
             }
         }
+        
 
         [HttpPost("addFriend/{friendId}")]
         public async Task<IActionResult> AddFriend(string friendId)
@@ -251,49 +255,26 @@ namespace AI_Social_Platform.Server.Controllers
 
                 if (currentUser == null)
                 {
-                    return NotFound(new { message = "Current user not found!"});
+                    return NotFound(new { message = "Current user not found!" });
                 }
 
                 if (currentUser.Id.ToString() == friendId)
                 {
-                    return BadRequest(new { message = "Cannot add yourself as a friends list!"});
+                    return BadRequest(new { message = "Cannot add yourself as a friends list!" });
                 }
 
                 var success = await userService.AddFriend(currentUser!, friendId!);
 
                 if (success)
                 {
-                    return Ok(new { message = "Friend added successfully."});
+                    return Ok(new { message = "Friend added successfully." });
                 }
 
-                return BadRequest(new { message = "Failed to add friend."});
+                return BadRequest(new { message = "Failed to add friend." });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = $"An error occurred: {ex.Message}"});
-            }
-        }
-
-        [HttpPost("addUserSchool")]
-        public async Task<IActionResult> AddUserSchool(SchoolFormModel model)
-        {
-            try
-            {
-                var currentUser = await userManager.GetUserAsync(User);
-                if (currentUser == null)
-                {
-                    return NotFound(new { message = "Current user not found!"});
-                }
-                var success = await userService.AddUserSchool(currentUser, model);
-                if (success)
-                {
-                    return Ok(new { message = "School added successfully."});
-                }
-                return BadRequest(new { message = "Failed to added school."});
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = $"An error occurred: {ex.Message}"});
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
             }
         }
 
@@ -348,6 +329,30 @@ namespace AI_Social_Platform.Server.Controllers
             }
         }
 
+
+        [HttpPost("addUserSchool")]
+        public async Task<IActionResult> AddUserSchool(SchoolFormModel model)
+        {
+            try
+            {
+                var currentUser = await userManager.GetUserAsync(User);
+                if (currentUser == null)
+                {
+                    return NotFound(new { message = "Current user not found!" });
+                }
+                var success = await userService.AddUserSchool(currentUser, model);
+                if (success)
+                {
+                    return Ok(new { message = "School added successfully." });
+                }
+                return BadRequest(new { message = "Failed to added school." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
+        }
+
         private string GetProfilImageUrl(Guid userId)
         {
             var request = HttpContext.Request;
@@ -355,6 +360,8 @@ namespace AI_Social_Platform.Server.Controllers
 
             return $"{baseUrl}/api/User/ProfilPicture/{userId}";
         }
+
+
         private string GetCoverImageUrl(Guid userId)
         {
             var request = HttpContext.Request;

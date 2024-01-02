@@ -151,19 +151,15 @@ namespace AI_Social_Platform.Services.Data.Models
 
                 if (updatedUserData.ProfilePicture != null)
                 {
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        await updatedUserData.ProfilePicture.CopyToAsync(memoryStream);
-                        user.ProfilePicture = memoryStream.ToArray();
-                    }
+                    using var memoryStream = new MemoryStream();
+                    await updatedUserData.ProfilePicture.CopyToAsync(memoryStream);
+                    user.ProfilePicture = memoryStream.ToArray();
                 }
                 if (updatedUserData.CoverPhoto != null)
                 {
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        await updatedUserData.CoverPhoto.CopyToAsync(memoryStream);
-                        user.CoverPhoto = memoryStream.ToArray();
-                    }
+                    using var memoryStream = new MemoryStream();
+                    await updatedUserData.CoverPhoto.CopyToAsync(memoryStream);
+                    user.CoverPhoto = memoryStream.ToArray();
                 }
 
                 await this.dbContext.SaveChangesAsync();
