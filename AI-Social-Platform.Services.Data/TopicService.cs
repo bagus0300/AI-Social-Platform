@@ -6,6 +6,8 @@
     using AI_Social_Platform.Data.Models.Topic;
     using AI_Social_Platform.FormModels;
     using AI_Social_Platform.Services.Data.Interfaces;
+    using AI_Social_Platform.Services.Data.Models.SocialFeature;
+    using AI_Social_Platform.Services.Data.Models.TopicDtos;
     using Microsoft.EntityFrameworkCore;
     using System;
     using System.Collections.Generic;
@@ -68,6 +70,43 @@
                 return "You alredy follow this topic";
             }
             
+        }
+
+        public async Task<IndexTopicDto> GetAllTopicsAsync(int pageNum)
+        {
+            int pageSize = 5;
+            if (pageNum <= 0) pageNum = 1;
+            int skip = (pageNum - 1) * pageSize;
+
+            IQueryable<Topic> allTopics = dbContext.Topics
+                .AsQueryable();
+
+            var pagedTopics = await allTopics
+                .OrderByDescending(t => t.DateCreate)
+                .Skip(skip)
+                .Take(pageSize)
+                .Select(t => new TopicDto
+                {
+                    Id = t.Id,
+                    Title = t.Title,
+                    Creator = t.Creator.FirstName + " " + t.Creator.LastName,
+                    DataCreated = t.DateCreate.ToString("d")
+                })
+                .ToListAsync();
+
+            int totalTopics = await dbContext.Topics.Where(t => t.IsActive == true).CountAsync();
+            int topicsLeft = totalTopics - (pageNum * pageSize) < 0 ? 0 : totalTopics - (pageNum * pageSize);
+
+            var indexTopicDto = new IndexTopicDto
+            {
+                Topics = pagedTopics,
+                CurrentPage = pageNum,
+                TotalPages = (int)Math.Ceiling(totalTopics / (double)pageSize),
+                TotalTopics = totalTopics,
+                TopicsLeft = topicsLeft
+            };
+
+            return indexTopicDto;
         }
 
         public async Task<ICollection<Topic>> GetFollowedTopicsAsync(string userId)

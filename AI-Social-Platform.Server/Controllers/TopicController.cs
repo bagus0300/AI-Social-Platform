@@ -106,5 +106,12 @@
             }
         }
 
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAllTopics(int page)
+        {
+            var result = await topicService.GetAllTopicsAsync(page);
+            return Ok(result);
+        }
+
     }
 }
