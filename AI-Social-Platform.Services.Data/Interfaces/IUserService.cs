@@ -25,5 +25,9 @@
         Task<bool> CheckIfUserExistsAsync(string userEmail);
 
         Task<bool> AddUserSchool(ApplicationUser currentUser, SchoolFormModel model);
+
+        Task<bool> EditUserSchool(ApplicationUser currentUser, SchoolFormModel model);
+
+        Task<bool> RemoveUserSchool(ApplicationUser currentUser);
     }
 }

@@ -261,22 +261,68 @@ namespace AI_Social_Platform.Services.Data.Models
 
         public async Task<bool> AddUserSchool(ApplicationUser currentUser, SchoolFormModel model)
         {
-            var state = await dbContext.States.FirstOrDefaultAsync(s => s.Name == model.Name);
+            if (currentUser.School == null)
+            {
+                var state = await dbContext.States.FirstOrDefaultAsync(s => s.Name == model.State);
+                if (state == null)
+                {
+                    state = new State
+                    {
+                        Name = model.State
+                    };
+                }
+
+                var school = await dbContext.Schools.FirstOrDefaultAsync(s => s.Name == model.Name);
+                if (school == null)
+                {
+                    school = new School
+                    {
+                        Name = model.Name,
+                        StateId = state.Id
+                    };
+                }
+
+                currentUser.School = school;
+                await dbContext.SaveChangesAsync();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> EditUserSchool(ApplicationUser currentUser, SchoolFormModel model)
+        {
+            var state = await dbContext.States.FirstOrDefaultAsync(s => s.Name == model.State);
             if (state == null)
             {
                 state = new State
                 {
-                    Name = model.Name
+                    Name = model.State
                 };
             }
 
-            var school = new School
+            var school = await dbContext.Schools.FirstOrDefaultAsync(s => s.Name == model.Name);
+            if (school == null)
             {
-                Name = model.Name,
-                StateId = state.Id
-            };
+                school = new School
+                {
+                    Name = model.Name,
+                    StateId = state.Id
+                };
+            }
 
+            currentUser.State = state;
             currentUser.School = school;
+            await dbContext.SaveChangesAsync();
+            return true;
+
+        }
+
+        public async Task<bool> RemoveUserSchool(ApplicationUser currentUser)
+        {
+            currentUser.SchoolId = null;
             await dbContext.SaveChangesAsync();
             return true;
         }

@@ -340,12 +340,79 @@
                 {
                     return NotFound(new { message = "Current user not found!" });
                 }
+
+                if (currentUser.School != null)
+                {
+                    return BadRequest(new { message = "User already has a school." });
+                }
+                
                 var success = await userService.AddUserSchool(currentUser, model);
                 if (success)
                 {
                     return Ok(new { message = "School added successfully." });
                 }
                 return BadRequest(new { message = "Failed to added school." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
+        }
+
+        [HttpPut("editUserSchool")]
+        public async Task<IActionResult> EditUserSchool(SchoolFormModel model)
+        {
+            try
+            {
+                var currentUser = await userManager.GetUserAsync(User);
+                if (currentUser == null)
+                {
+                    return NotFound(new { message = "Current user not found!" });
+                }
+
+                if (currentUser.SchoolId == null)
+                {
+                    return BadRequest(new { message = "User school not found." });
+                }
+                var success = await userService.EditUserSchool(currentUser, model);
+                if (success)
+                {
+                    return Ok(new { message = "School edited successfully." });
+                }
+
+                return BadRequest(new { message = "Failed to edit school." });
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
+
+        }
+
+        [HttpDelete("deleteUserSchool")]
+        public async Task<IActionResult> DeleteUserSchool()
+        {
+            try
+            {
+                var currentUser = await userManager.GetUserAsync(User);
+                if (currentUser == null)
+                {
+                    return NotFound(new { message = "Current user not found!" });
+                }
+
+                if (currentUser.SchoolId == null)
+                {
+                    return BadRequest(new { message = "User school not found." });
+                }
+                var success = await userService.RemoveUserSchool(currentUser);
+                if (success)
+                {
+                    return Ok(new { message = "School was removed successfully." });
+                }
+
+                return BadRequest(new { message = "Failed to remove school." });
+
             }
             catch (Exception ex)
             {
