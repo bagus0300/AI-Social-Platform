@@ -125,6 +125,8 @@ namespace AI_Social_Platform.Services.Data.Models
 
                     dbContext.States.Add(state);
                     await dbContext!.SaveChangesAsync();
+                    user.State = await dbContext.States.FirstAsync(s => s.Name == newStateName);
+
                 }
 
                 string? newCountryName = updatedUserData.Country;
@@ -138,10 +140,10 @@ namespace AI_Social_Platform.Services.Data.Models
                     };
                     dbContext.Countries.Add(country);
                     await dbContext!.SaveChangesAsync();
+                    user.Country = await dbContext.Countries.FirstAsync(c => c.Name == newCountryName);
+
                 }
 
-                user.State = await dbContext.States.FirstAsync(s => s.Name == newStateName);
-                user.Country = await dbContext.Countries.FirstAsync(c => c.Name == newCountryName);
                 user.FirstName = updatedUserData.FirstName;
                 user.LastName = updatedUserData.LastName;
                 user.PhoneNumber = updatedUserData.PhoneNumber;
