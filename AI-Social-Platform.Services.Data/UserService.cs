@@ -113,37 +113,11 @@ namespace AI_Social_Platform.Services.Data.Models
 
             if (user != null)
             {
-                string? newStateName = updatedUserData.State;
-                State? oldState = await dbContext.States.FirstOrDefaultAsync(s => s.Name == newStateName);
-
-                if (newStateName != null && oldState == null)
-                {
-                    State state = new State
-                    {
-                        Name = newStateName
-                    };
-
-                    dbContext.States.Add(state);
-                    await dbContext!.SaveChangesAsync();
-                    user.State = await dbContext.States.FirstAsync(s => s.Name == newStateName);
-
-                }
-
-                string? newCountryName = updatedUserData.Country;
-                Country? oldCountry = await dbContext.Countries.FirstOrDefaultAsync(c => c.Name == newCountryName);
-
-                if (newCountryName != null && oldCountry == null)
-                {
-                    Country country = new Country
-                    {
-                        Name = newCountryName
-                    };
-                    dbContext.Countries.Add(country);
-                    await dbContext!.SaveChangesAsync();
-                    user.Country = await dbContext.Countries.FirstAsync(c => c.Name == newCountryName);
-
-                }
-
+                updatedUserData.State = updatedUserData.State?.TrimEnd();
+                updatedUserData.Country = updatedUserData.Country?.TrimEnd();
+                
+                user.State = await GetOrCreateStateAsync(updatedUserData.State);
+                user.Country = await GetOrCreateCountryAsync(updatedUserData.Country);
                 user.FirstName = updatedUserData.FirstName;
                 user.LastName = updatedUserData.LastName;
                 user.PhoneNumber = updatedUserData.PhoneNumber;
@@ -167,10 +141,9 @@ namespace AI_Social_Platform.Services.Data.Models
                 await this.dbContext.SaveChangesAsync();
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            
+            return false;
+            
         }
 
         public async Task<bool> AddFriend(ApplicationUser currentUser, string friendId)
@@ -327,6 +300,44 @@ namespace AI_Social_Platform.Services.Data.Models
             currentUser.SchoolId = null;
             await dbContext.SaveChangesAsync();
             return true;
+        }
+
+        private async Task<State> GetOrCreateStateAsync(string stateName)
+        {
+            if (!string.IsNullOrWhiteSpace(stateName))
+            {
+                State state = await dbContext.States.FirstOrDefaultAsync(s => s.Name == stateName);
+                if (state == null)
+                {
+                    state = new State
+                    {
+                        Name = stateName
+                    };
+                    dbContext.States.Add(state);
+                }
+                return state;
+            }
+
+            return null;
+        }
+
+        private async Task<Country> GetOrCreateCountryAsync(string countryName)
+        {
+            if (!string.IsNullOrWhiteSpace(countryName))
+            {
+                Country country = await dbContext.Countries.FirstOrDefaultAsync(c => c.Name == countryName);
+                if (country == null)
+                {
+                    country = new Country
+                    {
+                        Name = countryName
+                    };
+                    dbContext.Countries.Add(country);
+                }
+                return country;
+            }
+
+            return null;
         }
 
         private async Task<List<FriendDetailsDto>> GetUserFriendsAsync(ApplicationUser user)

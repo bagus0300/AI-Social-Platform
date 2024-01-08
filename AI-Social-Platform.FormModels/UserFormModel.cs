@@ -43,11 +43,7 @@
 
         public Gender? Gender { get; set; }
 
-
-        [StringLength(SchoolMaxLength, MinimumLength = SchoolMinLength)]
-        public string? School { get; set; }
-
-
+        
         public DateTime? Birthday { get; set;}
 
 
