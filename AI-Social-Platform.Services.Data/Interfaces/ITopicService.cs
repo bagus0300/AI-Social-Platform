@@ -15,5 +15,6 @@
         Task<ICollection<Publication>> GetPublicationsByTopicIdAsync(string topicId);
         Task CreateTopicAsync(string creatorId, CreateTopicFormModel model);
         Task<IndexTopicDto> GetAllTopicsAsync(int pageNum);
+        Task<bool> DeleteTopicAsync(string id);
     }
 }

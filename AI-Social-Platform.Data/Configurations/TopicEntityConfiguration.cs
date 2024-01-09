@@ -8,9 +8,7 @@
     {
         public void Configure(EntityTypeBuilder<Topic> builder)
         {
-            builder
-                .Property(t => t.IsActive)
-                .HasDefaultValue(true);
+           
         }
     }
 }

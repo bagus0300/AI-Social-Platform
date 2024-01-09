@@ -37,6 +37,18 @@
             await dbContext.SaveChangesAsync();
         }
 
+        public async Task<bool> DeleteTopicAsync(string id)
+        {
+            var topic = await dbContext.Topics.FirstAsync(t => t.Id.ToString() == id);
+            if (topic != null)
+            {
+                dbContext.Topics.Remove(topic);
+                await dbContext.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
         public async Task<string> FollowTopicAsync(string userId, string topicId)
         {
             ApplicationUser? user = await dbContext.Users
@@ -94,7 +106,7 @@
                 })
                 .ToListAsync();
 
-            int totalTopics = await dbContext.Topics.Where(t => t.IsActive == true).CountAsync();
+            int totalTopics = await dbContext.Topics.CountAsync();
             int topicsLeft = totalTopics - (pageNum * pageSize) < 0 ? 0 : totalTopics - (pageNum * pageSize);
 
             var indexTopicDto = new IndexTopicDto

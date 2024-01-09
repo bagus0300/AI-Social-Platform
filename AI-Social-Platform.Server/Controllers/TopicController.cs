@@ -113,5 +113,23 @@
             return Ok(result);
         }
 
+        [HttpDelete]
+        public async Task<IActionResult> DeleteTopic(string id)
+        {
+            try
+            {
+                var result = await topicService.DeleteTopicAsync(id);
+                if (result)
+                {
+                    return Ok("Successfully deleted topic!");
+                }
+                return BadRequest("Something went wrong!");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
     }
 }

@@ -27,7 +27,5 @@
         public Guid CreatorId { get; set; }
 
         public DateTime DateCreate { get; set; }
-
-        public bool IsActive { get; set; } = true;
     }
 }
