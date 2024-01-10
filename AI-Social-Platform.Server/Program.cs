@@ -79,6 +79,7 @@ builder.Services.AddScoped<IPublicationService, PublicationService>();
 builder.Services.AddScoped<IMediaService, MediaService>();
 builder.Services.AddScoped<ITopicService, TopicService>();
 builder.Services.AddScoped<IBaseSocialService, BaseSocialService>();
+builder.Services.AddHttpClient();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
