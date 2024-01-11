@@ -1,6 +1,4 @@
-﻿using AI_Social_Platform.Data.Models.Enums;
-
-namespace AI_Social_Platform.Services.Data.Models
+﻿namespace AI_Social_Platform.Services.Data.Models
 {
     using System.IdentityModel.Tokens.Jwt;
     using System.Security.Claims;
@@ -13,6 +11,7 @@ namespace AI_Social_Platform.Services.Data.Models
 
     using AI_Social_Platform.Data;
     using AI_Social_Platform.Data.Models;
+    using AI_Social_Platform.Data.Models.Enums;
     using FormModels;
     using Interfaces;
     using UserDto;
@@ -74,17 +73,13 @@ namespace AI_Social_Platform.Services.Data.Models
                 .ApplicationUsers
                 .Include(u => u.Country)
                 .Include(u => u.State)
-                .Include(u => u.School)
-                .Include(u => u.Friends)
                 .FirstAsync(u => u.IsActive && u.Id.ToString() == id);
-
-            List<FriendDetailsDto> friends = await GetUserFriendsAsync(user);
-
 
             UserDetailsDto userDetailModel = new()
             {
                 Id = user.Id,
                 UserName = user.UserName,
+                Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 PhoneNumber = user.PhoneNumber ?? null,
@@ -93,12 +88,9 @@ namespace AI_Social_Platform.Services.Data.Models
                 Gender = user.Gender?.ToString() ?? null,
                 Birthday = user.Birthday?.Date ?? null,
                 Relationship = user.Relationship?.ToString() ?? null,
-                ProfilePictureData = user.ProfilePicture != null ? user.ProfilePicture : null,
-                CoverPhotoData = user.CoverPhoto != null ? user.CoverPhoto : null,
-                Friends = friends,
-                School = user.School?.Name ?? null,
-                ProfilPictureUrl = null,
-                CoverPhotoUrl = null
+                School = user.School ?? null,
+                CoverPhotoData = user.CoverPhoto ?? null,
+                ProfilePictureData = user.ProfilePicture ?? null
             };
 
             return userDetailModel;
@@ -115,15 +107,32 @@ namespace AI_Social_Platform.Services.Data.Models
             {
                 updatedUserData.State = updatedUserData.State?.TrimEnd();
                 updatedUserData.Country = updatedUserData.Country?.TrimEnd();
-                
-                user.State = await GetOrCreateStateAsync(updatedUserData.State);
-                user.Country = await GetOrCreateCountryAsync(updatedUserData.Country);
+                if (string.IsNullOrEmpty(updatedUserData.State))
+                {
+                    user.StateId = null;
+                }
+                else
+                {
+                    user.State = await GetOrCreateStateAsync(updatedUserData.State);
+                    
+                }
+
+                if (string.IsNullOrEmpty(updatedUserData.Country))
+                {
+                    user.CountryId = null;
+                }
+                else
+                {
+                    user.Country = await GetOrCreateCountryAsync(updatedUserData.Country);
+
+                }
                 user.FirstName = updatedUserData.FirstName;
                 user.LastName = updatedUserData.LastName;
                 user.PhoneNumber = updatedUserData.PhoneNumber;
                 user.Gender = updatedUserData.Gender;
                 user.Birthday = updatedUserData.Birthday;
                 user.Relationship = updatedUserData.Relationship;
+                user.School = updatedUserData.School;
 
                 if (updatedUserData.ProfilePicture != null)
                 {
@@ -143,7 +152,6 @@ namespace AI_Social_Platform.Services.Data.Models
             }
             
             return false;
-            
         }
 
         public async Task<bool> AddFriend(ApplicationUser currentUser, string friendId)
@@ -203,6 +211,16 @@ namespace AI_Social_Platform.Services.Data.Models
             return true;
         }
 
+        public async Task<bool> AreFriends(Guid id, Guid friendId)
+        {
+            var areFriends = await dbContext.ApplicationUsers
+                .Where(u => u.Id == id)
+                .SelectMany(u => u.Friends)
+                .AnyAsync(friend => friend.Id == friendId);
+
+            return areFriends;
+        }
+
         public async Task<ICollection<FriendDetailsDto>?> GetFriendsAsync(string userId)
         {
             var user = await dbContext.ApplicationUsers
@@ -228,85 +246,30 @@ namespace AI_Social_Platform.Services.Data.Models
             return friends;
         }
 
-        public async Task<bool> CheckIfUserExistsAsync(string userEmail) //returns true if user exists
+        public async Task<bool> CheckIfUserExistByEmailAsync(string userEmail) //returns true if user exists
         {
             var user = await dbContext.ApplicationUsers.FirstOrDefaultAsync(u => u.Email == userEmail);
+            
             return user != null;
         }
 
-        public async Task<bool> AddUserSchool(ApplicationUser currentUser, SchoolFormModel model)
+        public async Task<bool> CheckIfUserExistsByIdAsync(string id)
         {
-            if (currentUser.School == null)
-            {
-                var state = await dbContext.States.FirstOrDefaultAsync(s => s.Name == model.State);
-                if (state == null)
-                {
-                    state = new State
-                    {
-                        Name = model.State
-                    };
-                }
+            var user = await dbContext.ApplicationUsers.FirstOrDefaultAsync(u => u.Id.ToString() == id);
 
-                var school = await dbContext.Schools.FirstOrDefaultAsync(s => s.Name == model.Name);
-                if (school == null)
-                {
-                    school = new School
-                    {
-                        Name = model.Name,
-                        StateId = state.Id
-                    };
-                }
-
-                currentUser.School = school;
-                await dbContext.SaveChangesAsync();
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return user != null;
         }
+        
 
-        public async Task<bool> EditUserSchool(ApplicationUser currentUser, SchoolFormModel model)
-        {
-            var state = await dbContext.States.FirstOrDefaultAsync(s => s.Name == model.State);
-            if (state == null)
-            {
-                state = new State
-                {
-                    Name = model.State
-                };
-            }
 
-            var school = await dbContext.Schools.FirstOrDefaultAsync(s => s.Name == model.Name);
-            if (school == null)
-            {
-                school = new School
-                {
-                    Name = model.Name,
-                    StateId = state.Id
-                };
-            }
+        // Private //
 
-            currentUser.State = state;
-            currentUser.School = school;
-            await dbContext.SaveChangesAsync();
-            return true;
-
-        }
-
-        public async Task<bool> RemoveUserSchool(ApplicationUser currentUser)
-        {
-            currentUser.SchoolId = null;
-            await dbContext.SaveChangesAsync();
-            return true;
-        }
 
         private async Task<State> GetOrCreateStateAsync(string stateName)
         {
             if (!string.IsNullOrWhiteSpace(stateName))
             {
-                State state = await dbContext.States.FirstOrDefaultAsync(s => s.Name == stateName);
+                var state = await dbContext.States.FirstOrDefaultAsync(s => s.Name == stateName);
                 if (state == null)
                 {
                     state = new State
@@ -316,6 +279,10 @@ namespace AI_Social_Platform.Services.Data.Models
                     dbContext.States.Add(state);
                 }
                 return state;
+            }
+            else
+            {
+                
             }
 
             return null;
@@ -353,7 +320,8 @@ namespace AI_Social_Platform.Services.Data.Models
                 {
                     FirstName = user.FirstName ?? string.Empty,
                     LastName = user.LastName ?? string.Empty,
-                    UserName = userName
+                    UserName = userName,
+                    Id = user.Id
                 };
                 friends.Add(friend);
             }

@@ -50,9 +50,9 @@
         public int? StateId { get; set; }
         public virtual State? State { get; set; }
 
-        [ForeignKey(nameof(School))]
-        public int? SchoolId { get; set; }
-        public virtual School? School { get; set; }
+        
+        public string? School { get; set; }
+        
 
         public Gender? Gender { get; set; }
 

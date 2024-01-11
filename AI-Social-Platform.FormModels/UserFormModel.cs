@@ -7,7 +7,7 @@
     using static Common.EntityValidationConstants.User;
     using static Common.EntityValidationConstants.State;
     using static Common.EntityValidationConstants.Country;
-    using static Common.EntityValidationConstants.School;
+    
     using Microsoft.AspNetCore.Http;
 
     public class UserFormModel
@@ -35,6 +35,9 @@
 
         [StringLength(CountryMaxLength, MinimumLength = CountryMinLength)]
         public string? Country { get; set; }
+
+        [StringLength(SchoolMaxLength, MinimumLength = SchoolMinLength)]
+        public string? School { get; set; }
 
 
         [StringLength(StateMaxLength, MinimumLength = StateMinLength)]

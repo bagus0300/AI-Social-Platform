@@ -15,14 +15,12 @@
 
             public const int PhoneNumberMaxLength = 10;
             public const int PhoneNumberMinLength = 8;
-        }
 
-        public static class School
-        {
             public const int SchoolMaxLength = 50;
             public const int SchoolMinLength = 3;
         }
 
+        
         public static class Country
         {
             public const int CountryMaxLength = 50;

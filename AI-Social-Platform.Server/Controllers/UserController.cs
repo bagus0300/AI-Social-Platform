@@ -1,4 +1,6 @@
-﻿namespace AI_Social_Platform.Server.Controllers
+﻿using AI_Social_Platform.Services.Data.Models.UserDto;
+
+namespace AI_Social_Platform.Server.Controllers
 {
     using System.Security.Claims;
 
@@ -48,7 +50,7 @@
                 return BadRequest(new { Message = ErrorMessage });
             }
 
-            if (await userService.CheckIfUserExistsAsync(model.Email))
+            if (await userService.CheckIfUserExistByEmailAsync(model.Email))
             {
                 return BadRequest(new { Message = UserAlreadyExists });
             }
@@ -97,7 +99,7 @@
                 Username = user.UserName,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                ProfilePicture = GetProfilImageUrl(user.Id),
+                ProfilePicture = GetProfileImageUrl(user.Id),
                 Token = userService.BuildToken(userId)
             });
 
@@ -142,7 +144,7 @@
                 Username = user.UserName,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                ProfilePicture = GetProfilImageUrl(user.Id),
+                ProfilePicture = GetProfileImageUrl(user.Id),
                 Token = userService.BuildToken(userId)
             });
         }
@@ -157,9 +159,9 @@
         }
 
 
-        [HttpGet("ProfilPicture/{userId}")]
+        [HttpGet("ProfilePicture/{userId}")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetUserProfilPicture(string userId)
+        public async Task<IActionResult> GetUserProfilePicture(string userId)
         {
             var user = await userService.GetUserDetailsByIdAsync(userId);
             if (user.ProfilePictureData != null)
@@ -194,7 +196,7 @@
             
             try
             {
-                var user = await userService.GetUserDetailsByIdAsync(userId);
+                UserDetailsDto? user = await userService.GetUserDetailsByIdAsync(userId);
                 if (user == null)
                 {
                     return NotFound(new { message = "Current user not found!"});
@@ -202,7 +204,7 @@
 
                 if (user.ProfilePictureData != null)
                 {
-                    user.ProfilPictureUrl = GetProfilImageUrl(user.Id);
+                    user.ProfilePictureUrl = GetProfileImageUrl(user.Id);
                     user.ProfilePictureData = null;
                 }
                 if (user.CoverPhotoData != null)
@@ -262,6 +264,13 @@
                 {
                     return BadRequest(new { message = "Cannot add yourself as a friends list!" });
                 }
+                
+                bool areFriends = await userService.AreFriends(currentUser.Id, Guid.Parse(friendId));
+                
+                if (areFriends)
+                {
+                    return BadRequest(new { message = "Users are already friends!" });
+                }
 
                 var success = await userService.AddFriend(currentUser!, friendId!);
 
@@ -308,15 +317,20 @@
 
 
         [HttpGet("allFriends")]
-        public async Task<IActionResult> GetAllFriends()
+        public async Task<IActionResult> GetAllFriends(string userId)
         {
             try
             {
-                var userId = this.User.GetUserId();
-
-                if (string.IsNullOrEmpty(userId))
+                if (string.IsNullOrEmpty(userId) )
                 {
                     return BadRequest(new { message = "User not found."});
+                }
+
+                var userExist = await userService.CheckIfUserExistsByIdAsync(userId);
+
+                if (!userExist)
+                {
+                    return BadRequest(new { message = "User not found or wrong data." });
                 }
 
                 var friends = await userService.GetFriendsAsync(userId);
@@ -328,104 +342,14 @@
                 return StatusCode(500, new { message = $"An error occurred: {ex.Message}"});
             }
         }
+        
 
-
-        [HttpPost("addUserSchool")]
-        public async Task<IActionResult> AddUserSchool(SchoolFormModel model)
-        {
-            try
-            {
-                var currentUser = await userManager.GetUserAsync(User);
-                if (currentUser == null)
-                {
-                    return NotFound(new { message = "Current user not found!" });
-                }
-
-                if (currentUser.School != null)
-                {
-                    return BadRequest(new { message = "User already has a school." });
-                }
-                
-                var success = await userService.AddUserSchool(currentUser, model);
-                if (success)
-                {
-                    return Ok(new { message = "School added successfully." });
-                }
-                return BadRequest(new { message = "Failed to added school." });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
-            }
-        }
-
-        [HttpPut("editUserSchool")]
-        public async Task<IActionResult> EditUserSchool(SchoolFormModel model)
-        {
-            try
-            {
-                var currentUser = await userManager.GetUserAsync(User);
-                if (currentUser == null)
-                {
-                    return NotFound(new { message = "Current user not found!" });
-                }
-
-                if (currentUser.SchoolId == null)
-                {
-                    return BadRequest(new { message = "User school not found." });
-                }
-                var success = await userService.EditUserSchool(currentUser, model);
-                if (success)
-                {
-                    return Ok(new { message = "School edited successfully." });
-                }
-
-                return BadRequest(new { message = "Failed to edit school." });
-
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
-            }
-
-        }
-
-        [HttpDelete("deleteUserSchool")]
-        public async Task<IActionResult> DeleteUserSchool()
-        {
-            try
-            {
-                var currentUser = await userManager.GetUserAsync(User);
-                if (currentUser == null)
-                {
-                    return NotFound(new { message = "Current user not found!" });
-                }
-
-                if (currentUser.SchoolId == null)
-                {
-                    return BadRequest(new { message = "User school not found." });
-                }
-                var success = await userService.RemoveUserSchool(currentUser);
-                if (success)
-                {
-                    return Ok(new { message = "School was removed successfully." });
-                }
-
-                return BadRequest(new { message = "Failed to remove school." });
-
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
-            }
-        }
-
-        private string GetProfilImageUrl(Guid userId)
+        private string GetProfileImageUrl(Guid userId)
         {
             var request = HttpContext.Request;
             var baseUrl = $"{request.Scheme}://{request.Host}{request.PathBase}";
 
-            return $"{baseUrl}/api/User/ProfilPicture/{userId}";
+            return $"{baseUrl}/api/User/ProfilePicture/{userId}";
         }
 
 

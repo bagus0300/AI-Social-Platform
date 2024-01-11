@@ -6,7 +6,7 @@
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
     using System.Reflection;
-    using AI_Social_Platform.Data.Models.Topic;
+    using Models.Topic;
 
     public class ASPDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
     {
@@ -16,7 +16,6 @@
         }
         public DbSet<Country> Countries { get; set; } = null!;
         public DbSet<State> States { get; set; } = null!;
-        public DbSet<School> Schools { get; set; } = null!;
         public DbSet<ApplicationUser> ApplicationUsers { get; set; } = null!;
         public DbSet<Publication> Publications { get; set; } = null!;
         public DbSet<Comment> Comments { get; set; } = null!;

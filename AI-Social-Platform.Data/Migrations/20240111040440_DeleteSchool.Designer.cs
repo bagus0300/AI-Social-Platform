@@ -4,6 +4,7 @@ using AI_Social_Platform.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AI_Social_Platform.Data.Migrations
 {
     [DbContext(typeof(ASPDbContext))]
-    partial class ASPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240111040440_DeleteSchool")]
+    partial class DeleteSchool
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -156,7 +158,7 @@ namespace AI_Social_Platform.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "user@user.com",
                             NormalizedUserName = "USER@USER.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJPzUL9k575A6C3IyH1no/Xx4Rb8hQlxq7hDRieCfly7/1yNQ6i70wrNRVVDk2Sg4w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDRn2HhxkKcP6ncSz7jNKvJVhYEpu22L5mXBGjZx2qz5Q3Xzg4UGItjYf3vCKDUs0w==",
                             PhoneNumber = "0888555666",
                             PhoneNumberConfirmed = false,
                             Relationship = 1,
@@ -182,7 +184,7 @@ namespace AI_Social_Platform.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.com",
                             NormalizedUserName = "ADMIN@ADMIN.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJYnURFRY+vi19lyd+xMKeKzOT3w66bYM87g2Rm5wp/XPgP9jzBe20yLv6fcQ40dbA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECGeRYHORcuIMVbGNmL2HovH1zw5IT8uNGPVmxpHwoEvwMaMeEoeNeyn6PKLPH0d4Q==",
                             PhoneNumberConfirmed = false,
                             Relationship = 0,
                             School = "Vasil Levski",
@@ -482,6 +484,11 @@ namespace AI_Social_Platform.Data.Migrations
 
                     b.Property<DateTime>("DateCreate")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("Title")
                         .IsRequired()

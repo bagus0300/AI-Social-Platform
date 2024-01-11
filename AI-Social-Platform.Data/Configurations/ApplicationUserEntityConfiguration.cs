@@ -37,12 +37,6 @@
                 .HasForeignKey(u => u.StateId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder
-                .HasOne(u => u.School)
-                .WithMany(s => s.UserInThisSchool)
-                .HasForeignKey(u => u.SchoolId)
-                .OnDelete(DeleteBehavior.Restrict);
-
         }
 
         private ApplicationUser[] GenerateIdentityUser()
@@ -62,6 +56,7 @@
                 UserName = "user@user.com",
                 NormalizedUserName = "USER@USER.com",
                 Email = "user@user.com",
+                School = "Ivan Vazov",
                 NormalizedEmail = "user@user.com",
                 SecurityStamp = "9c4f02ae-4f84-4acb-93ff-dd995539f7c6",
                 ConcurrencyStamp = "ef38cf8a-c85f-4c3f-8479-d2c13337d6e8",
@@ -85,6 +80,7 @@
                 UserName = "admin@admin.com",
                 NormalizedUserName = "ADMIN@ADMIN.com",
                 Email = "admin@admin.com",
+                School = "Vasil Levski",
                 NormalizedEmail = "ADMIN@ADMIN.com",
                 SecurityStamp = "cfb5501d-596e-4bd5-b3e0-763e303fe980",
                 ConcurrencyStamp = "515a311c-e50d-4f5e-ae9d-ed9e6d2cc786",
@@ -100,6 +96,7 @@
 
             users.Add(user);
 
+            
             return users.ToArray();
         }
     }

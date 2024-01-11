@@ -12,6 +12,6 @@
 
         public byte[]? ProfilePictureData { get; set; }
 
-        public string? ProfilPictureUrl { get; set; }
+        public string? ProfilePictureUrl { get; set; }
     }
 }

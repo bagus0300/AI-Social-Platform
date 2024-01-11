@@ -18,16 +18,15 @@
 
         Task<bool> AddFriend(ApplicationUser currentUser, string friendId);
 
+        Task<bool> AreFriends(Guid id, Guid friendId);
+
         Task<bool> RemoveFriend(ApplicationUser currentUser, string friendId);
 
         Task<ICollection<FriendDetailsDto>?> GetFriendsAsync(string userId);
 
-        Task<bool> CheckIfUserExistsAsync(string userEmail);
+        Task<bool> CheckIfUserExistByEmailAsync(string userEmail);
 
-        Task<bool> AddUserSchool(ApplicationUser currentUser, SchoolFormModel model);
+        Task<bool> CheckIfUserExistsByIdAsync(string id);
 
-        Task<bool> EditUserSchool(ApplicationUser currentUser, SchoolFormModel model);
-
-        Task<bool> RemoveUserSchool(ApplicationUser currentUser);
     }
 }
