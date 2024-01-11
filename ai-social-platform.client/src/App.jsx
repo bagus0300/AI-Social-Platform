@@ -17,7 +17,7 @@ import Logout from './components/Logout/Logout';
 import Userprofile from './components/Userprofile/Userprofile';
 import Userprofileedit from './components/Userprofile/Userprofileedit';
 import CreatePost from './components/CreatePost/CreatePost';
-import Successfully from './components/Successfully/Successfully';
+// import Successfully from './components/Successfully/Successfully';
 import NotFound from './components/NotFound/NotFound';
 
 function App() {
@@ -53,10 +53,10 @@ function App() {
                                     path={PATH.create}
                                     element={<CreatePost />}
                                 />
-                                <Route
+                                {/* <Route
                                     path={PATH.successfully}
                                     element={<Successfully />}
-                                />
+                                /> */}
 
                                 <Route
                                     path={PATH.profile}
