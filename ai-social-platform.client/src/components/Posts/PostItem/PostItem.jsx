@@ -160,13 +160,18 @@ export default function PostItem({ post }) {
                 <p>{post.content}</p>
             </section>
             {media.length === 1 && (
-                <section ref={mediaSectionRef} className={styles['media']}>
+                <section
+                    onClick={openPostDetails}
+                    ref={mediaSectionRef}
+                    className={styles['media']}
+                >
                     <img src={media[0].url} alt="img" />
                 </section>
             )}
 
             {media.length === 2 && (
                 <section
+                    onClick={openPostDetails}
                     ref={mediaSectionRef}
                     className={styles['with-two-files']}
                 >
@@ -219,7 +224,10 @@ export default function PostItem({ post }) {
                     <i className="fa-solid fa-thumbs-up"></i>
                     <p>0</p>
                 </div>
-                <p className={styles['comments-count']}>
+                <p
+                    onClick={openPostDetails}
+                    className={styles['comments-count']}
+                >
                     {commentsCount} comments
                 </p>
             </section>

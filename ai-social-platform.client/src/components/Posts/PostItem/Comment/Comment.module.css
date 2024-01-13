@@ -58,6 +58,16 @@
 
 .username {
     font-weight: bold;
+    color: #000;
+    text-decoration: none;
+}
+
+.username:visited {
+    color: #000;
+}
+
+.username:hover {
+    text-decoration: underline;
 }
 
 .comment-user-img {
@@ -65,4 +75,8 @@
     width: 2em;
     border-radius: 50%;
     aspect-ratio: 1/1;
+}
+
+.image-wrapper:hover {
+    filter: brightness(110%);
 }

@@ -1,5 +1,7 @@
 import { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
 
+import { PATH } from '../../../../core/environments/costants';
 import styles from './Comment.module.css';
 import AuthContext from '../../../../contexts/authContext';
 import dateFormater from '../../../../utils/dateFormatter';
@@ -36,11 +38,19 @@ export default function Comment({
                     closeDeleteModal={closeDeleteModal}
                 />
             )}
-            <img
-                className={styles['comment-user-img']}
-                src={comment.user?.avatar || '/images/default-profile-pic.png'}
-                alt="user"
-            />
+            <Link
+                className={styles['image-wrapper']}
+                to={PATH.userProfile(comment.user.id)}
+            >
+                <img
+                    className={styles['comment-user-img']}
+                    src={
+                        comment.user?.avatar ||
+                        '/images/default-profile-pic.png'
+                    }
+                    alt="user"
+                />
+            </Link>
             <div
                 className={
                     userId === comment.user.id
@@ -50,9 +60,12 @@ export default function Comment({
             >
                 <div className={styles['comment-header']}>
                     <div className={styles['owner']}>
-                        <p className={styles['username']}>
+                        <Link
+                            to={PATH.userProfile(comment.user.id)}
+                            className={styles['username']}
+                        >
                             {comment.user.firstName} {comment.user.lastName}
-                        </p>
+                        </Link>
 
                         {userId === comment.user.id && (
                             <div className={styles['buttons']}>

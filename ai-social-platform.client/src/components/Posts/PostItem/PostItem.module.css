@@ -24,6 +24,11 @@
     margin-bottom: 0.5em;
 }
 
+.media:hover {
+    cursor: pointer;
+    filter: brightness(105%);
+}
+
 .multi-media {
     position: relative;
 }
@@ -60,6 +65,11 @@
     height: 100%;
 }
 
+.with-two-files ul li img:hover {
+    cursor: pointer;
+    filter: brightness(105%);
+}
+
 .files {
     display: flex;
     flex-wrap: wrap;
@@ -88,6 +98,11 @@
     height: auto;
 }
 
+.file:hover {
+    cursor: pointer;
+    filter: brightness(105%);
+}
+
 .likes {
     display: flex;
     justify-content: space-between;
@@ -107,6 +122,14 @@
 .likes-count i,
 .likes .comments-count {
     padding-right: 0.2em;
+}
+
+.comments-count {
+    cursor: pointer;
+}
+
+.comments-count:hover {
+    text-decoration: underline;
 }
 
 .buttons {
