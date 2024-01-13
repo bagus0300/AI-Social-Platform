@@ -8,6 +8,7 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.IdentityModel.Tokens;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.AspNetCore.Http;
 
     using AI_Social_Platform.Data;
     using AI_Social_Platform.Data.Models;
@@ -96,7 +97,6 @@
             return userDetailModel;
         }
         
-
         public async Task<bool> EditUserDataAsync(string id, UserFormModel updatedUserData)
         {
             Guid userId = Guid.Parse(id);
@@ -154,9 +154,10 @@
             return false;
         }
 
-        public async Task<bool> AddFriend(ApplicationUser currentUser, string friendId)
+        public async Task<bool> AddFriendAsync(ApplicationUser currentUser, string friendId)
         {
-            ApplicationUser? friendUser = await userManager.FindByIdAsync(friendId);
+            ApplicationUser? friendUser = await dbContext.ApplicationUsers
+                .FirstOrDefaultAsync(u => u.Id.ToString() == friendId);
 
             if (friendUser == null)
             {
@@ -174,19 +175,15 @@
 
             friendUser.Friends.Add(currentUser);
 
-            await baseSocialService.CreateNotificationAsync(friendUser.Id, 
-                currentUser.Id, NotificationType.Follow, null);
-
-            await userManager.UpdateAsync(currentUser);
-            await userManager.UpdateAsync(friendUser);
             await dbContext.SaveChangesAsync();
 
             return true;
         }
 
-        public async Task<bool> RemoveFriend(ApplicationUser currentUser, string friendId)
+        public async Task<bool> RemoveFriendAsync(ApplicationUser currentUser, string friendId)
         {
-            ApplicationUser? friendUser = await userManager.FindByIdAsync(friendId);
+            ApplicationUser? friendUser = await dbContext.ApplicationUsers
+                .FirstOrDefaultAsync(f => f.Id.ToString() == friendId);
 
             if (friendUser == null)
             {
@@ -203,15 +200,13 @@
             currentUser.Friends.Remove(friendUser);
 
             friendUser.Friends.Remove(currentUser);
-
-            await userManager.UpdateAsync(currentUser);
-            await userManager.UpdateAsync(friendUser);
+            
             await dbContext.SaveChangesAsync();
 
             return true;
         }
 
-        public async Task<bool> AreFriends(Guid id, Guid friendId)
+        public async Task<bool> AreFriendsAsync(Guid id, Guid friendId)
         {
             var areFriends = await dbContext.ApplicationUsers
                 .Where(u => u.Id == id)
@@ -238,8 +233,7 @@
                     UserName = friend.UserName,
                     FirstName = friend.FirstName,
                     LastName = friend.LastName,
-                    Id = friend.Id,
-                    ProfilePictureData = friend.ProfilePicture
+                    Id = friend.Id
                 })
                 .ToArray();
 
@@ -259,77 +253,7 @@
 
             return user != null;
         }
-        
-
-
-        // Private //
-
-
-        private async Task<State> GetOrCreateStateAsync(string stateName)
-        {
-            if (!string.IsNullOrWhiteSpace(stateName))
-            {
-                var state = await dbContext.States.FirstOrDefaultAsync(s => s.Name == stateName);
-                if (state == null)
-                {
-                    state = new State
-                    {
-                        Name = stateName
-                    };
-                    dbContext.States.Add(state);
-                }
-                return state;
-            }
-            else
-            {
-                
-            }
-
-            return null;
-        }
-
-        private async Task<Country> GetOrCreateCountryAsync(string countryName)
-        {
-            if (!string.IsNullOrWhiteSpace(countryName))
-            {
-                Country country = await dbContext.Countries.FirstOrDefaultAsync(c => c.Name == countryName);
-                if (country == null)
-                {
-                    country = new Country
-                    {
-                        Name = countryName
-                    };
-                    dbContext.Countries.Add(country);
-                }
-                return country;
-            }
-
-            return null;
-        }
-
-        private async Task<List<FriendDetailsDto>> GetUserFriendsAsync(ApplicationUser user)
-        {
-            List<FriendDetailsDto> friends = new List<FriendDetailsDto>();
-
-            foreach (var itemFriend in user.Friends)
-            {
-                var myFriend = await this.dbContext.ApplicationUsers.FindAsync(itemFriend.Id);
-                string userName = myFriend?.UserName ?? string.Empty;
-
-                FriendDetailsDto friend = new FriendDetailsDto()
-                {
-                    FirstName = user.FirstName ?? string.Empty,
-                    LastName = user.LastName ?? string.Empty,
-                    UserName = userName,
-                    Id = user.Id
-                };
-                friends.Add(friend);
-            }
-
-            return friends;
-        }
-
-        private static List<PublicationDto> GetUserPublications(ApplicationUser user)
+        public static List<PublicationDto> GetUserPublications(ApplicationUser user)
         {
             List<PublicationDto> publications = new List<PublicationDto>();
 
@@ -347,5 +271,48 @@
 
             return publications;
         }
+
+
+        // Private //
+
+        private async Task<State?> GetOrCreateStateAsync(string stateName)
+        {
+            if (!string.IsNullOrWhiteSpace(stateName))
+            {
+                var state = await dbContext.States.FirstOrDefaultAsync(s => s.Name == stateName);
+                if (state == null)
+                {
+                    state = new State
+                    {
+                        Name = stateName
+                    };
+                    dbContext.States.Add(state);
+                }
+                return state;
+            }
+
+            return null;
+        }
+        
+        private async Task<Country?> GetOrCreateCountryAsync(string countryName)
+        {
+            if (!string.IsNullOrWhiteSpace(countryName))
+            {
+                Country? country = await dbContext.Countries.FirstOrDefaultAsync(c => c.Name == countryName);
+                if (country == null)
+                {
+                    country = new Country
+                    {
+                        Name = countryName
+                    };
+                    dbContext.Countries.Add(country);
+                }
+                return country;
+            }
+
+            return null;
+        }
+        
+        
     }
 }

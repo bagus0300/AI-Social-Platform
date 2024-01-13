@@ -32,17 +32,32 @@
             
             try
             {
+                string textLength = request.TextLength.ToString();
+                int length = 100;
+                if (textLength == "Short")
+                {
+                    length = 100;
+                }
+                else if (textLength == "Middle")
+                {
+                    length = 250;
+                }
+                else if (textLength == "Long")
+                {
+                    length = 500;
+                }
+                
                 var token = configuration["OpenAi:ApiKey"];
 
                 var requestMessage = new HttpRequestMessage(HttpMethod.Post, "https://api.openai.com/v1/chat/completions");
                 requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
+               
                 var requestData = new
                 {
                     model = "gpt-3.5-turbo",
                     messages = new[]
                     {
-                        new { role = "user", content = request.Prompt }
+                        new { role = "user", content = $"Please generate for me a text on {request.Subject} topic, suitable for {request.Audience} audience, in {request.Tone} style and with {length} character length" }
                     },
                     temperature = 0.7
                 };

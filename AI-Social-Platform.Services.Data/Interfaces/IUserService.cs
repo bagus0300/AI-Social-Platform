@@ -16,11 +16,11 @@
         
         Task<bool> EditUserDataAsync(string id, UserFormModel updatedUserData);
 
-        Task<bool> AddFriend(ApplicationUser currentUser, string friendId);
+        Task<bool> AddFriendAsync(ApplicationUser currentUser, string friendId);
 
-        Task<bool> AreFriends(Guid id, Guid friendId);
+        Task<bool> AreFriendsAsync(Guid id, Guid friendId);
 
-        Task<bool> RemoveFriend(ApplicationUser currentUser, string friendId);
+        Task<bool> RemoveFriendAsync(ApplicationUser currentUser, string friendId);
 
         Task<ICollection<FriendDetailsDto>?> GetFriendsAsync(string userId);
 

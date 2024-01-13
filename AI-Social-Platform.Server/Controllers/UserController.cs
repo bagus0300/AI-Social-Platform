@@ -14,6 +14,7 @@ namespace AI_Social_Platform.Server.Controllers
     using FormModels;
     using AI_Social_Platform.Data.Models;
     using AI_Social_Platform.Services.Data.Interfaces;
+    using AI_Social_Platform.Services.Data.Models.UserDto;
 
     using static Common.NotificationMessagesConstants;
     using static Common.GeneralApplicationConstants;
@@ -55,7 +56,7 @@ namespace AI_Social_Platform.Server.Controllers
                 return BadRequest(new { Message = UserAlreadyExists });
             }
 
-            ApplicationUser user = new ApplicationUser()
+            ApplicationUser user = new()
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
@@ -102,8 +103,6 @@ namespace AI_Social_Platform.Server.Controllers
                 ProfilePicture = GetProfileImageUrl(user.Id),
                 Token = userService.BuildToken(userId)
             });
-
-
         }
 
 
@@ -164,11 +163,11 @@ namespace AI_Social_Platform.Server.Controllers
         public async Task<IActionResult> GetUserProfilePicture(string userId)
         {
             var user = await userService.GetUserDetailsByIdAsync(userId);
-            if (user.ProfilePictureData != null)
+            if (user?.ProfilePictureData != null)
             {
                 return File(user.ProfilePictureData, "image/png");
             }
-            return BadRequest("No profil picture found!");
+            return BadRequest("No profile picture found!");
         }
 
 
@@ -253,7 +252,7 @@ namespace AI_Social_Platform.Server.Controllers
         {
             try
             {
-                var currentUser = await userManager.GetUserAsync(User);
+                ApplicationUser currentUser = await userManager.GetUserAsync(User);
 
                 if (currentUser == null)
                 {
@@ -265,14 +264,14 @@ namespace AI_Social_Platform.Server.Controllers
                     return BadRequest(new { message = "Cannot add yourself as a friends list!" });
                 }
                 
-                bool areFriends = await userService.AreFriends(currentUser.Id, Guid.Parse(friendId));
+                bool areFriends = await userService.AreFriendsAsync(currentUser.Id, Guid.Parse(friendId));
                 
                 if (areFriends)
                 {
                     return BadRequest(new { message = "Users are already friends!" });
                 }
 
-                var success = await userService.AddFriend(currentUser!, friendId!);
+                bool success = await userService.AddFriendAsync(currentUser!, friendId!);
 
                 if (success)
                 {
@@ -300,7 +299,7 @@ namespace AI_Social_Platform.Server.Controllers
                     return NotFound(new { message = "Current user not found!"});
                 }
 
-                var success = await userService.RemoveFriend(currentUser!, friendId!);
+                var success = await userService.RemoveFriendAsync(currentUser!, friendId!);
 
                 if (success)
                 {
@@ -326,14 +325,15 @@ namespace AI_Social_Platform.Server.Controllers
                     return BadRequest(new { message = "User not found."});
                 }
 
-                var userExist = await userService.CheckIfUserExistsByIdAsync(userId);
+
+                bool userExist = await userService.CheckIfUserExistsByIdAsync(userId);
 
                 if (!userExist)
                 {
                     return BadRequest(new { message = "User not found or wrong data." });
                 }
 
-                var friends = await userService.GetFriendsAsync(userId);
+                ICollection<FriendDetailsDto>? friends = await userService.GetFriendsAsync(userId);
 
                 return Ok(friends);
             }
