@@ -1,5 +1,5 @@
 import { useContext, useEffect, useReducer, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 
 import * as mediaService from '../../../core/services/mediaService';
@@ -9,10 +9,12 @@ import { CommentFormKeys, PATH } from '../../../core/environments/costants';
 import { CommentActions } from '../../../core/environments/costants';
 import styles from './PostItem.module.css';
 import commentReducer from '../../../reducers/commentReducer';
-import dateFormater from '../../../utils/dateFormatter';
 import AuthContext from '../../../contexts/authContext';
 
 import Comment from './Comment/Comment';
+// import DeletePost from '../../DeletePost/DeletePost';
+// import EditComment from './Comment/EditComment/EditComment';
+import UserInfo from './UserInfo/UserInfo';
 
 const initialValues = {
     [CommentFormKeys.CommentText]: '',
@@ -21,13 +23,21 @@ const initialValues = {
 export default function PostItem({ post }) {
     const [media, setMedia] = useState([]);
 
+    const [commentsCount, setCommentsCount] = useState(post.commentsCount);
+
+    const [editMenu, setEditMenu] = useState(false);
+
+    // const [deleteModal, setDeleteModal] = useState(false);
+
     const [comments, dispatchComment] = useReducer(commentReducer, []);
 
     const inputRef = useRef(null);
 
     const mediaSectionRef = useRef(null);
 
-    const { avatar, userId } = useContext(AuthContext);
+    const { avatar } = useContext(AuthContext);
+
+    const navigate = useNavigate();
 
     const { values, isSubmitting, handleChange, resetForm, handleSubmit } =
         useFormik({
@@ -36,12 +46,15 @@ export default function PostItem({ post }) {
         });
 
     useEffect(() => {
-        commentService.getAllComments(post.id).then((result) => {
-            dispatchComment({
-                type: CommentActions.GetAllComments,
-                payload: result.comments,
-            });
-        });
+        commentService
+            .getAllComments(post.id, 0)
+            .then((result) => {
+                dispatchComment({
+                    type: CommentActions.GetAllComments,
+                    payload: result.comments,
+                });
+            })
+            .catch((error) => console.log(error));
     }, []);
 
     useEffect(() => {
@@ -60,6 +73,19 @@ export default function PostItem({ post }) {
         }
     };
 
+    const openPostDetails = () => navigate(PATH.postDetails(post.id));
+
+    // const showEditMenuToggle = () => setEditMenu(!editMenu);
+
+    const closeEditMenu = () => setEditMenu(false);
+
+    // const showDeleteModal = () => {
+    //     setEditMenu(false);
+    //     setDeleteModal(true);
+    // };
+
+    // const closeDeleteModal = () => setDeleteModal(false);
+
     async function onSubmit(values) {
         try {
             const newComment = await commentService.createComment({
@@ -72,6 +98,8 @@ export default function PostItem({ post }) {
                 payload: newComment,
             });
 
+            setCommentsCount((state) => state + 1);
+
             resetForm();
         } catch (error) {
             console.log(error);
@@ -79,47 +107,55 @@ export default function PostItem({ post }) {
         }
     }
 
+    function editCommentHandler(editedComment) {
+        dispatchComment({
+            type: CommentActions.EditComment,
+            payload: editedComment,
+        });
+    }
+
     function deleteCommentHandler(comment) {
         dispatchComment({
             type: CommentActions.DeleteComment,
             payload: comment,
         });
+
+        setCommentsCount((state) => state - 1);
     }
 
     return (
         <article className={styles['post-item']}>
-            <section className={styles['user-info']}>
-                <div className={styles['user-info-wrapper']}>
-                    <Link to={PATH.userProfile(post.authorId)}>
-                        <img
-                            className={styles['user-img']}
-                            src={
-                                post.author.profilePictureBase64 ||
-                                '/images/default-profile-pic.png'
-                            }
-                            alt="User profile pic"
-                        />
-                    </Link>
-                    <div className={styles['post-info']}>
-                        <p className={styles['username-wrapper']}>
-                            <Link
-                                to={PATH.userProfile(post.authorId)}
-                                className={styles['username']}
-                            >
-                                {post.author.firstName} {post.author.lastName}
-                            </Link>
-                        </p>
-                        <p className={styles['posted-on']}>
-                            Posted on: {dateFormater(post.dateCreated)}
-                        </p>
-                    </div>
-                </div>
-                {post.authorId === userId && (
-                    <div className={styles['edit']}>
-                        <i className="fa-solid fa-pen-to-square"></i>
-                    </div>
-                )}
-            </section>
+            {editMenu && (
+                <div
+                    onClick={closeEditMenu}
+                    className={styles['backdrop']}
+                ></div>
+            )}
+
+            {/* {deleteModal && (
+                <DeletePost
+                    closeDeleteModal={closeDeleteModal}
+                    postId={post.id}
+                />
+            )} */}
+
+            <UserInfo post={post} />
+
+            {/* {editMenu && ( */}
+            {/* <section className={styles['edit-menu']}> */}
+            {/* <div className={styles['edit-post']}> */}
+            {/* <i className="fa-solid fa-pen-to-square"></i> */}
+            {/* <p>Edit Post</p> */}
+            {/* </div> */}
+            {/* <div */}
+            {/* onClick={showDeleteModal} */}
+            {/* className={styles['delete-post']} */}
+            {/* > */}
+            {/* <i className="fa-solid fa-trash-can"></i> */}
+            {/* <p>Delete Post</p> */}
+            {/* </div> */}
+            {/* </section> */}
+            {/* // )} */}
             <section className={styles['content-description']}>
                 <p>{post.content}</p>
             </section>
@@ -146,6 +182,7 @@ export default function PostItem({ post }) {
 
             {media.length === 3 && (
                 <section
+                    onClick={openPostDetails}
                     ref={mediaSectionRef}
                     className={styles['multi-media']}
                 >
@@ -161,6 +198,7 @@ export default function PostItem({ post }) {
 
             {media.length > 3 && (
                 <section
+                    onClick={openPostDetails}
                     ref={mediaSectionRef}
                     className={styles['multi-media']}
                 >
@@ -171,8 +209,8 @@ export default function PostItem({ post }) {
                             </li>
                         ))}
                     </ul>
-                    <div className={styles['backdrop']}>
-                        <p>View all {media.length} phots</p>
+                    <div className={styles['media-backdrop']}>
+                        <p>View all {media.length} photos</p>
                     </div>
                 </section>
             )}
@@ -182,7 +220,7 @@ export default function PostItem({ post }) {
                     <p>0</p>
                 </div>
                 <p className={styles['comments-count']}>
-                    {comments.length} comments
+                    {commentsCount} comments
                 </p>
             </section>
             <section className={styles['buttons']}>
@@ -199,14 +237,20 @@ export default function PostItem({ post }) {
                 </div>
             </section>
             <section className={styles['comments']}>
-                {comments.map((comment) => (
-                    <li className={styles['comment']} key={comment.id}>
-                        <Comment
-                            comment={comment}
-                            deleteCommentHandler={deleteCommentHandler}
-                        />
-                    </li>
-                ))}
+                {comments
+                    .sort(
+                        (a, b) =>
+                            new Date(a.dateCreated) - new Date(b.dateCreated)
+                    )
+                    .map((comment) => (
+                        <li className={styles['comment']} key={comment.id}>
+                            <Comment
+                                comment={comment}
+                                deleteCommentHandler={deleteCommentHandler}
+                                editCommentHandler={editCommentHandler}
+                            />
+                        </li>
+                    ))}
             </section>
             <section className={styles['add-comment']}>
                 <img

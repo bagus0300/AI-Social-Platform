@@ -1,18 +1,18 @@
-// ON CREATE POST WE NEED RESPONSE TO BE POST DATA
+import { PostActions } from '../core/environments/costants';
 
 const postReducer = (state, action) => {
     switch (action?.type) {
-        case 'GET_ALL_POSTS':
+        case PostActions.GetAllPosts:
             return [...state, ...action.payload];
-        case 'CREATE_POST':
-            return [...state, action.payload.content];
-        case 'EDIT_POST':
+        case PostActions.CreatePost:
+            return [...state, action.payload];
+        case PostActions.EditPost:
             return state.map((p) =>
                 p.id === action.payload.id
                     ? { ...p, content: action.payload.content }
                     : p
             );
-        case 'DELETE_POST':
+        case PostActions.DeletePost:
             return state.filter((p) => p.id !== action.payload.id);
         default:
             return state;

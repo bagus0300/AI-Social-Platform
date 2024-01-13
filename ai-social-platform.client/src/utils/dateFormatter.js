@@ -1,6 +1,6 @@
 export default function dateFormater(date) {
-    const newDate = date.split('T')[0];
-    const time = date.split('T')[1].split('.')[0];
+    const newDate = date ? date.split('T')[0] : '';
+    const time = date ? date.split('T')[1].split('.')[0] : '';
 
     const [hour, minutes] = time.split(':');
 

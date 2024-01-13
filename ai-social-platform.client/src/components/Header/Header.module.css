@@ -20,6 +20,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: fixed;
+    width: 100%;
+    z-index: 100;
 }
 
 .logo-heading {
@@ -33,6 +36,12 @@
 .logo-heading .logo-text {
     text-decoration: none;
     color: #fff;
+}
+
+.search-form  {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .search-form input,
@@ -72,12 +81,14 @@
     display: flex;
     gap: 0.5em;
     font-size: 0.8em;
+    align-items: center;
 }
 
 .profile {
     display: flex;
     gap: 1em;
     font-size: 1.5em;
+    margin-right: 1.2em;
 }
 
 .guest > * {

@@ -10,3 +10,9 @@ export const getPostMedia = async (postId) =>
 
 export const getMediaById = async (mediaId) =>
     await api.get(endpoints.getMediaById(mediaId));
+
+export const getMediaByPostId = async (postId) =>
+    await api.get(endpoints.getMediaByPostId(postId));
+
+export const deleteMedia = async (mediaId) =>
+    await api.post(endpoints.deleteMedia(mediaId));

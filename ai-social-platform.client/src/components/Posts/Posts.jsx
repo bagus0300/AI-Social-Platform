@@ -1,5 +1,6 @@
 import { useEffect, useReducer, useRef, useState } from 'react';
 
+import { PostActions } from '../../core/environments/costants';
 import * as postService from '../../core/services/postService';
 import styles from './Posts.module.css';
 import postReducer from '../../reducers/postReducer';
@@ -45,7 +46,7 @@ export default function Posts() {
             setHasMore(false);
         } else {
             dispatchPost({
-                type: 'GET_ALL_POSTS',
+                type: PostActions.GetAllPosts,
                 payload: data.publications,
             });
 
@@ -56,16 +57,28 @@ export default function Posts() {
     return (
         <section className={styles['posts-section']}>
             <div className={styles['content-wrapper']}>
-                {posts.map((post) => (
-                    <PostItem key={post.id} post={post} />
-                ))}
+                {posts
+                    .sort(
+                        (a, b) =>
+                            new Date(b.dateCreated) - new Date(a.dateCreated)
+                    )
+                    .map((post) => (
+                        <PostItem key={post.id} post={post} />
+                    ))}
                 {hasMore && (
                     <div ref={elementRef}>
                         <PaginationSpinner />
                     </div>
                 )}
-                {posts.length > 0 && !hasMore && <div>There are no more posts</div>}
-                {posts.length === 0 && <p>Add friends or follow topics of your choice to fill your feed.</p>}
+                {posts.length > 0 && !hasMore && (
+                    <div>There are no more posts</div>
+                )}
+                {posts.length === 0 && (
+                    <p>
+                        Add friends or follow topics of your choice to fill your
+                        feed.
+                    </p>
+                )}
             </div>
         </section>
     );

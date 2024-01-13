@@ -43,6 +43,10 @@
     color: #585858;
 }
 
+.description {
+    position: relative;
+}
+
 .delete-button:hover,
 .edit-button:hover {
     transform: scale(1.2);

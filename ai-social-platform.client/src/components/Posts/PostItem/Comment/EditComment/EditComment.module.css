@@ -1,0 +1,35 @@
+.edit-comment-area {
+    resize: none;
+    display: block;
+    border: 0;
+    border-radius: 0.3em;
+    padding: 0.4em;
+}
+
+.edit-comment-buttons {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 0.7em;
+}
+
+.cancel-button,
+.submit-button {
+    padding: 0.4em;
+    border: 0;
+    border-radius: 0.3em;
+    color: #fff;
+    cursor: pointer;
+}
+
+.cancel-button:hover,
+.submit-button:hover {
+    filter: brightness(110%);
+}
+
+.cancel-button {
+    background-color: #6b6b6b;
+}
+
+.submit-button {
+    background-color: #369;
+}

@@ -1,0 +1,43 @@
+.user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-info-wrapper {
+    display: flex;
+    gap: 1em;
+    padding: 0.5em 1em 0.5em 1em;
+    align-items: center;
+}
+
+.user-img {
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+}
+
+.user-img:hover {
+    filter: brightness(115%);
+    cursor: pointer;
+}
+
+.username-wrapper {
+    font-size: 0.9em;
+    font-weight: 600;
+}
+
+.username-wrapper .username {
+    text-decoration: none;
+    color: #000000;
+}
+
+.username-wrapper .username:hover {
+    text-decoration: underline;
+}
+
+.posted-on {
+    font-size: 0.6em;
+    color: #636363;
+}

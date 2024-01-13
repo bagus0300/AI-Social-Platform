@@ -19,10 +19,10 @@ import Userprofileedit from './components/Userprofile/Userprofileedit';
 import CreatePost from './components/CreatePost/CreatePost';
 // import Successfully from './components/Successfully/Successfully';
 import NotFound from './components/NotFound/NotFound';
+import PostDetails from './components/PostDetails/PostDetails';
 
 function App() {
     return (
-        // ADD NOT FOUND PAGE
         <ErrorBoundary>
             <AuthProvider>
                 <>
@@ -52,6 +52,10 @@ function App() {
                                 <Route
                                     path={PATH.create}
                                     element={<CreatePost />}
+                                />
+                                <Route
+                                    path={PATH.detailsPost}
+                                    element={<PostDetails />}
                                 />
                                 {/* <Route
                                     path={PATH.successfully}

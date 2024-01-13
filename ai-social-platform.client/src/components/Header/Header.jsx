@@ -27,11 +27,11 @@ export default function Header() {
                         AI-Social-Platform
                     </Link>
                 </h1>
-                <form className={styles['search-form']}>
-                    <input type="search" placeholder="Search..." />
-                    <button>Search</button>
-                </form>
                 <section className={styles['profile']}>
+                    <form className={styles['search-form']}>
+                        <input placeholder="Search..." />
+                        <button>Search</button>
+                    </form>
                     {!isAuthenticated ? (
                         <div className={styles['guest']}>
                             <Link to={PATH.login}>Login</Link>

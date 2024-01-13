@@ -1,97 +1,28 @@
-.post-item {
+.post-details-section {
     background-color: #fff;
     overflow: hidden;
-    width: 30em;
+    width: 36em;
     display: flex;
     flex-direction: column;
     border-radius: 0.5em;
     box-shadow: 0 0 0.2em 0.1em #ddd;
     position: relative;
+    margin: 5em auto 2em auto;
 }
 
-.content-description,
-.likes {
+.post-description {
     padding: 0 1em 0.5em 1em;
-    font-size: 0.9em;
 }
 
-.media {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    margin-bottom: 0.5em;
-}
-
-.multi-media {
-    position: relative;
-}
-
-.media-backdrop {
-    display: flex;
-    position: absolute;
-    bottom: 0.4em;
-    right: 0;
-    width: 50%;
-    height: 8.47em;
-    background-color: rgba(0, 0, 0, 0.7);
-    align-items: center;
-    justify-content: center;
-    color: white;
-    cursor: pointer;
-}
-
-.media-backdrop:hover {
-    background-color: rgba(0, 0, 0, 0.6);
-}
-
-.with-two-files ul {
-    display: flex;
-}
-
-.with-two-files ul li {
-    list-style: none;
-    flex: 1 1 200px;
-    margin-bottom: 0.5em;
-}
-
-.with-two-files ul li img {
-    height: 100%;
-}
-
-.files {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.files .file:nth-of-type(1) img {
-    height: 100%;
-}
-
-.files .file:nth-of-type(1) {
-    margin: 0 auto;
-}
-
-.files .file:nth-of-type(2),
-.files .file:nth-of-type(3) {
-    flex: 1 1 200px;
-}
-
-.files .file:nth-of-type(2) img,
-.files .file:nth-of-type(3) img {
-    aspect-ratio: 16/9;
-}
-
-.files .file {
-    list-style: none;
-    height: auto;
+.media img {
+    width: 100%;
 }
 
 .likes {
     display: flex;
     justify-content: space-between;
     color: #636363;
+    padding: 0.5em;
 }
 
 .likes-count {
@@ -159,6 +90,16 @@
     margin-bottom: 0.5em;
 }
 
+.load-more-comments {
+    display: flex;
+    justify-content: space-around;
+    font-size: 1em;
+}
+
+.load-more-comments > * {
+    cursor: pointer;
+}
+
 .add-comment {
     display: flex;
     align-items: center;
@@ -204,14 +145,20 @@
 }
 
 .comment-area .submit-button-error {
+    /* position: absolute; */
     border: 0;
+    /* top: 0.6em; */
+    /* right: 1em; */
     color: #aaa;
     font-size: 0.8em;
     cursor: no-drop;
 }
 
 .comment-area .submit-button {
+    /* position: absolute; */
     border: 0;
+    /* top: 0.6em; */
+    /* right: 1em; */
     color: #369;
     font-size: 0.8em;
     cursor: pointer;
