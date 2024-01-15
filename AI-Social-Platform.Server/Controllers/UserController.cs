@@ -334,6 +334,13 @@ namespace AI_Social_Platform.Server.Controllers
                 }
 
                 ICollection<FriendDetailsDto>? friends = await userService.GetFriendsAsync(userId);
+                if (friends.Any())
+                {
+                    foreach (var friend in friends)
+                    {
+                        friend.ProfilePictureUrl = GetProfileImageUrl(friend.Id);
+                    }
+                }
 
                 return Ok(friends);
             }
