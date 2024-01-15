@@ -112,8 +112,8 @@ namespace AI_Social_Platform.Server.Controllers
         {
             try
             {
-                await baseSocialService.UpdateCommentAsync(dto, commentId);
-                return Ok(new {message = CommentSuccessfullyEdited });
+                var comment = await baseSocialService.UpdateCommentAsync(dto, commentId);
+                return Ok(comment);
             }
             catch (NullReferenceException ex)
             {

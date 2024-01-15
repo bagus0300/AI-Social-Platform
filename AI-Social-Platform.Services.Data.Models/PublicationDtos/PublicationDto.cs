@@ -18,6 +18,8 @@ namespace AI_Social_Platform.Services.Data.Models.PublicationDtos
         public int LikesCount { get; set; }
         public int CommentsCount { get; set; }
 
+        public bool IsLiked { get; set; }
+
         //Relations
         public TopicDto Topic { get; set; } = null!;
         public Guid AuthorId { get; set; }

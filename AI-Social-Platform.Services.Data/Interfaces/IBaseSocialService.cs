@@ -17,7 +17,7 @@ namespace AI_Social_Platform.Services.Data.Interfaces
         //Comments
         public Task<IndexCommentDto> GetCommentsOnPublicationAsync(Guid publicationId, int page);
         public Task<CommentDto> CreateCommentAsync(CommentFormDto dto);
-        public Task UpdateCommentAsync(CommentEditDto dto, Guid id);
+        public Task<CommentDto> UpdateCommentAsync(CommentEditDto dto, Guid id);
         public Task DeleteCommentAsync(Guid id);
 
         //Likes

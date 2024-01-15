@@ -170,7 +170,7 @@ namespace AI_Social_Platform.Services.Data
             return dtoReturn;
         }
 
-        public async Task UpdateCommentAsync(CommentEditDto dto, Guid id)
+        public async Task<CommentDto> UpdateCommentAsync(CommentEditDto dto, Guid id)
         {
             var comment = await dbContext.Comments.FindAsync(id);
             var userId = GetUserId();
@@ -186,6 +186,11 @@ namespace AI_Social_Platform.Services.Data
             }
             comment.Content = dto.Content;
             await dbContext.SaveChangesAsync();
+
+            var commentDto = mapper.Map<CommentDto>(comment);
+            commentDto.User = mapper.Map<UserDto>(await dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId));
+
+            return commentDto;
         }
 
         public async Task DeleteCommentAsync(Guid id)

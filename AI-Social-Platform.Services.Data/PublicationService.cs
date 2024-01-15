@@ -47,9 +47,19 @@ public class PublicationService : IPublicationService
             .ProjectTo<PublicationDto>(mapper.ConfigurationProvider)
             .ToListAsync();
 
+        var publicationIds = publications.Select(p => p.Id).ToList();
+
+        var likes = await dbContext.Likes
+            .Where(l => l.UserId == GetUserId() && publicationIds.Any(p => p == l.PublicationId))
+            .ToListAsync();
+
         int totalPublications = await userFriends.SelectMany(u => u.Friends.SelectMany(f => f.Publications)).CountAsync();
         int publicationsLeft = totalPublications - (pageNum * pageSize) < 0 ? 0 : totalPublications - (pageNum * pageSize);
-
+        publications.ForEach(p =>
+        {
+            p.IsLiked = likes.Any(l => l.PublicationId == p.Id && l.UserId == GetUserId());
+        });
+       
 
         var indexPublicationDto = new IndexPublicationDto
         {
@@ -90,7 +100,10 @@ public class PublicationService : IPublicationService
             .Where(c => c.PublicationId == publication.Id)
             .CountAsync();
 
+       
+
         publicationDto.LikesCount = await dbContext.Likes.Where(l => l.PublicationId == publication.Id).CountAsync();
+        publicationDto.IsLiked = await dbContext.Likes.AnyAsync(l => l.PublicationId == publication.Id && l.UserId == GetUserId());
 
         return publicationDto;
     }

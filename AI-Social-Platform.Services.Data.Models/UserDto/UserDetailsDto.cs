@@ -1,7 +1,5 @@
 ﻿namespace AI_Social_Platform.Services.Data.Models.UserDto
 {
-    using PublicationDtos;
-
     public class UserDetailsDto : UserDto
     {
         public string Email { get; set; } = null!;
