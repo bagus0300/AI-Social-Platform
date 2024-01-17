@@ -4,31 +4,29 @@ import { EditCommentFromKeys } from '../../../../../core/environments/costants';
 import * as commentService from '../../../../../core/services/commentService';
 import styles from './EditComment.module.css';
 
-// TODO: Add validation
-
 export default function EditComment({
     hideEditCommentField,
     editCommentHandler,
     comment,
 }) {
-    const { values, errors, isSubmitting, handleChange, handleSubmit } =
-        useFormik({
-            initialValues: {
-                [EditCommentFromKeys.EditCommentArea]: comment.content,
-            },
-            onSubmit,
-            enableReinitialize: true,
-        });
+    const { values, isSubmitting, handleChange, handleSubmit } = useFormik({
+        initialValues: {
+            [EditCommentFromKeys.EditCommentArea]: comment.content,
+        },
+        onSubmit,
+        enableReinitialize: true,
+    });
 
     async function onSubmit(values) {
-        // TODO: use editCommentHandler with editedComment
         try {
             const editedComment = await commentService.editComment(
                 comment.id,
                 values[EditCommentFromKeys.EditCommentArea]
             );
 
-            console.log(editedComment);
+            editCommentHandler(editedComment);
+
+            hideEditCommentField();
         } catch (error) {
             console.log(error);
         }
@@ -41,9 +39,18 @@ export default function EditComment({
                 className={styles['edit-comment-form']}
             >
                 <textarea
-                    className={styles['edit-comment-area']}
+                    className={
+                        values[EditCommentFromKeys.EditCommentArea].length === 0
+                            ? styles['edit-comment-area-error']
+                            : styles['edit-comment-area']
+                    }
                     name={EditCommentFromKeys.EditCommentArea}
                     id={EditCommentFromKeys.EditCommentArea}
+                    placeholder={
+                        values[EditCommentFromKeys.EditCommentArea].length === 0
+                            ? "You can't send an empty comment"
+                            : ''
+                    }
                     cols="50"
                     rows="5"
                     onChange={handleChange}
@@ -57,7 +64,11 @@ export default function EditComment({
                         Cancel
                     </button>
                     <button
-                        disabled={isSubmitting}
+                        disabled={
+                            isSubmitting ||
+                            values[EditCommentFromKeys.EditCommentArea]
+                                .length === 0
+                        }
                         className={styles['submit-button']}
                         type="submit"
                     >

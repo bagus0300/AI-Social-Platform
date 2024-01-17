@@ -6,6 +6,18 @@
     padding: 0.4em;
 }
 
+.edit-comment-area-error {
+    resize: none;
+    display: block;
+    border: 1px solid #a10000;
+    border-radius: 0.3em;
+    padding: 0.4em;
+}
+
+.edit-comment-area-error::placeholder {
+    color: #a10000;
+}
+
 .edit-comment-buttons {
     display: flex;
     justify-content: space-evenly;
