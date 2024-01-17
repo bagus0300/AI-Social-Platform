@@ -233,7 +233,8 @@
                     UserName = friend.UserName,
                     FirstName = friend.FirstName,
                     LastName = friend.LastName,
-                    Id = friend.Id
+                    Id = friend.Id,
+                    ProfilePictureData = friend.ProfilePicture
                 })
                 .ToArray();
 

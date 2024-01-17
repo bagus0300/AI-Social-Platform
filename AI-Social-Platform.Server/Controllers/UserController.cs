@@ -338,7 +338,15 @@ namespace AI_Social_Platform.Server.Controllers
                 {
                     foreach (var friend in friends)
                     {
-                        friend.ProfilePictureUrl = GetProfileImageUrl(friend.Id);
+                        if (friend.ProfilePictureData == null)
+                        {
+                            friend.ProfilePictureUrl = null;
+                        }
+                        else
+                        {
+                            friend.ProfilePictureUrl = GetProfileImageUrl(friend.Id);
+                            friend.ProfilePictureData = null;
+                        }
                     }
                 }
 
