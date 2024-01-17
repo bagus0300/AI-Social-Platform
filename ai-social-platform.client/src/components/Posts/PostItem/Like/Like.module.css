@@ -1,0 +1,11 @@
+.like-button-liked {
+    color: #369;
+}
+.like-button {
+    color: #797979;
+}
+
+.like-button:hover,
+.like-button-liked:hover {
+    background-color: #eee;
+}

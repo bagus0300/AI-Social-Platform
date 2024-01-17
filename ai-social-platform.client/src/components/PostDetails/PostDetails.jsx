@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import * as postService from '../../core/services/postService';
 import * as mediaService from '../../core/services/mediaService';
 import * as commentService from '../../core/services/commentService';
+import * as likeService from '../../core/services/likeService';
 
 import { CommentFormKeys } from '../../core/environments/costants';
 import { CommentActions } from '../../core/environments/costants';
@@ -14,6 +15,8 @@ import styles from './PostDetails.module.css';
 
 import Comment from '../Posts/PostItem/Comment/Comment';
 import UserInfo from '../Posts/PostItem/UserInfo/UserInfo';
+import Like from '../Posts/PostItem/Like/Like';
+import likeReducer from '../../reducers/likeReducer';
 
 const initialValues = {
     [CommentFormKeys.CommentText]: '',
@@ -30,6 +33,10 @@ export default function PostDetails() {
 
     const [postMedia, setPostMedia] = useState([]);
 
+    const [isPostLiked, setIsPostLiked] = useState();
+
+    const [likes, dispatchLike] = useReducer(likeReducer, []);
+
     const [comments, dispatchComment] = useReducer(
         commentReducer,
         postData.comments
@@ -45,6 +52,7 @@ export default function PostDetails() {
             .then((result) => {
                 setPostData(result);
                 setCommentsCount(result.commentsCount);
+                setIsPostLiked(result.isLiked);
             })
             .catch((error) => console.log(error));
 
@@ -61,6 +69,16 @@ export default function PostDetails() {
                     payload: result.comments,
                 });
             })
+            .catch((error) => console.log(error));
+
+        likeService
+            .getLikes(postId)
+            .then((result) =>
+                dispatchLike({
+                    type: 'getLikes',
+                    payload: result,
+                })
+            )
             .catch((error) => console.log(error));
     }, [postId]);
 
@@ -124,6 +142,19 @@ export default function PostDetails() {
 
     const backPage = () => setCommentsPage((state) => state - 1);
 
+    const onLikeButtonClickHandler = async () => {
+        if (!isPostLiked) {
+            const newLike = await likeService.addLike(postId);
+
+            dispatchLike({
+                type: 'addLike',
+                payload: newLike,
+            });
+
+            setIsPostLiked(true);
+        }
+    };
+
     return (
         <section className={styles['post-details-section']}>
             <UserInfo post={postData} />
@@ -142,17 +173,17 @@ export default function PostDetails() {
             <section className={styles['likes']}>
                 <div className={styles['likes-count']}>
                     <i className="fa-solid fa-thumbs-up"></i>
-                    <p>0</p>
+                    <p>{likes.length}</p>
                 </div>
                 <p className={styles['comments-count']}>
                     {commentsCount} comments
                 </p>
             </section>
             <section className={styles['buttons']}>
-                <div className={styles['like-button']}>
-                    <i className="fa-solid fa-thumbs-up"></i>
-                    <p>Like</p>
-                </div>
+                <Like
+                    isPostLiked={isPostLiked}
+                    onLikeButtonClickHandler={onLikeButtonClickHandler}
+                />
                 <div className={styles['comment-button-wrapper']}>
                     <i className="fa-solid fa-comment"></i>
                     <p className={styles['comment-button']}>Comment</p>

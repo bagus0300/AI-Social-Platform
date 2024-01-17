@@ -4,17 +4,20 @@ import { useFormik } from 'formik';
 
 import * as mediaService from '../../../core/services/mediaService';
 import * as commentService from '../../../core/services/commentService';
+import * as likeService from '../../../core/services/likeService';
 
 import { CommentFormKeys, PATH } from '../../../core/environments/costants';
 import { CommentActions } from '../../../core/environments/costants';
 import styles from './PostItem.module.css';
+import likeReducer from '../../../reducers/likeReducer';
 import commentReducer from '../../../reducers/commentReducer';
 import AuthContext from '../../../contexts/authContext';
 
-import Comment from './Comment/Comment';
 // import DeletePost from '../../DeletePost/DeletePost';
 // import EditComment from './Comment/EditComment/EditComment';
+import Comment from './Comment/Comment';
 import UserInfo from './UserInfo/UserInfo';
+import Like from './Like/Like';
 
 const initialValues = {
     [CommentFormKeys.CommentText]: '',
@@ -26,6 +29,10 @@ export default function PostItem({ post }) {
     const [commentsCount, setCommentsCount] = useState(post.commentsCount);
 
     const [editMenu, setEditMenu] = useState(false);
+
+    const [isPostLiked, setIsPostLiked] = useState(post.isLiked);
+
+    const [likes, dispatchLike] = useReducer(likeReducer, []);
 
     // const [deleteModal, setDeleteModal] = useState(false);
 
@@ -46,6 +53,13 @@ export default function PostItem({ post }) {
         });
 
     useEffect(() => {
+        mediaService
+            .getPostMedia(post.id)
+            .then((result) => {
+                setMedia(result);
+            })
+            .catch((error) => console.log(error));
+
         commentService
             .getAllComments(post.id, 0)
             .then((result) => {
@@ -58,13 +72,16 @@ export default function PostItem({ post }) {
     }, []);
 
     useEffect(() => {
-        mediaService
-            .getPostMedia(post.id)
-            .then((result) => {
-                setMedia(result);
-            })
+        likeService
+            .getLikes(post.id)
+            .then((result) =>
+                dispatchLike({
+                    type: 'getLikes',
+                    payload: result,
+                })
+            )
             .catch((error) => console.log(error));
-    }, []);
+    }, [likes.length]);
 
     const focusInput = () => {
         if (inputRef.current && mediaSectionRef.current) {
@@ -74,10 +91,22 @@ export default function PostItem({ post }) {
     };
 
     const openPostDetails = () => navigate(PATH.postDetails(post.id));
-
     // const showEditMenuToggle = () => setEditMenu(!editMenu);
 
     const closeEditMenu = () => setEditMenu(false);
+
+    const onLikeButtonClickHandler = async () => {
+        if (!isPostLiked) {
+            const newLike = await likeService.addLike(post.id);
+
+            dispatchLike({
+                type: 'addLike',
+                payload: newLike,
+            });
+
+            setIsPostLiked(true);
+        }
+    };
 
     // const showDeleteModal = () => {
     //     setEditMenu(false);
@@ -125,12 +154,12 @@ export default function PostItem({ post }) {
 
     return (
         <article className={styles['post-item']}>
-            {editMenu && (
+            {/* {editMenu && (
                 <div
                     onClick={closeEditMenu}
                     className={styles['backdrop']}
                 ></div>
-            )}
+            )} */}
 
             {/* {deleteModal && (
                 <DeletePost
@@ -156,7 +185,10 @@ export default function PostItem({ post }) {
             {/* </div> */}
             {/* </section> */}
             {/* // )} */}
-            <section className={styles['content-description']}>
+            <section
+                ref={mediaSectionRef}
+                className={styles['content-description']}
+            >
                 <p>{post.content}</p>
             </section>
             {media.length === 1 && (
@@ -222,7 +254,7 @@ export default function PostItem({ post }) {
             <section className={styles['likes']}>
                 <div className={styles['likes-count']}>
                     <i className="fa-solid fa-thumbs-up"></i>
-                    <p>0</p>
+                    <p>{likes.length}</p>
                 </div>
                 <p
                     onClick={openPostDetails}
@@ -232,10 +264,10 @@ export default function PostItem({ post }) {
                 </p>
             </section>
             <section className={styles['buttons']}>
-                <div className={styles['like-button']}>
-                    <i className="fa-solid fa-thumbs-up"></i>
-                    <p>Like</p>
-                </div>
+                <Like
+                    onLikeButtonClickHandler={onLikeButtonClickHandler}
+                    isPostLiked={isPostLiked}
+                />
                 <div
                     onClick={focusInput}
                     className={styles['comment-button-wrapper']}

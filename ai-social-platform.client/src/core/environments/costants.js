@@ -28,7 +28,7 @@ export const endpoints = {
     userDetails: (userId) => `User/userDetails/${userId}`,
     addFriend: (userId) => `User/addFriend/${userId}`,
     removeFriend: (userId) => `User/removeFriend/${userId}`,
-    allFriends:(userId) => `User/allFriends?userId=${userId}`,
+    allFriends: (userId) => `User/allFriends?userId=${userId}`,
 
     // POSTS
     createPost: 'Publication',
@@ -48,6 +48,10 @@ export const endpoints = {
     getAllComments: (postId) => `SocialFeature/comment/${postId}`,
     editComment: (commentId) => `SocialFeature/comment/${commentId}`,
     deleteComment: (commentId) => `SocialFeature/comment/${commentId}`,
+
+    // LIKES
+    getLikes: (postId) => `SocialFeature/like/${postId}`,
+    addLike: (postId) => `SocialFeature/like/${postId}`,
 };
 
 export const LoginFormKeys = {
@@ -109,6 +113,12 @@ export const PostActions = {
     GetAllPosts: 'getAllPosts',
     EditPost: 'editPost',
     DeletePost: 'deletePost',
+};
+
+export const LikeActions = {
+    GetLikes: 'getLikes',
+    AddLike: 'addLike',
+    RemoveLike: 'removeLike',
 };
 
 export const tokenName = 'accessToken';

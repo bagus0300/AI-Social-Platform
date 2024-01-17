@@ -149,6 +149,10 @@
     padding: 0 2em 0 2em;
 }
 
+.like-button-liked {
+    color: #369;
+}
+
 .like-button,
 .comment-button-wrapper,
 .comment-button {
@@ -160,6 +164,7 @@
 }
 
 .like-button:hover,
+.like-button-liked:hover,
 .comment-button-wrapper:hover {
     background-color: #eee;
 }
