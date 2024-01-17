@@ -135,7 +135,7 @@ export default function Userprofile() {
                         alt="User profile pic"
                     />
 
-                    <fieldset>
+                    <fieldset className="userprofile-fieldset">
                         <legend>Contact information</legend>
                         <p className="username-profile">
                             {userData.firstName} {'  '} {userData.lastName}
@@ -188,7 +188,7 @@ export default function Userprofile() {
                     </div>
                 </div>
 
-                <fieldset>
+                <fieldset className="userprofile-fieldset">
                     <legend>Personal data</legend>
 
                     <p className="posted-user">Country: {userData.country}</p>
@@ -202,13 +202,16 @@ export default function Userprofile() {
                         Relationship Status: {userData.relationship}
                     </p>
                 </fieldset>
-                <fieldset>
+                <fieldset className="userprofile-fieldset">
                     <legend>Friends</legend>
                     <div>
                         <ul>
                             {isCurrentUserProfile
                                 ? friendsData.map((friend) => (
-                                      <li key={friend.id}>
+                                      <li
+                                          className="userprofile-li"
+                                          key={friend.id}
+                                      >
                                           <Link
                                               to={PATH.userProfile(friend.id)}
                                           >
@@ -226,7 +229,10 @@ export default function Userprofile() {
                                       </li>
                                   ))
                                 : friendsDataFriend.map((friend) => (
-                                      <li key={friend.id}>
+                                      <li
+                                          className="userprofile-li"
+                                          key={friend.id}
+                                      >
                                           <Link
                                               to={PATH.userProfile(friend.id)}
                                           >

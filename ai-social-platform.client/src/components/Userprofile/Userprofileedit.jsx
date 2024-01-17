@@ -193,45 +193,46 @@ export default function Userprofileedit() {
                             alt="User profile pic"
                         />
 
-                        <div className="username-profile">
-                            <fieldset>
-                                <legend>Change the Picture</legend>
-                                <label htmlFor={ProfileFormKeys.ProfilePicture}>
-                                    ProfilePicture{' '}
+                        <fieldset className="userprofile-fieldset">
+                            <legend>Change the Picture</legend>
+                            <label htmlFor={ProfileFormKeys.ProfilePicture}>
+                                Profile Picture{' '}
+                            </label>
+
+                            <input
+                                type="file"
+                                className="userprofile-input"
+                                id={ProfileFormKeys.ProfilePicture}
+                                name={ProfileFormKeys.ProfilePicture}
+                                placeholder="Upload a photo..."
+                                onChange={handleChangeProfilePicture}
+                                onBlur={handleBlur}
+                            />
+                            <div>
+                                <label htmlFor={ProfileFormKeys.CoverPhoto}>
+                                    Cover Photo{' '}
                                 </label>
 
                                 <input
                                     type="file"
-                                    id={ProfileFormKeys.ProfilePicture}
-                                    name={ProfileFormKeys.ProfilePicture}
+                                    className="userprofile-input"
+                                    id={ProfileFormKeys.CoverPhoto}
+                                    name={ProfileFormKeys.CoverPhoto}
                                     placeholder="Upload a photo..."
-                                    onChange={handleChangeProfilePicture}
+                                    onChange={handleChangeCoverPhoto}
                                     onBlur={handleBlur}
                                 />
-                                <div>
-                                    <label htmlFor={ProfileFormKeys.CoverPhoto}>
-                                        CoverPhoto{' '}
-                                    </label>
-
-                                    <input
-                                        type="file"
-                                        id={ProfileFormKeys.CoverPhoto}
-                                        name={ProfileFormKeys.CoverPhoto}
-                                        placeholder="Upload a photo..."
-                                        onChange={handleChangeCoverPhoto}
-                                        onBlur={handleBlur}
-                                    />
-                                </div>
-                            </fieldset>
-                        </div>
+                            </div>
+                        </fieldset>
                     </div>
-                    <fieldset>
+                    <fieldset className="userprofile-fieldset">
                         <legend>Contact information</legend>
                         <label htmlFor={ProfileFormKeys.FirstName}>
                             First Name{' '}
                         </label>
                         <input
                             type="text"
+                            className="userprofile-input"
                             name={ProfileFormKeys.FirstName}
                             id={ProfileFormKeys.FirstName}
                             placeholder="First name"
@@ -253,6 +254,7 @@ export default function Userprofileedit() {
                             </label>
                             <input
                                 type="text"
+                                className="userprofile-input"
                                 name={ProfileFormKeys.LastName}
                                 id={ProfileFormKeys.LastName}
                                 onChange={handleChange}
@@ -274,6 +276,7 @@ export default function Userprofileedit() {
                             </label>
                             <input
                                 type="text"
+                                className="userprofile-input"
                                 name={ProfileFormKeys.PhoneNumber}
                                 id={ProfileFormKeys.PhoneNumber}
                                 placeholder="Phone number"
@@ -290,7 +293,7 @@ export default function Userprofileedit() {
                                 )}
                         </section>
                     </fieldset>
-                    <fieldset>
+                    <fieldset className="userprofile-fieldset">
                         <legend>Personal data</legend>
                         <section>
                             <label htmlFor={ProfileFormKeys.Country}>
@@ -298,6 +301,7 @@ export default function Userprofileedit() {
                             </label>
                             <input
                                 type="text"
+                                className="userprofile-input"
                                 name={ProfileFormKeys.Country}
                                 id={ProfileFormKeys.Country}
                                 placeholder="Country"
@@ -320,6 +324,7 @@ export default function Userprofileedit() {
                             </label>
                             <input
                                 type="text"
+                                className="userprofile-input"
                                 name={ProfileFormKeys.State}
                                 id={ProfileFormKeys.State}
                                 placeholder="State"
@@ -390,6 +395,7 @@ export default function Userprofileedit() {
                             </label>
                             <input
                                 type="text"
+                                className="userprofile-input"
                                 name={ProfileFormKeys.School}
                                 id={ProfileFormKeys.School}
                                 placeholder="School"
@@ -412,6 +418,7 @@ export default function Userprofileedit() {
                             </label>
                             <input
                                 type="date"
+                                className="userprofile-input"
                                 name={ProfileFormKeys.Birthday}
                                 id={ProfileFormKeys.Birthday}
                                 placeholder="Birthday"
