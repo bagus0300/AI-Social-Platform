@@ -6,7 +6,11 @@ import * as mediaService from '../../../core/services/mediaService';
 import * as commentService from '../../../core/services/commentService';
 import * as likeService from '../../../core/services/likeService';
 
-import { CommentFormKeys, PATH } from '../../../core/environments/costants';
+import {
+    CommentFormKeys,
+    LikeActions,
+    PATH,
+} from '../../../core/environments/costants';
 import { CommentActions } from '../../../core/environments/costants';
 import styles from './PostItem.module.css';
 import likeReducer from '../../../reducers/likeReducer';
@@ -18,6 +22,7 @@ import AuthContext from '../../../contexts/authContext';
 import Comment from './Comment/Comment';
 import UserInfo from './UserInfo/UserInfo';
 import Like from './Like/Like';
+import PostTemplate from '../../PostTemplate/PostTemplate';
 
 const initialValues = {
     [CommentFormKeys.CommentText]: '',
@@ -28,7 +33,13 @@ export default function PostItem({ post }) {
 
     const [commentsCount, setCommentsCount] = useState(post.commentsCount);
 
-    const [editMenu, setEditMenu] = useState(false);
+    // const [editMenu, setEditMenu] = useState(false);
+
+    const [isPostLiked, setIsPostLiked] = useState(post.isLiked);
+
+    const [isLoading, setIsLoading] = useState(true);
+
+    const [likes, dispatchLike] = useReducer(likeReducer, []);
 
     const [isPostLiked, setIsPostLiked] = useState(post.isLiked);
 
@@ -58,7 +69,8 @@ export default function PostItem({ post }) {
             .then((result) => {
                 setMedia(result);
             })
-            .catch((error) => console.log(error));
+            .catch((error) => console.log(error))
+            .finally(() => setIsLoading(false));
 
         commentService
             .getAllComments(post.id, 0)
@@ -76,7 +88,7 @@ export default function PostItem({ post }) {
             .getLikes(post.id)
             .then((result) =>
                 dispatchLike({
-                    type: 'getLikes',
+                    type: LikeActions.GetLikes,
                     payload: result,
                 })
             )
@@ -93,7 +105,20 @@ export default function PostItem({ post }) {
     const openPostDetails = () => navigate(PATH.postDetails(post.id));
     // const showEditMenuToggle = () => setEditMenu(!editMenu);
 
-    const closeEditMenu = () => setEditMenu(false);
+    // const closeEditMenu = () => setEditMenu(false);
+
+    const onLikeButtonClickHandler = async () => {
+        if (!isPostLiked) {
+            const newLike = await likeService.addLike(post.id);
+
+            dispatchLike({
+                type: LikeActions.AddLike,
+                payload: newLike,
+            });
+
+            setIsPostLiked(true);
+        }
+    };
 
     const onLikeButtonClickHandler = async () => {
         if (!isPostLiked) {
@@ -153,184 +178,207 @@ export default function PostItem({ post }) {
     }
 
     return (
-        <article className={styles['post-item']}>
-            {/* {editMenu && (
+        <>
+            {isLoading && <PostTemplate />}
+
+            {!isLoading && (
+                <article className={styles['post-item']}>
+                    {/* {editMenu && (
+
                 <div
                     onClick={closeEditMenu}
                     className={styles['backdrop']}
                 ></div>
             )} */}
 
-            {/* {deleteModal && (
+                    {/* {deleteModal && (
                 <DeletePost
                     closeDeleteModal={closeDeleteModal}
                     postId={post.id}
                 />
             )} */}
 
-            <UserInfo post={post} />
+                    <UserInfo post={post} />
 
-            {/* {editMenu && ( */}
-            {/* <section className={styles['edit-menu']}> */}
-            {/* <div className={styles['edit-post']}> */}
-            {/* <i className="fa-solid fa-pen-to-square"></i> */}
-            {/* <p>Edit Post</p> */}
-            {/* </div> */}
-            {/* <div */}
-            {/* onClick={showDeleteModal} */}
-            {/* className={styles['delete-post']} */}
-            {/* > */}
-            {/* <i className="fa-solid fa-trash-can"></i> */}
-            {/* <p>Delete Post</p> */}
-            {/* </div> */}
-            {/* </section> */}
-            {/* // )} */}
-            <section
-                ref={mediaSectionRef}
-                className={styles['content-description']}
-            >
-                <p>{post.content}</p>
-            </section>
-            {media.length === 1 && (
-                <section
-                    onClick={openPostDetails}
-                    ref={mediaSectionRef}
-                    className={styles['media']}
-                >
-                    <img src={media[0].url} alt="img" />
-                </section>
-            )}
-
-            {media.length === 2 && (
-                <section
-                    onClick={openPostDetails}
-                    ref={mediaSectionRef}
-                    className={styles['with-two-files']}
-                >
-                    <ul>
-                        {media.slice(0, 3).map((file) => (
-                            <li key={file.fileId}>
-                                <img src={file.url} alt="img" />
-                            </li>
-                        ))}
-                    </ul>
-                </section>
-            )}
-
-            {media.length === 3 && (
-                <section
-                    onClick={openPostDetails}
-                    ref={mediaSectionRef}
-                    className={styles['multi-media']}
-                >
-                    <ul className={styles['files']}>
-                        {media.slice(0, 3).map((file) => (
-                            <li key={file.fileId} className={styles['file']}>
-                                <img src={file.url} alt="img" />
-                            </li>
-                        ))}
-                    </ul>
-                </section>
-            )}
-
-            {media.length > 3 && (
-                <section
-                    onClick={openPostDetails}
-                    ref={mediaSectionRef}
-                    className={styles['multi-media']}
-                >
-                    <ul className={styles['files']}>
-                        {media.slice(0, 3).map((file) => (
-                            <li key={file.fileId} className={styles['file']}>
-                                <img src={file.url} alt="img" />
-                            </li>
-                        ))}
-                    </ul>
-                    <div className={styles['media-backdrop']}>
-                        <p>View all {media.length} photos</p>
-                    </div>
-                </section>
-            )}
-            <section className={styles['likes']}>
-                <div className={styles['likes-count']}>
-                    <i className="fa-solid fa-thumbs-up"></i>
-                    <p>{likes.length}</p>
-                </div>
-                <p
-                    onClick={openPostDetails}
-                    className={styles['comments-count']}
-                >
-                    {commentsCount} comments
-                </p>
-            </section>
-            <section className={styles['buttons']}>
-                <Like
-                    onLikeButtonClickHandler={onLikeButtonClickHandler}
-                    isPostLiked={isPostLiked}
-                />
-                <div
-                    onClick={focusInput}
-                    className={styles['comment-button-wrapper']}
-                >
-                    <i className="fa-solid fa-comment"></i>
-                    <p className={styles['comment-button']}>Comment</p>
-                </div>
-            </section>
-            <section className={styles['comments']}>
-                {comments
-                    .sort(
-                        (a, b) =>
-                            new Date(a.dateCreated) - new Date(b.dateCreated)
-                    )
-                    .map((comment) => (
-                        <li className={styles['comment']} key={comment.id}>
-                            <Comment
-                                comment={comment}
-                                deleteCommentHandler={deleteCommentHandler}
-                                editCommentHandler={editCommentHandler}
-                            />
-                        </li>
-                    ))}
-            </section>
-            <section className={styles['add-comment']}>
-                <img
-                    className={styles['comment-user-img']}
-                    src={avatar || '/images/default-profile-pic.png'}
-                    alt="user"
-                />
-                <div className={styles['comment-area']}>
-                    <form
-                        className={styles['comment-form']}
-                        onSubmit={handleSubmit}
+                    {/* {editMenu && ( */}
+                    {/* <section className={styles['edit-menu']}> */}
+                    {/* <div className={styles['edit-post']}> */}
+                    {/* <i className="fa-solid fa-pen-to-square"></i> */}
+                    {/* <p>Edit Post</p> */}
+                    {/* </div> */}
+                    {/* <div */}
+                    {/* onClick={showDeleteModal} */}
+                    {/* className={styles['delete-post']} */}
+                    {/* > */}
+                    {/* <i className="fa-solid fa-trash-can"></i> */}
+                    {/* <p>Delete Post</p> */}
+                    {/* </div> */}
+                    {/* </section> */}
+                    {/* // )} */}
+                    <section
+                        ref={mediaSectionRef}
+                        className={styles['content-description']}
                     >
-                        <label htmlFor={CommentFormKeys.CommentText}></label>
-                        <textarea
-                            ref={inputRef}
-                            className={styles['comment-area']}
-                            type="text"
-                            placeholder="Write a comment..."
-                            name={CommentFormKeys.CommentText}
-                            id={CommentFormKeys.CommentText}
-                            onChange={handleChange}
-                            value={values[CommentFormKeys.CommentText]}
-                        ></textarea>
-                        <button
-                            className={
-                                values[CommentFormKeys.CommentText].length > 0
-                                    ? styles['submit-button']
-                                    : styles['submit-button-error']
-                            }
-                            type="submit"
-                            disabled={
-                                isSubmitting ||
-                                values[CommentFormKeys.CommentText].length === 0
-                            }
+                        <p>{post.content}</p>
+                    </section>
+                    {media.length === 1 && (
+                        <section
+                            onClick={openPostDetails}
+                            ref={mediaSectionRef}
+                            className={styles['media']}
                         >
-                            <i className="fa-solid fa-paper-plane"></i>
-                        </button>
-                    </form>
-                </div>
-            </section>
-        </article>
+                            <img src={media[0].url} alt="img" />
+                        </section>
+                    )}
+
+                    {media.length === 2 && (
+                        <section
+                            onClick={openPostDetails}
+                            ref={mediaSectionRef}
+                            className={styles['with-two-files']}
+                        >
+                            <ul>
+                                {media.slice(0, 3).map((file) => (
+                                    <li key={file.fileId}>
+                                        <img src={file.url} alt="img" />
+                                    </li>
+                                ))}
+                            </ul>
+                        </section>
+                    )}
+
+                    {media.length === 3 && (
+                        <section
+                            onClick={openPostDetails}
+                            ref={mediaSectionRef}
+                            className={styles['multi-media']}
+                        >
+                            <ul className={styles['files']}>
+                                {media.slice(0, 3).map((file) => (
+                                    <li
+                                        key={file.fileId}
+                                        className={styles['file']}
+                                    >
+                                        <img src={file.url} alt="img" />
+                                    </li>
+                                ))}
+                            </ul>
+                        </section>
+                    )}
+
+                    {media.length > 3 && (
+                        <section
+                            onClick={openPostDetails}
+                            ref={mediaSectionRef}
+                            className={styles['multi-media']}
+                        >
+                            <ul className={styles['files']}>
+                                {media.slice(0, 3).map((file) => (
+                                    <li
+                                        key={file.fileId}
+                                        className={styles['file']}
+                                    >
+                                        <img src={file.url} alt="img" />
+                                    </li>
+                                ))}
+                            </ul>
+                            <div className={styles['media-backdrop']}>
+                                <p>View all {media.length} photos</p>
+                            </div>
+                        </section>
+                    )}
+                    <section className={styles['likes']}>
+                        <div className={styles['likes-count']}>
+                            <i className="fa-solid fa-thumbs-up"></i>
+                            <p>{likes.length}</p>
+                        </div>
+                        <p
+                            onClick={openPostDetails}
+                            className={styles['comments-count']}
+                        >
+                            {commentsCount} comments
+                        </p>
+                    </section>
+                    <section className={styles['buttons']}>
+                        <Like
+                            onLikeButtonClickHandler={onLikeButtonClickHandler}
+                            isPostLiked={isPostLiked}
+                        />
+                        <div
+                            onClick={focusInput}
+                            className={styles['comment-button-wrapper']}
+                        >
+                            <i className="fa-solid fa-comment"></i>
+                            <p className={styles['comment-button']}>Comment</p>
+                        </div>
+                    </section>
+                    <section className={styles['comments']}>
+                        {comments
+                            .sort(
+                                (a, b) =>
+                                    new Date(a.dateCreated) -
+                                    new Date(b.dateCreated)
+                            )
+                            .map((comment) => (
+                                <li
+                                    className={styles['comment']}
+                                    key={comment.id}
+                                >
+                                    <Comment
+                                        comment={comment}
+                                        deleteCommentHandler={
+                                            deleteCommentHandler
+                                        }
+                                        editCommentHandler={editCommentHandler}
+                                    />
+                                </li>
+                            ))}
+                    </section>
+                    <section className={styles['add-comment']}>
+                        <img
+                            className={styles['comment-user-img']}
+                            src={avatar || '/images/default-profile-pic.png'}
+                            alt="user"
+                        />
+                        <div className={styles['comment-area']}>
+                            <form
+                                className={styles['comment-form']}
+                                onSubmit={handleSubmit}
+                            >
+                                <label
+                                    htmlFor={CommentFormKeys.CommentText}
+                                ></label>
+                                <textarea
+                                    ref={inputRef}
+                                    className={styles['comment-area']}
+                                    type="text"
+                                    placeholder="Write a comment..."
+                                    name={CommentFormKeys.CommentText}
+                                    id={CommentFormKeys.CommentText}
+                                    onChange={handleChange}
+                                    value={values[CommentFormKeys.CommentText]}
+                                ></textarea>
+                                <button
+                                    className={
+                                        values[CommentFormKeys.CommentText]
+                                            .length > 0
+                                            ? styles['submit-button']
+                                            : styles['submit-button-error']
+                                    }
+                                    type="submit"
+                                    disabled={
+                                        isSubmitting ||
+                                        values[CommentFormKeys.CommentText]
+                                            .length === 0
+                                    }
+                                >
+                                    <i className="fa-solid fa-paper-plane"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </section>
+                </article>
+            )}
+        </>
     );
 }

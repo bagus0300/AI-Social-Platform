@@ -10,6 +10,12 @@
     margin: 5em auto 2em auto;
 }
 
+.spinner-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 6em;
+}
+
 .post-description {
     padding: 0 1em 0.5em 1em;
 }

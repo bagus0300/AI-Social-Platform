@@ -3,7 +3,7 @@ import { ContentType, tokenName, host } from '../environments/costants';
 const buildOptions = (data, requestType) => {
     const options = {};
 
-    if (requestType === ContentType.ApplicationJSON) {
+    if (requestType === ContentType.ApplicationJSON && data) {
         options.body = JSON.stringify(data);
         options.headers = {
             'Content-Type': ContentType.ApplicationJSON,

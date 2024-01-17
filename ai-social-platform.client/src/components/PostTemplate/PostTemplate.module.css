@@ -1,0 +1,134 @@
+.post-item {
+    background-color: #fff;
+    overflow: hidden;
+    width: 30em;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.5em;
+    box-shadow: 0 0 0.2em 0.1em #ddd;
+    position: relative;
+}
+
+.content-description,
+.likes {
+    padding: 0 1em 0.5em 1em;
+    font-size: 0.9em;
+}
+
+.user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-info-wrapper {
+    display: flex;
+    gap: 1em;
+    padding: 0.5em 1em 0.5em 1em;
+    align-items: center;
+}
+
+.user-img {
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+    background-color: #ccc;
+}
+
+/* .username-wrapper {
+    font-size: 0.9em;
+    font-weight: 600;
+} */
+
+.names-wrapper {
+    display: flex;
+    gap: 0.3em;
+}
+
+.first-name,
+.last-name {
+    width: 4em;
+    background-color: #ccc;
+    height: 0.9em;
+    border-radius: 0.3em;
+}
+
+.posted-on {
+    font-size: 0.6em;
+    color: #636363;
+}
+
+.media {
+    width: 100%;
+    background-color: #ccc;
+    height: 20em;
+}
+
+.likes {
+    display: flex;
+    justify-content: space-between;
+    color: #636363;
+}
+
+.likes-count {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+}
+
+.likes-count i {
+    color: #369;
+}
+
+.likes-count i,
+.likes .comments-count {
+    padding-right: 0.2em;
+}
+
+.comments-count {
+    cursor: default;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-evenly;
+    border-top: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+.buttons > * {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    cursor: default;
+    padding: 0 2em 0 2em;
+}
+
+.like-button,
+.comment-button-wrapper,
+.comment-button {
+    color: #797979;
+}
+
+.add-comment {
+    display: flex;
+    align-items: center;
+    padding: 0.5em 1em 0.5em 1em;
+    gap: 0.2em;
+}
+
+.comment-area {
+    background-color: #ccc;
+    width: 70%;
+    height: 1em;
+    border-radius: 0.3em;
+}
+
+.comment-user-img {
+    height: 2em;
+    width: 2em;
+    background-color: #ccc;
+    border-radius: 50%;
+}

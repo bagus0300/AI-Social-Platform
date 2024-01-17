@@ -7,7 +7,7 @@ import * as mediaService from '../../core/services/mediaService';
 import * as commentService from '../../core/services/commentService';
 import * as likeService from '../../core/services/likeService';
 
-import { CommentFormKeys } from '../../core/environments/costants';
+import { CommentFormKeys, LikeActions } from '../../core/environments/costants';
 import { CommentActions } from '../../core/environments/costants';
 import AuthContext from '../../contexts/authContext';
 import commentReducer from '../../reducers/commentReducer';
@@ -17,6 +17,7 @@ import Comment from '../Posts/PostItem/Comment/Comment';
 import UserInfo from '../Posts/PostItem/UserInfo/UserInfo';
 import Like from '../Posts/PostItem/Like/Like';
 import likeReducer from '../../reducers/likeReducer';
+import PaginationSpinner from '../PaginationSpinner/PaginationSpinner';
 
 const initialValues = {
     [CommentFormKeys.CommentText]: '',
@@ -34,6 +35,8 @@ export default function PostDetails() {
     const [postMedia, setPostMedia] = useState([]);
 
     const [isPostLiked, setIsPostLiked] = useState();
+
+    const [isLoading, setIsLoading] = useState(true);
 
     const [likes, dispatchLike] = useReducer(likeReducer, []);
 
@@ -59,7 +62,8 @@ export default function PostDetails() {
         mediaService
             .getMediaByPostId(postId)
             .then((result) => setPostMedia(result))
-            .catch((error) => console.log(error));
+            .catch((error) => console.log(error))
+            .finally(() => setIsLoading(false));
 
         commentService
             .getAllComments(postId, commentsPage)
@@ -75,7 +79,7 @@ export default function PostDetails() {
             .getLikes(postId)
             .then((result) =>
                 dispatchLike({
-                    type: 'getLikes',
+                    type: LikeActions.GetLikes,
                     payload: result,
                 })
             )
@@ -147,7 +151,7 @@ export default function PostDetails() {
             const newLike = await likeService.addLike(postId);
 
             dispatchLike({
-                type: 'addLike',
+                type: LikeActions.AddLike,
                 payload: newLike,
             });
 
@@ -156,99 +160,119 @@ export default function PostDetails() {
     };
 
     return (
-        <section className={styles['post-details-section']}>
-            <UserInfo post={postData} />
-            <section className={styles['post-description']}>
-                {postData.content}
-            </section>
-            <section className={styles['media']}>
-                {postMedia.map((media) => (
-                    <ul key={media.fileId}>
-                        <li className={styles['media']}>
-                            <img src={media.url} alt="" />
-                        </li>
-                    </ul>
-                ))}
-            </section>
-            <section className={styles['likes']}>
-                <div className={styles['likes-count']}>
-                    <i className="fa-solid fa-thumbs-up"></i>
-                    <p>{likes.length}</p>
+        <>
+            {isLoading && (
+                <div className={styles['spinner-wrapper']}>
+                    <PaginationSpinner />
                 </div>
-                <p className={styles['comments-count']}>
-                    {commentsCount} comments
-                </p>
-            </section>
-            <section className={styles['buttons']}>
-                <Like
-                    isPostLiked={isPostLiked}
-                    onLikeButtonClickHandler={onLikeButtonClickHandler}
-                />
-                <div className={styles['comment-button-wrapper']}>
-                    <i className="fa-solid fa-comment"></i>
-                    <p className={styles['comment-button']}>Comment</p>
-                </div>
-            </section>
-            <section className={styles['comments']}>
-                {comments
-                    ?.sort(
-                        (a, b) =>
-                            new Date(a.dateCreated) - new Date(b.dateCreated)
-                    )
-                    ?.map((comment) => (
-                        <li className={styles['comment']} key={comment.id}>
-                            <Comment
-                                comment={comment}
-                                deleteCommentHandler={deleteCommentHandler}
-                                editCommentHandler={editCommentHandler}
-                            />
-                        </li>
-                    ))}
-                <div className={styles['load-more-comments']}>
-                    {commentsPage > 0 && <p onClick={backPage}>Back</p>}
-                    {commentsLeft !== 0 && (
-                        <p onClick={loadMoreComments}>Next</p>
-                    )}
-                </div>
-            </section>
-            <section className={styles['add-comment']}>
-                <img
-                    className={styles['comment-user-img']}
-                    src={avatar || '/images/default-profile-pic.png'}
-                    alt="user"
-                />
-                <div className={styles['comment-area']}>
-                    <form
-                        className={styles['comment-form']}
-                        onSubmit={handleSubmit}
-                    >
-                        <label htmlFor={CommentFormKeys.CommentText}></label>
-                        <textarea
-                            className={styles['comment-area']}
-                            type="text"
-                            placeholder="Write a comment..."
-                            name={CommentFormKeys.CommentText}
-                            id={CommentFormKeys.CommentText}
-                            onChange={handleChange}
-                            value={values[CommentFormKeys.CommentText]}
-                        ></textarea>
-                        <button
-                            className={
-                                values[CommentFormKeys.CommentText].length > 0
-                                    ? styles['submit-button']
-                                    : styles['submit-button-error']
-                            }
-                            type="submit"
-                            disabled={
-                                isSubmitting ||
-                                values[CommentFormKeys.CommentText].length === 0
-                            }
-                        >
-                            <i className="fa-solid fa-paper-plane"></i>
-                        </button>
-                    </form>
-                </div>
-            </section>
-        </section>
+            )}
+            {!isLoading && (
+                <section className={styles['post-details-section']}>
+                    <UserInfo post={postData} />
+                    <section className={styles['post-description']}>
+                        {postData.content}
+                    </section>
+                    <section className={styles['media']}>
+                        {postMedia.map((media) => (
+                            <ul key={media.fileId}>
+                                <li className={styles['media']}>
+                                    <img src={media.url} alt="" />
+                                </li>
+                            </ul>
+                        ))}
+                    </section>
+                    <section className={styles['likes']}>
+                        <div className={styles['likes-count']}>
+                            <i className="fa-solid fa-thumbs-up"></i>
+                            <p>{likes.length}</p>
+                        </div>
+                        <p className={styles['comments-count']}>
+                            {commentsCount} comments
+                        </p>
+                    </section>
+                    <section className={styles['buttons']}>
+                        <Like
+                            isPostLiked={isPostLiked}
+                            onLikeButtonClickHandler={onLikeButtonClickHandler}
+                        />
+                        <div className={styles['comment-button-wrapper']}>
+                            <i className="fa-solid fa-comment"></i>
+                            <p className={styles['comment-button']}>Comment</p>
+                        </div>
+                    </section>
+                    <section className={styles['comments']}>
+                        {comments
+                            ?.sort(
+                                (a, b) =>
+                                    new Date(a.dateCreated) -
+                                    new Date(b.dateCreated)
+                            )
+                            ?.map((comment) => (
+                                <li
+                                    className={styles['comment']}
+                                    key={comment.id}
+                                >
+                                    <Comment
+                                        comment={comment}
+                                        deleteCommentHandler={
+                                            deleteCommentHandler
+                                        }
+                                        // TODO: ADD edit comment handler
+                                        // editCommentHandler={editCom6mentHandler}
+                                    />
+                                </li>
+                            ))}
+                        <div className={styles['load-more-comments']}>
+                            {commentsPage > 0 && <p onClick={backPage}>Back</p>}
+                            {commentsLeft !== 0 && (
+                                <p onClick={loadMoreComments}>Next</p>
+                            )}
+                        </div>
+                    </section>
+                    <section className={styles['add-comment']}>
+                        <img
+                            className={styles['comment-user-img']}
+                            src={avatar || '/images/default-profile-pic.png'}
+                            alt="user"
+                        />
+                        <div className={styles['comment-area']}>
+                            <form
+                                className={styles['comment-form']}
+                                onSubmit={handleSubmit}
+                            >
+                                <label
+                                    htmlFor={CommentFormKeys.CommentText}
+                                ></label>
+                                <textarea
+                                    className={styles['comment-area']}
+                                    type="text"
+                                    placeholder="Write a comment..."
+                                    name={CommentFormKeys.CommentText}
+                                    id={CommentFormKeys.CommentText}
+                                    onChange={handleChange}
+                                    value={values[CommentFormKeys.CommentText]}
+                                ></textarea>
+                                <button
+                                    className={
+                                        values[CommentFormKeys.CommentText]
+                                            .length > 0
+                                            ? styles['submit-button']
+                                            : styles['submit-button-error']
+                                    }
+                                    type="submit"
+                                    disabled={
+                                        isSubmitting ||
+                                        values[CommentFormKeys.CommentText]
+                                            .length === 0
+                                    }
+                                >
+                                    <i className="fa-solid fa-paper-plane"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </section>
+                </section>
+            )}
+        </>
     );
 }
