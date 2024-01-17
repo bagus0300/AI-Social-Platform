@@ -26,6 +26,9 @@ export const endpoints = {
     userDetails: 'User/userDetails',
     updateUser: 'User/updateUser',
     userDetails: (userId) => `User/userDetails/${userId}`,
+    addFriend: (userId) => `User/addFriend/${userId}`,
+    removeFriend: (userId) => `User/removeFriend/${userId}`,
+    allFriends:(userId) => `User/allFriends?userId=${userId}`,
 
     // POSTS
     createPost: 'Publication',
@@ -62,19 +65,18 @@ export const RegisterFormKeys = {
 };
 
 export const ProfileFormKeys = {
-    FirstName: 'firstName',
-    LastName: 'lastName',
-    Email: 'email',
-    PhoneNumber: 'phoneNumber',
-    Password: 'password',
-    ConfirmPassword: 'confirmPassword',
-    Country: 'country',
-    State: 'state',
-    Gender: 0,
-    School: 'school',
-    Birthday: 'birthday',
-    Relationship: 0,
-    Schools: [{}],
+    FirstName: 'FirstName',
+    LastName: 'LastName',
+    //Email: 'email',
+    PhoneNumber: 'PhoneNumber',
+    ProfilePicture: 'ProfilPicture',
+    CoverPhoto: 'CoverPhoto',
+    Country: 'Country',
+    State: 'State',
+    Gender: 'Gender',
+    School: 'School',
+    Birthday: 'Birthday',
+    Relationship: 'Relationship',
 };
 
 export const CreateFormKeys = {

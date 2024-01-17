@@ -18,42 +18,45 @@
     border-radius: 0.5em;
     box-shadow: 0 0 0.2em 0.1em #ddd;
     justify-content: space-between;
-    
+       
 }
 
 .user-info-wrapper {
     display: flex;
     gap: 1em;
     padding: 0.5em 1em 0.5em 1em;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
 }
 
-.user-info-text {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    align-self: flex-start;
-    padding: 12ex 0;
-}
-
 .user-img {
-    width: 13em;
-    height: 15em;
+    width: 7em;
+    height:7em;
+    border-radius: 40px;
 }
 
+.user-img:hover {
+    border-radius: 0px;
+  transform: scale(1.4); 
+}
 .user-cover {
     width: 30em;
-    height: 8em;
+    height: 10em;
 }
 .username-profile {
     font-size: 0.9em;
     font-weight: 700;
 }
 
+.cover-profile {
+    font-size: 1.0em;
+    font-weight: 700;
+}
+
+
 .posted-user {
-    font-size: 0.7em;
-    color: rgb(99, 99, 99);
+    font-size: 0.8em;
+   
 }
 
 .edit {
@@ -76,3 +79,80 @@
     text-indent: 2em;
 }
 
+label {
+    font-size: 0.8em;
+    font-weight: 700;
+}
+
+input {
+    font-size: 0.8em;
+    font-weight: 600;
+    border: 1px solid #aaa;
+   
+}
+
+.name-input {
+    font-size: 0.8em;
+    font-weight: 600;
+    border: 1px solid #aaa;
+    width: 70%;
+}
+
+.name-input-error {
+    font-size: 0.8em;
+    font-weight: 600;
+    border: 1px solid #a10000;
+    width: 70%;
+}
+
+.error-message {
+    color: #a10000;
+    font-size: 0.9em;
+    text-align: left;
+    padding-left: 0.2em;
+    margin-top: 0.2em;
+}
+ li {
+    list-style-type:none;
+    padding: 0em 1em 0em 1em;
+    }
+
+ fieldset {
+    width: 90%;
+    padding: 0.5em 1em 0.5em 1em;
+    border: 2px solid #004aad;
+    border-radius: 10px;
+    margin-top: auto;
+    margin-bottom: 10px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.profile-button {
+    background-color: #004aad;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    padding: 10px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer; 
+  }
+
+  .parent-button{
+    text-align: center;
+  }
+
+  .friend-img {
+    width: 1.3em;
+    height:1.3em;
+    border-radius: 40px;
+}
+
+.friend-img:hover {
+    border-radius: 0px;
+  transform: scale(2.3); 
+}

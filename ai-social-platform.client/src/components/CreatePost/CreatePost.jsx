@@ -16,7 +16,7 @@ const initialValues = {
 };
 
 export default function CreatePost() {
-    const {firstName, lastName} = useContext(AuthContext);
+    const { firstName, lastName } = useContext(AuthContext);
 
     const [textareaRows, setTextareaRows] = useState(2);
 
@@ -119,7 +119,9 @@ export default function CreatePost() {
                             alt=""
                         />
                     </Link>
-                    <p className={styles['user-names']}>{firstName} {lastName}</p>
+                    <p className={styles['user-names']}>
+                        {firstName} {lastName}
+                    </p>
                 </div>
                 <form onSubmit={handleSubmit} className={styles['create-form']}>
                     <label htmlFor={CreateFormKeys.PostDescription}></label>
