@@ -217,8 +217,7 @@ export default function PostDetails() {
                                         deleteCommentHandler={
                                             deleteCommentHandler
                                         }
-                                        // TODO: ADD edit comment handler
-                                        // editCommentHandler={editCom6mentHandler}
+                                        editCommentHandler={editCommentHandler}
                                     />
                                 </li>
                             ))}
