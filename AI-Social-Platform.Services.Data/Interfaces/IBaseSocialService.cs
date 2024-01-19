@@ -6,12 +6,16 @@ namespace AI_Social_Platform.Services.Data.Interfaces
 {
     public interface IBaseSocialService
     {
+        //Notifications
         public Task CreateNotificationAsync(Guid receivingUserId, 
             Guid creatingUserId,
             NotificationType notificationType,
             Guid? returningId);
-
+        public Task<int> GetNotificationsCountAsync();
         public Task<IEnumerable<NotificationDto>> GetLatestNotificationsAsync();
+        public Task ReadNotificationAsync(Guid notificationId);
+
+        //Search
         public Task<IEnumerable> SearchAsync(string type, string query);
 
         //Comments
@@ -22,8 +26,8 @@ namespace AI_Social_Platform.Services.Data.Interfaces
 
         //Likes
         public Task<IEnumerable<LikeDto>> GetLikesOnPublicationAsync(Guid publicationId);
-        public Task CreateLikesOnPublicationAsync(Guid publicationId);
-        public Task DeleteLikeOnPublicationAsync(Guid likeId);
+        public Task<LikeDto> CreateLikesOnPublicationAsync(Guid publicationId);
+        public Task<LikeDto> DeleteLikeOnPublicationAsync(Guid likeId);
 
         //Shares
         public Task<IEnumerable<ShareDto>> GetSharesOnPublicationAsync(Guid publicationId);

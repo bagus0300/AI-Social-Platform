@@ -76,10 +76,31 @@ namespace AI_Social_Platform.Services.Data
             return await mapper.ProjectTo<NotificationDto>
             (dbContext.Notifications
                 .AsQueryable()
-                .Where(n => n.ReceivingUserId == GetUserId())
+                .Where(n => n.ReceivingUserId == GetUserId() && n.IsRead == false)
                 .OrderByDescending(n => n.DateCreated)
                 .Take(notificationListSize))
                 .ToArrayAsync();
+        }
+
+        public async Task<int> GetNotificationsCountAsync()
+        {
+            return await dbContext.Notifications
+                .AsQueryable()
+                .Where(n => n.ReceivingUserId == GetUserId() && n.IsRead == false)
+                .CountAsync();
+        }
+
+        public async Task ReadNotificationAsync(Guid notificationId)
+        {
+            var notification = await dbContext.Notifications.FirstOrDefaultAsync(n => n.Id == notificationId);
+
+            if (notification == null)
+            {
+                throw new NullReferenceException(NotificationNotFound);
+            }
+
+            notification.IsRead = true;
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task<IEnumerable> SearchAsync(string type, string query)
@@ -238,7 +259,7 @@ namespace AI_Social_Platform.Services.Data
         }
 
         //Like
-        public async Task CreateLikesOnPublicationAsync(Guid publicationId)
+        public async Task<LikeDto> CreateLikesOnPublicationAsync(Guid publicationId)
         {
             var publication = await dbContext.Publications
                 .FirstOrDefaultAsync(p => p.Id == publicationId);
@@ -268,9 +289,11 @@ namespace AI_Social_Platform.Services.Data
 
             await dbContext.Likes.AddAsync(like);
             await dbContext.SaveChangesAsync();
+
+            return mapper.Map<LikeDto>(like);
         }
 
-        public async Task DeleteLikeOnPublicationAsync(Guid likeId)
+        public async Task<LikeDto> DeleteLikeOnPublicationAsync(Guid likeId)
         {
             var like = await dbContext.Likes.FirstOrDefaultAsync(l => l.Id == likeId);
             var userId = GetUserId();
@@ -287,6 +310,8 @@ namespace AI_Social_Platform.Services.Data
 
             dbContext.Likes.Remove(like);
             await dbContext.SaveChangesAsync();
+
+            return mapper.Map<LikeDto>(like);
         }
 
         public async Task<IEnumerable<LikeDto>> GetLikesOnPublicationAsync(Guid publicationId)

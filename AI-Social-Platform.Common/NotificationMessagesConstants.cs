@@ -29,5 +29,8 @@
         //Share
         public const string ShareSuccessfullyCreated = "Successfully created share!";
         public const string ShareSuccessfullyDeletedFromPublication = "Successfully deleted share from publication!";
+
+        //Notification
+        public const string NotificationSuccessfullyRead = "Successfully read notification!";
     }
 }

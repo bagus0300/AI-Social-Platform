@@ -15,5 +15,7 @@
         public string NotificationType { get; set; } = null!;
 
         public DateTime DateCreated { get; set; } 
+
+        public bool IsRead { get; set; } = false;
     }
 }
