@@ -8,17 +8,20 @@ import AuthContext from '../../contexts/authContext';
 import Posts from '../Posts/Posts';
 
 export default function Home() {
-    const { firstName, userId } = useContext(AuthContext);
+    const { firstName, userId, avatar } = useContext(AuthContext);
 
     return (
         <>
             <section className={styles['home-page']}>
                 <div className={styles['create-post-banner']}>
-                    <Link to={PATH.userProfile(userId)} className={styles['profile-pic-wrapper']}>
+                    <Link
+                        to={PATH.userProfile(userId)}
+                        className={styles['profile-pic-wrapper']}
+                    >
                         <img
                             className={styles['user-profile-pic']}
-                            src="/images/default-profile-pic.png"
-                            alt=""
+                            src={avatar || "/images/default-profile-pic.png"}
+                            alt="profile-pic"
                         />
                     </Link>
                     <p className={styles['placeholder']}>

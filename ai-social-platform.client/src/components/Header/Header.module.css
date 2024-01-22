@@ -41,7 +41,25 @@
 .search-form {
     display: flex;
     align-items: center;
-    justify-content: center;
+}
+
+.search-input-wrapper {
+    display: flex;
+    position: relative;
+}
+
+.search-input-cover {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    cursor: pointer;
+}
+.search-input-wrapper:hover,
+.search-form button:hover {
+    /* filter: drop-shadow(0 0 0.1em #eee); */
+    filter: contrast(0.9);
 }
 
 .search-form input,
@@ -49,6 +67,11 @@
     padding: 0.3em 0.5em;
     border: 0;
     border-radius: 0.3em;
+    cursor: pointer;
+}
+
+.search-form input:disabled {
+    background-color: #fff;
 }
 
 .search-form input {
@@ -62,10 +85,12 @@
 
 .user .menu {
     list-style: none;
+    position: relative;
 }
 
 .user .menu:hover {
     filter: brightness(90%);
+    position: relative;
     cursor: pointer;
 }
 
@@ -97,6 +122,17 @@
 
 .profile a:hover {
     text-decoration: underline;
+}
+
+.notifications-count-wrapper {
+    background-color: red;
+    width: 1.2em;
+    height: 1.3em;
+    border-radius: 50%;
+    font-size: 0.5em;
+    position: absolute;
+    bottom: 0.4em;
+    left: 0.9em;
 }
 
 .user-menu {

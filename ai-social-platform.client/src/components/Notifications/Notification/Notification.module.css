@@ -1,0 +1,16 @@
+.notification-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5em;
+}
+
+.notification-media {
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+}
+
+.notification-created {
+    font-size: 0.8em;
+}

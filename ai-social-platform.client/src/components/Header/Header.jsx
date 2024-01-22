@@ -1,24 +1,74 @@
-import { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+
+import * as notificationsService from '../../core/services/notificationsService';
 
 import { PATH } from '../../core/environments/costants';
 import styles from './Header.module.css';
 import AuthContext from '../../contexts/authContext';
 
+import Notifications from '../Notifications/Notifications';
+
 export default function Header() {
     const [showUserMenu, setShowUserMenu] = useState(false);
-    const { isAuthenticated, firstName, lastName, userId } =
+    const [showNotificationsMenu, setShowNotificationsMenu] = useState(false);
+
+    const { isAuthenticated, firstName, lastName, userId, avatar } =
         useContext(AuthContext);
+    const [notificationsCount, setNotificationsCount] = useState(0);
 
-    const showUserMenuToggle = () => setShowUserMenu(!showUserMenu);
+    useEffect(() => {
+        if (isAuthenticated) {
+            const interval = setInterval(() => {
+                notificationsService
+                    .getNotificationsCount()
+                    .then((result) => setNotificationsCount(result))
+                    .catch((error) => console.log(error));
+            }, 5000);
 
-    const hideMenus = () => {
+            return () => clearInterval(interval);
+        }
+    }, [isAuthenticated]);
+
+    const navigate = useNavigate();
+
+    const showUserMenuToggle = () => {
+        setShowUserMenu(!showUserMenu);
+        setShowNotificationsMenu(false);
+    };
+
+    const showNotificationsMenuToggle = () => {
+        setShowNotificationsMenu(!showNotificationsMenu);
         setShowUserMenu(false);
     };
 
+    const clearNotificationsCount = () =>
+        setNotificationsCount((state) =>
+            state - 20 < 0 ? state === 0 : state - 20
+        );
+
+    const hideMenus = () => {
+        setShowUserMenu(false);
+        setShowNotificationsMenu(false);
+    };
+
+    const onLogoutClickHandler = () => {
+        hideMenus();
+        setNotificationsCount(0);
+    };
+
+    const openSearchPage = () => navigate(PATH.search);
+
+    const formSubmit = (e) => e.preventDefault();
+
     return (
         <>
-            {showUserMenu && (
+            {showNotificationsMenu && (
+                <Notifications
+                    clearNotificationsCount={clearNotificationsCount}
+                />
+            )}
+            {(showUserMenu || showNotificationsMenu) && (
                 <div onClick={hideMenus} className={styles['backdrop']}></div>
             )}
             <header className={styles['app-header']}>
@@ -28,8 +78,15 @@ export default function Header() {
                     </Link>
                 </h1>
                 <section className={styles['profile']}>
-                    <form className={styles['search-form']}>
-                        <input placeholder="Search..." />
+                    <form
+                        onClick={openSearchPage}
+                        onSubmit={formSubmit}
+                        className={styles['search-form']}
+                    >
+                        <div className={styles['search-input-wrapper']}>
+                            <input placeholder="Search..." />
+                            <div className={styles['search-input-cover']}></div>
+                        </div>
                         <button>Search</button>
                     </form>
                     {!isAuthenticated ? (
@@ -40,18 +97,35 @@ export default function Header() {
                     ) : (
                         <div>
                             <ul className={styles['user']}>
-                                <li className={styles['menu']}>
+                                <li
+                                    onClick={showNotificationsMenuToggle}
+                                    className={styles['menu']}
+                                >
                                     <div className={styles['media']}>
                                         <i className="fa-solid fa-bell"></i>
                                     </div>
+                                    {notificationsCount > 0 && (
+                                        <div
+                                            className={
+                                                styles[
+                                                    'notifications-count-wrapper'
+                                                ]
+                                            }
+                                        >
+                                            <p>{notificationsCount}</p>
+                                        </div>
+                                    )}
                                 </li>
                                 <li
                                     onClick={showUserMenuToggle}
                                     className={styles['menu']}
                                 >
                                     <img
-                                        src="/images/default-profile-pic.png"
-                                        alt=""
+                                        src={
+                                            avatar ||
+                                            '/images/default-profile-pic.png'
+                                        }
+                                        alt="profile-pic"
                                     />
                                 </li>
                             </ul>
@@ -65,14 +139,19 @@ export default function Header() {
                             to={PATH.userProfile(userId)}
                             className={styles['user-info']}
                         >
-                            <img src="/images/default-profile-pic.png" alt="" />
+                            <img
+                                src={
+                                    avatar || '/images/default-profile-pic.png'
+                                }
+                                alt="profile-pic"
+                            />
                             <p>
                                 {firstName} {lastName}
                             </p>
                         </Link>
                         <Link
                             className={styles['logout']}
-                            onClick={hideMenus}
+                            onClick={onLogoutClickHandler}
                             to={PATH.logout}
                         >
                             <i className="fa-solid fa-right-from-bracket"></i>{' '}

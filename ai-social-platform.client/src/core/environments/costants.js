@@ -53,6 +53,13 @@ export const endpoints = {
     getLikes: (postId) => `SocialFeature/like/${postId}`,
     addLike: (postId) => `SocialFeature/like/${postId}`,
     removeLike: (likeId) => `SocialFeature/like/${likeId}`,
+
+    // NOTIFICATIONS
+    getNotificationsCount: 'SocialFeature/notification/count',
+    getNotifications: 'SocialFeature/notification',
+    readNotification: (notificationId) =>
+        `SocialFeature/notification/read?notificationId=${notificationId}`,
+
 };
 
 export const LoginFormKeys = {

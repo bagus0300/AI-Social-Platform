@@ -1,0 +1,28 @@
+.notifications-section {
+    padding: 0.5em 0.8em;
+    width: 15em;
+    position: absolute;
+    top: 3em;
+    right: 0.2em;
+    background-color: #fff;
+    color: #000;
+    border-radius: 0.5em;
+    box-shadow: 0 0 0.2em 0.1em #ccc;
+    z-index: 500;
+}
+
+.notification {
+    list-style: none;
+    padding: 0.3em;
+    border-radius: 0.5em;
+    cursor: pointer;
+}
+
+.notification:hover {
+    background-color: #eee;
+}
+
+.notification-spinner {
+    display: flex;
+    justify-content: center;
+}
