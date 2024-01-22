@@ -17,7 +17,7 @@
         {
             this.Id = Guid.NewGuid();
             this.Publications = new HashSet<Publication.Publication>();
-            this.Friends = new HashSet<ApplicationUser>();
+            this.Friendships = new HashSet<Friendship>();
             this.Comments = new HashSet<Comment>();
             this.Likes = new HashSet<Like>();
             this.Shares = new HashSet<Share>();
@@ -65,7 +65,7 @@
         public ICollection<Comment> Comments { get; set; }
         public ICollection<Like> Likes { get; set; }
         public ICollection<Share> Shares { get; set; }
-        public ICollection<ApplicationUser> Friends { get; set; }
+        public ICollection<Friendship> Friendships { get; set; }
         public ICollection<UserTopic> FollowedTopics { get; set; }
         public ICollection<Notification> CreatingNotifications { get; set; }
         public ICollection<Notification> ReceivingNotifications { get; set; }

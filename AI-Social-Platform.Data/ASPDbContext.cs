@@ -17,6 +17,7 @@
         public DbSet<Country> Countries { get; set; } = null!;
         public DbSet<State> States { get; set; } = null!;
         public DbSet<ApplicationUser> ApplicationUsers { get; set; } = null!;
+        public DbSet<Friendship> Friendships { get; set; }
         public DbSet<Publication> Publications { get; set; } = null!;
         public DbSet<Comment> Comments { get; set; } = null!;
         public DbSet<Like> Likes { get; set; } = null!;
@@ -28,6 +29,23 @@
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+
+            builder.Entity<Friendship>()
+                .HasKey(f => new { f.UserId, f.FriendId });
+
+            builder.Entity<Friendship>()
+                .HasOne(f => f.User)
+                .WithMany(u => u.Friendships)
+                .HasForeignKey(f => f.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Friendship>()
+                .HasOne(f => f.Friend)
+                .WithMany()
+                .HasForeignKey(f => f.FriendId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
             Assembly configAssembly = Assembly.GetAssembly(typeof(ASPDbContext)) ??
                                       Assembly.GetExecutingAssembly();
 

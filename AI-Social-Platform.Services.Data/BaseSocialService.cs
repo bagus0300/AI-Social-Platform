@@ -49,19 +49,19 @@ namespace AI_Social_Platform.Services.Data
             {
                 case NotificationType.Comment: 
                     notification.Content = $"{user} commented your publication"; 
-                    notification.RedirectUrl = $"/Publication/{returningId}";
+                    notification.RedirectUrl = $"/posts/{returningId}";
                     break;
                 case NotificationType.Like: 
                     notification.Content = $"{user} liked your publication";
-                    notification.RedirectUrl = $"/Publication/{returningId}";
+                    notification.RedirectUrl = $"/posts/{returningId}";
                     break;
                 case NotificationType.Follow:
                     notification.Content = $"{user} followed you";
-                    notification.RedirectUrl = $"/User/{creatingUserId}";
+                    notification.RedirectUrl = $"/user/{creatingUserId}";
                     break;
                 case NotificationType.Share: 
                     notification.Content = $"{user} shared your publication";
-                    notification.RedirectUrl = $"/Publication/{returningId}";
+                    notification.RedirectUrl = $"/posts/{returningId}";
                     break;
             }
 

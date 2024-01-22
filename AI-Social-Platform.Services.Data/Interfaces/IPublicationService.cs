@@ -5,6 +5,7 @@ namespace AI_Social_Platform.Services.Data.Interfaces;
 public interface IPublicationService
 {
     public Task<IndexPublicationDto> GetPublicationsAsync(int pageNum);
+    public Task<IndexPublicationDto> GetUserPublicationsAsync(int pageNum, Guid userId);
     public Task<PublicationDto> GetPublicationAsync(Guid id);
     public Task<PublicationDto> CreatePublicationAsync(PublicationFormDto dto);
 

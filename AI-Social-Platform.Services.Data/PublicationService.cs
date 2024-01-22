@@ -34,40 +34,74 @@ public class PublicationService : IPublicationService
         if (pageNum <= 0) pageNum = 1;
         int skip = (pageNum - 1) * pageSize;
 
-        var userFriends = dbContext.Users
-            .Where(u => u.Id == GetUserId())
-            .Include(u => u.Friends)
-            .ThenInclude(f => f.Publications);
+        var userId = GetUserId();
 
-        var publications = await userFriends
-            .SelectMany(u => u.Friends.SelectMany(f => f.Publications))
+        var userFriends =  dbContext.Friendships
+            .Where(u => u.UserId == userId)
+            .Select(f => f.FriendId);
+
+        var publications = dbContext.Publications
+            .Where(p => userFriends.Any(u => u == p.AuthorId))
             .OrderByDescending(p => p.LatestActivity)
             .Skip(skip)
-            .Take(pageSize)
+            .Take(pageSize);
+
+        var likeIds = await dbContext.Likes
+            .Where(l => l.UserId == userId && publications.Select(p => p.Id)
+                .Any(p => p == l.PublicationId)).ToListAsync();
+
+        int totalPublications = await dbContext.Publications
+            .Where(p => userFriends.Any(u => u == p.AuthorId)).CountAsync();
+
+        int publicationsLeft = totalPublications - (pageNum * pageSize) < 0 ? 0 : totalPublications - (pageNum * pageSize);
+
+        var publicationsDto = await publications
             .ProjectTo<PublicationDto>(mapper.ConfigurationProvider)
             .ToListAsync();
 
-        var publicationIds = publications.Select(p => p.Id).ToList();
-
-        var likes = await dbContext.Likes
-            .Where(l => l.UserId == GetUserId() && publicationIds.Any(p => p == l.PublicationId))
-            .ToListAsync();
-
-        int totalPublications = await userFriends.SelectMany(u => u.Friends.SelectMany(f => f.Publications)).CountAsync();
-        int publicationsLeft = totalPublications - (pageNum * pageSize) < 0 ? 0 : totalPublications - (pageNum * pageSize);
-        publications.ForEach(p =>
+        publicationsDto.ForEach(p =>
         {
-            p.IsLiked = likes.Any(l => l.PublicationId == p.Id && l.UserId == GetUserId());
+            p.IsLiked = likeIds.Any(l => l.PublicationId == p.Id);
         });
-       
 
         var indexPublicationDto = new IndexPublicationDto
         {
-            Publications = publications.OrderByDescending(p => p.LatestActivity),
+            Publications = publicationsDto.OrderByDescending(p => p.LatestActivity),
             CurrentPage = pageNum,
             TotalPages = (int)Math.Ceiling(totalPublications / (double)pageSize),
             TotalPublications = totalPublications,
             PublicationsLeft = publicationsLeft
+        };
+        return indexPublicationDto;
+    }
+
+    public async Task<IndexPublicationDto> GetUserPublicationsAsync(int pageNum, Guid userId)
+    {
+        int pageSize = 10;
+        if (pageNum <= 0) pageNum = 1;
+        int skip = (pageNum - 1) * pageSize;
+
+        var userPublicationsQuery = dbContext.Publications
+            .Where(p => p.AuthorId == userId)
+            .OrderByDescending(p => p.LatestActivity)
+            .ProjectTo<PublicationDto>(mapper.ConfigurationProvider);
+
+        var publicationsCount = userPublicationsQuery.Count();
+
+        var publications = await userPublicationsQuery
+            .Skip(skip)
+            .Take(pageSize)
+            .ToListAsync();
+
+        publications.ForEach(p => p.IsLiked = dbContext.Likes.Any(l => l.PublicationId == p.Id && l.UserId == GetUserId()));
+
+        var indexPublicationDto = new IndexPublicationDto
+        {
+            Publications = publications,
+            CurrentPage = pageNum,
+            TotalPages = (int)Math.Ceiling(publicationsCount / (double)pageSize),
+            TotalPublications = publicationsCount,
+            PublicationsLeft = publicationsCount - (pageNum * 10) < 0 ? 0 : publicationsCount - (pageNum * 10)
         };
         return indexPublicationDto;
     }
@@ -177,4 +211,6 @@ public class PublicationService : IPublicationService
 
         return Guid.Parse(userId);
     }
+
+   
 }

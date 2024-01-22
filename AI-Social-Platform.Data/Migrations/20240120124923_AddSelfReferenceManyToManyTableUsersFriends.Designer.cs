@@ -4,6 +4,7 @@ using AI_Social_Platform.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AI_Social_Platform.Data.Migrations
 {
     [DbContext(typeof(ASPDbContext))]
-    partial class ASPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240120124923_AddSelfReferenceManyToManyTableUsersFriends")]
+    partial class AddSelfReferenceManyToManyTableUsersFriends
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,6 +32,9 @@ namespace AI_Social_Platform.Data.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<Guid?>("ApplicationUserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("Birthday")
                         .HasColumnType("datetime2");
@@ -120,6 +125,8 @@ namespace AI_Social_Platform.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicationUserId");
+
                     b.HasIndex("CountryId");
 
                     b.HasIndex("NormalizedEmail")
@@ -151,7 +158,7 @@ namespace AI_Social_Platform.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "user@user.com",
                             NormalizedUserName = "USER@USER.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIykoSpi5VlNUVgvnQWQ3upvmqJvcymY6PedYIxYE5HwRNA7YlDoiwH251HWSiB35A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBtk7zIbfywtV3whfzHR+UEzuSQwERUwAa0vABxw2TRHRNWhQzCD1uh027Qyw+J8Og==",
                             PhoneNumber = "0888555666",
                             PhoneNumberConfirmed = false,
                             Relationship = 1,
@@ -177,7 +184,7 @@ namespace AI_Social_Platform.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.com",
                             NormalizedUserName = "ADMIN@ADMIN.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGDx2Mdtf8PLPl9jnS+J608EiH1LxW9LMcsiP9deWKVAiPHR0xpJYOQejU+R6V29Bw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEx10LDD88ntTjJNqwRrZdJnVrNTt8q+YqySJ9dUyJVemp0ByzESklz8KKBkA/y1PA==",
                             PhoneNumberConfirmed = false,
                             Relationship = 0,
                             School = "Vasil Levski",
@@ -655,6 +662,10 @@ namespace AI_Social_Platform.Data.Migrations
 
             modelBuilder.Entity("AI_Social_Platform.Data.Models.ApplicationUser", b =>
                 {
+                    b.HasOne("AI_Social_Platform.Data.Models.ApplicationUser", null)
+                        .WithMany("Friends")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("AI_Social_Platform.Data.Models.Country", "Country")
                         .WithMany("UsersInThisCountry")
                         .HasForeignKey("CountryId")
@@ -887,6 +898,8 @@ namespace AI_Social_Platform.Data.Migrations
                     b.Navigation("CreatingNotifications");
 
                     b.Navigation("FollowedTopics");
+
+                    b.Navigation("Friends");
 
                     b.Navigation("Friendships");
 

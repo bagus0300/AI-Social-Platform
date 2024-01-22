@@ -17,6 +17,7 @@
     using Interfaces;
     using UserDto;
     using PublicationDtos;
+    using System.Net.Http;
 
     public class UserService : IUserService
     {
@@ -24,14 +25,16 @@
         private readonly IConfiguration configuration;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IBaseSocialService baseSocialService;
+        private readonly HttpContext httpContext;
 
         public UserService(ASPDbContext dbContext, IConfiguration configuration,
-            UserManager<ApplicationUser> userManager, IBaseSocialService baseSocialService)
+            UserManager<ApplicationUser> userManager, IBaseSocialService baseSocialService, IHttpContextAccessor httpContext)
         {
             this.dbContext = dbContext;
             this.configuration = configuration;
             this.userManager = userManager;
             this.baseSocialService = baseSocialService;
+            this.httpContext = httpContext.HttpContext;
         }
 
         public string BuildToken(string userId)
@@ -154,91 +157,66 @@
             return false;
         }
 
-        public async Task<bool> AddFriendAsync(ApplicationUser currentUser, string friendId)
+        public async Task<bool> AddFriendAsync(Guid friendId)
         {
-            ApplicationUser? friendUser = await dbContext.ApplicationUsers
-                .FirstOrDefaultAsync(u => u.Id.ToString() == friendId);
+            var friendShip = await dbContext.Friendships.FirstOrDefaultAsync(f => f.UserId == GetUserId() && f.FriendId == friendId);
 
-            if (friendUser == null)
+            if (friendShip != null)
             {
                 return false;
             }
-
-            bool areFriends = currentUser.Friends.Any(f => f.Id.ToString() == friendUser.Id.ToString());
-
-            if (areFriends)
+            var friendship = new List<Friendship>()
             {
-                return false;
-            }
-
-            currentUser.Friends.Add(friendUser);
-
-            friendUser.Friends.Add(currentUser);
-
-            await dbContext.SaveChangesAsync();
-
-            return true;
-        }
-
-        public async Task<bool> RemoveFriendAsync(ApplicationUser currentUser, string friendId)
-        {
-            ApplicationUser? friendUser = await dbContext.ApplicationUsers
-                .FirstOrDefaultAsync(f => f.Id.ToString() == friendId);
-
-            if (friendUser == null)
-            {
-                return false;
-            }
-
-            bool areFriends = currentUser.Friends.Any(f => f.Id.ToString() == friendUser.Id.ToString());
-
-            if (!areFriends)
-            {
-                return false;
-            }
-
-            currentUser.Friends.Remove(friendUser);
-
-            friendUser.Friends.Remove(currentUser);
-            
-            await dbContext.SaveChangesAsync();
-
-            return true;
-        }
-
-        public async Task<bool> AreFriendsAsync(Guid id, Guid friendId)
-        {
-            var areFriends = await dbContext.ApplicationUsers
-                .Where(u => u.Id == id)
-                .SelectMany(u => u.Friends)
-                .AnyAsync(friend => friend.Id == friendId);
-
-            return areFriends;
-        }
-
-        public async Task<ICollection<FriendDetailsDto>?> GetFriendsAsync(string userId)
-        {
-            var user = await dbContext.ApplicationUsers
-                .Include(u => u.Friends)
-                .FirstOrDefaultAsync(u => u.Id.ToString() == userId);
-
-            if (user == null)
-            {
-                return null;
-            }
-
-            var friends = user.Friends
-                .Select(friend => new FriendDetailsDto
+                new Friendship
                 {
-                    UserName = friend.UserName,
-                    FirstName = friend.FirstName,
-                    LastName = friend.LastName,
-                    Id = friend.Id,
-                    ProfilePictureData = friend.ProfilePicture
-                })
-                .ToArray();
+                    UserId = GetUserId(),
+                    FriendId = friendId
+                },
+                new Friendship
+                {
+                    UserId = friendId,
+                    FriendId = GetUserId()
+                }
+            };
+           
+            await dbContext.Friendships.AddRangeAsync(friendship);
+            await dbContext.SaveChangesAsync();
+            return true;
+        }
 
-            return friends;
+        public async Task<bool> RemoveFriendAsync(Guid friendId)
+        {
+           var friendShips = await dbContext.Friendships
+               .Where(f => (f.UserId == GetUserId() && f.FriendId == friendId)
+                           && (f.FriendId == GetUserId() && f.UserId == friendId)).ToListAsync();
+
+           if (friendShips.Count == 0)
+           {
+                return false;
+           }
+           
+           dbContext.Friendships.RemoveRange(friendShips);
+           await dbContext.SaveChangesAsync();
+
+           return true;
+        }
+
+
+        public async Task<ICollection<FriendDetailsDto>?> GetFriendsAsync(Guid userId)
+        {
+            var friendShips = dbContext.Friendships
+                .Where(f => f.UserId == userId)
+                .Include(u => u.Friend);
+
+           var friendsDto = await friendShips.Select(f => new FriendDetailsDto()
+                {
+                    Id = f.FriendId,
+                    FirstName = f.Friend.FirstName,
+                    LastName = f.Friend.LastName,
+                    ProfilePictureData = f.Friend.ProfilePicture
+                }).ToListAsync();
+           
+           return friendsDto;
         }
 
         public async Task<bool> CheckIfUserExistByEmailAsync(string userEmail) //returns true if user exists
@@ -248,9 +226,9 @@
             return user != null;
         }
 
-        public async Task<bool> CheckIfUserExistsByIdAsync(string id)
+        public async Task<bool> CheckIfUserExistsByIdAsync(Guid id)
         {
-            var user = await dbContext.ApplicationUsers.FirstOrDefaultAsync(u => u.Id.ToString() == id);
+            var user = await dbContext.ApplicationUsers.FirstOrDefaultAsync(u => u.Id == id);
 
             return user != null;
         }
@@ -313,7 +291,16 @@
 
             return null;
         }
-        
-        
+        private Guid GetUserId()
+        {
+            var userId = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
+
+            if (userId == null)
+            {
+                throw new NullReferenceException();
+            }
+
+            return Guid.Parse(userId);
+        }
     }
 }

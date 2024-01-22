@@ -16,17 +16,15 @@
         
         Task<bool> EditUserDataAsync(string id, UserFormModel updatedUserData);
 
-        Task<bool> AddFriendAsync(ApplicationUser currentUser, string friendId);
+        Task<bool> AddFriendAsync(Guid friendId);
 
-        Task<bool> AreFriendsAsync(Guid id, Guid friendId);
+        Task<bool> RemoveFriendAsync(Guid friendId);
 
-        Task<bool> RemoveFriendAsync(ApplicationUser currentUser, string friendId);
-
-        Task<ICollection<FriendDetailsDto>?> GetFriendsAsync(string userId);
+        Task<ICollection<FriendDetailsDto>?> GetFriendsAsync(Guid userId);
 
         Task<bool> CheckIfUserExistByEmailAsync(string userEmail);
 
-        Task<bool> CheckIfUserExistsByIdAsync(string id);
+        Task<bool> CheckIfUserExistsByIdAsync(Guid id);
 
     }
 }

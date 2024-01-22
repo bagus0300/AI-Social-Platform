@@ -248,7 +248,7 @@ namespace AI_Social_Platform.Server.Controllers
         
 
         [HttpPost("addFriend/{friendId}")]
-        public async Task<IActionResult> AddFriend(string friendId)
+        public async Task<IActionResult> AddFriend(Guid friendId)
         {
             try
             {
@@ -259,19 +259,12 @@ namespace AI_Social_Platform.Server.Controllers
                     return NotFound(new { message = "Current user not found!" });
                 }
 
-                if (currentUser.Id.ToString() == friendId)
+                if (currentUser.Id == friendId)
                 {
                     return BadRequest(new { message = "Cannot add yourself as a friends list!" });
                 }
-                
-                bool areFriends = await userService.AreFriendsAsync(currentUser.Id, Guid.Parse(friendId));
-                
-                if (areFriends)
-                {
-                    return BadRequest(new { message = "Users are already friends!" });
-                }
 
-                bool success = await userService.AddFriendAsync(currentUser!, friendId!);
+                bool success = await userService.AddFriendAsync(friendId!);
 
                 if (success)
                 {
@@ -288,18 +281,11 @@ namespace AI_Social_Platform.Server.Controllers
 
 
         [HttpPost("removeFriend/{friendId}")]
-        public async Task<IActionResult> RemoveFriend(string friendId)
+        public async Task<IActionResult> RemoveFriend(Guid friendId)
         {
             try
             {
-                var currentUser = await userManager.GetUserAsync(User);
-
-                if (currentUser == null)
-                {
-                    return NotFound(new { message = "Current user not found!"});
-                }
-
-                var success = await userService.RemoveFriendAsync(currentUser!, friendId!);
+                var success = await userService.RemoveFriendAsync(friendId);
 
                 if (success)
                 {
@@ -316,16 +302,10 @@ namespace AI_Social_Platform.Server.Controllers
 
 
         [HttpGet("allFriends")]
-        public async Task<IActionResult> GetAllFriends(string userId)
+        public async Task<IActionResult> GetAllFriends(Guid userId)
         {
             try
             {
-                if (string.IsNullOrEmpty(userId) )
-                {
-                    return BadRequest(new { message = "User not found."});
-                }
-
-
                 bool userExist = await userService.CheckIfUserExistsByIdAsync(userId);
 
                 if (!userExist)

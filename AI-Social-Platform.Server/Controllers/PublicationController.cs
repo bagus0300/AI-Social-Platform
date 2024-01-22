@@ -33,6 +33,20 @@ public class PublicationController : ControllerBase
         }
     }
 
+    [HttpGet("User/{userId}",Name = "user publications")]
+    public async Task<IndexPublicationDto> UserPublications(int page, Guid userId)
+    {
+        try
+        {
+            var publications = await publicationService.GetUserPublicationsAsync(page, userId);
+            return publications;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
+
     [HttpPost(Name = "create")]
     public async Task<IActionResult> Create(PublicationFormDto dto)
     {
