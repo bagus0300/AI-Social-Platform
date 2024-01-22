@@ -49,7 +49,7 @@ export default function PostItem({ post }) {
 
     const mediaSectionRef = useRef(null);
 
-    const { avatar } = useContext(AuthContext);
+    const { avatar, userId } = useContext(AuthContext);
 
     const navigate = useNavigate();
 
@@ -113,6 +113,17 @@ export default function PostItem({ post }) {
             });
 
             setIsPostLiked(true);
+        } else {
+            const like = likes.filter((like) => like.user.id === userId)[0];
+
+            await likeService.removeLike(like.id);
+
+            dispatchLike({
+                type: LikeActions.RemoveLike,
+                payload: like,
+            });
+
+            setIsPostLiked(false);
         }
     };
 

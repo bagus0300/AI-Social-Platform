@@ -45,7 +45,7 @@ export default function PostDetails() {
         postData.comments
     );
 
-    const { avatar } = useContext(AuthContext);
+    const { avatar, userId } = useContext(AuthContext);
 
     const { postId } = useParams();
 
@@ -156,6 +156,17 @@ export default function PostDetails() {
             });
 
             setIsPostLiked(true);
+        } else {
+            const like = likes.filter((like) => like.user.id === userId)[0];
+
+            await likeService.removeLike(like.id);
+
+            dispatchLike({
+                type: LikeActions.RemoveLike,
+                payload: like,
+            });
+
+            setIsPostLiked(false);
         }
     };
 

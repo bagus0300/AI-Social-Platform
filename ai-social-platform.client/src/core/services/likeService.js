@@ -6,3 +6,6 @@ export const getLikes = async (postId) =>
 
 export const addLike = async (postId) =>
     await api.post(`${endpoints.addLike(postId)}`);
+
+export const removeLike = async (likeId) =>
+    await api.remove(`${endpoints.removeLike(likeId)}`);

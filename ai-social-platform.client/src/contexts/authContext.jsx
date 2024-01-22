@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
 
         localStorage.removeItem('accessToken');
 
-        navigate(PATH.home);
+        navigate(PATH.login);
     };
 
     const values = {

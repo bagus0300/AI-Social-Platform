@@ -52,6 +52,7 @@ export const endpoints = {
     // LIKES
     getLikes: (postId) => `SocialFeature/like/${postId}`,
     addLike: (postId) => `SocialFeature/like/${postId}`,
+    removeLike: (likeId) => `SocialFeature/like/${likeId}`,
 };
 
 export const LoginFormKeys = {
