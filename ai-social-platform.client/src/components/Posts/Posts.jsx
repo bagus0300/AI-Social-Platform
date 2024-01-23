@@ -42,7 +42,7 @@ export default function Posts() {
     async function fetchMoreItems() {
         const data = await postService.getAllPosts(page);
 
-        if (data.publicationsLeft === 0) {
+        if (data.publicationsLeft === 0 && data.publications.length === 0) {
             setHasMore(false);
         } else {
             dispatchPost({
