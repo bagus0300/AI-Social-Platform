@@ -186,16 +186,24 @@
 
         public async Task<bool> RemoveFriendAsync(Guid friendId)
         {
-           var friendShips = await dbContext.Friendships
-               .Where(f => (f.UserId == GetUserId() && f.FriendId == friendId)
-                           && (f.FriendId == GetUserId() && f.UserId == friendId)).ToListAsync();
+            var friendShipsUser = await dbContext.Friendships
+                .FirstOrDefaultAsync(u => u.FriendId == friendId && u.UserId == GetUserId());
 
-           if (friendShips.Count == 0)
-           {
+            var friendShipsFriend = await dbContext.Friendships
+                .FirstOrDefaultAsync(u => u.FriendId == GetUserId() && u.UserId == friendId);
+
+            if (friendShipsUser == null)
+            {
                 return false;
-           }
-           
-           dbContext.Friendships.RemoveRange(friendShips);
+            }
+
+            if (friendShipsFriend == null)
+            {
+                return false;
+            }
+
+            dbContext.Friendships.Remove(friendShipsUser);
+            dbContext.Friendships.Remove(friendShipsFriend);
            await dbContext.SaveChangesAsync();
 
            return true;
