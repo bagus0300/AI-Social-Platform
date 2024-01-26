@@ -7,6 +7,7 @@ export const PATH = {
     logout: '/users/logout',
     create: '/create-post',
     detailsPost: '/posts/:postId',
+    search: '/search',
     postDetails: (postId) => `posts/${postId}`,
     profile: '/profile/:userId',
     profileedit: '/profileedit/:userId',
@@ -60,6 +61,8 @@ export const endpoints = {
     readNotification: (notificationId) =>
         `SocialFeature/notification/read?notificationId=${notificationId}`,
 
+    // SEARCH
+    search: (type, query) => `SocialFeature/search?type=${type}&query=${query}`,
 };
 
 export const LoginFormKeys = {
@@ -102,6 +105,11 @@ export const CommentFormKeys = {
 
 export const EditCommentFromKeys = {
     EditCommentArea: 'editCommentArea',
+};
+
+export const SearchFormKeys = {
+    SearchSelect: 'search-select',
+    SearchText: 'search-text',
 };
 
 export const ContentType = {

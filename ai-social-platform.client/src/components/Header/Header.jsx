@@ -78,17 +78,21 @@ export default function Header() {
                     </Link>
                 </h1>
                 <section className={styles['profile']}>
-                    <form
-                        onClick={openSearchPage}
-                        onSubmit={formSubmit}
-                        className={styles['search-form']}
-                    >
-                        <div className={styles['search-input-wrapper']}>
-                            <input placeholder="Search..." />
-                            <div className={styles['search-input-cover']}></div>
-                        </div>
-                        <button>Search</button>
-                    </form>
+                    {isAuthenticated && (
+                        <form
+                            onClick={openSearchPage}
+                            onSubmit={formSubmit}
+                            className={styles['search-form']}
+                        >
+                            <div className={styles['search-input-wrapper']}>
+                                <input placeholder="Search..." />
+                                <div
+                                    className={styles['search-input-cover']}
+                                ></div>
+                            </div>
+                            <button>Search</button>
+                        </form>
+                    )}
                     {!isAuthenticated ? (
                         <div className={styles['guest']}>
                             <Link to={PATH.login}>Login</Link>

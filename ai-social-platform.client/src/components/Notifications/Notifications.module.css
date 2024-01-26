@@ -1,9 +1,9 @@
 .notifications-section {
     padding: 0.5em 0.8em;
     width: 15em;
-    position: absolute;
+    position: fixed;
     top: 3em;
-    right: 0.2em;
+    right: 0.7em;
     background-color: #fff;
     color: #000;
     border-radius: 0.5em;
