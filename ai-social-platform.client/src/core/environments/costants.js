@@ -61,8 +61,14 @@ export const endpoints = {
     readNotification: (notificationId) =>
         `SocialFeature/notification/read?notificationId=${notificationId}`,
 
+
+    // OpenAI
+    getTextWhitOpenAi: 'OpenAi/generateText'
+
+
     // SEARCH
     search: (type, query) => `SocialFeature/search?type=${type}&query=${query}`,
+
 };
 
 export const LoginFormKeys = {

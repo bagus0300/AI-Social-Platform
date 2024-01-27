@@ -10,6 +10,10 @@ import styles from './CreatePost.module.css';
 import createPostValidation from './createPostValidation';
 import AuthContext from '../../contexts/authContext';
 
+import OpenAiLogo from '../../../public/images/openAi.png'
+import OpenAIForm from '../OpenAI/openAi';
+
+
 const initialValues = {
     [CreateFormKeys.PostDescription]: '',
     [CreateFormKeys.PostMedia]: '',
@@ -19,6 +23,10 @@ export default function CreatePost() {
     const { firstName, lastName } = useContext(AuthContext);
 
     const [textareaRows, setTextareaRows] = useState(2);
+
+    const [openAiFormVisible, setOpenAiFormVisible] = useState(false);
+    
+    const toggleOpenAiForm = () => {setOpenAiFormVisible(!openAiFormVisible);};
 
     const navigate = useNavigate();
 
@@ -99,7 +107,8 @@ export default function CreatePost() {
     }
 
     return (
-        <>
+        <>  
+            {openAiFormVisible && (<OpenAIForm onClose={toggleOpenAiForm} onSubmit={(data) => {console.log(data); toggleOpenAiForm();}} /> )}
             <div onClick={closeCreateForm} className={styles['backdrop']}></div>
             <section className={styles['create-post-section']}>
                 <div className={styles['section-header']}>
@@ -122,6 +131,13 @@ export default function CreatePost() {
                     <p className={styles['user-names']}>
                         {firstName} {lastName}
                     </p>
+                </div>
+                <div className={styles['openAi']}>
+                    <section className={styles['openAi-section']}>
+                        <img src={OpenAiLogo} alt="OpenAI Logo" className={styles['openAi-logo']}/>
+                        <p className={styles['openAi']}><strong>Generating text with OpenAI</strong></p>
+                    </section>
+                    <button className={styles['openAi-button']} onClick={toggleOpenAiForm}>Try</button>
                 </div>
                 <form onSubmit={handleSubmit} className={styles['create-form']}>
                     <label htmlFor={CreateFormKeys.PostDescription}></label>

@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import styles from './Userprofile.css';
+import styles from "./Userprofile.css?inline";
 import * as userService from '../../core/services/userService';
 import { Link, useParams } from 'react-router-dom';
 import { PATH } from '../../core/environments/costants';
