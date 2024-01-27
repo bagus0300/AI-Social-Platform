@@ -8,6 +8,8 @@
     using Newtonsoft.Json;
     using System.Net.Http.Headers;
     using System.Text;
+    using OpenAI_API;
+    using OpenAI.Images;
 
     [ApiController]
     [Route("api/[controller]")]
@@ -107,5 +109,21 @@
             public string Content { get; set; } = null!;
         }
 
+        [HttpPost("GenerateAIImage")]
+        public async Task<IActionResult> GenerateImage([FromBody] string ImageDescription)
+        {
+            try
+            {
+                var apiKey = configuration["OpenAi:ApiKey"]; 
+                var api = new OpenAIAPI(apiKey);
+                var result = await api.ImageGenerations.CreateImageAsync(ImageDescription, OpenAI_API.Models.Model.DALLE3);
+
+                return Ok(result.Data[0].Url);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error: {ex.Message}");
+            }
+        }
     }
 }
