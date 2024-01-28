@@ -1,4 +1,6 @@
-﻿namespace AI_Social_Platform.Server.Controllers
+﻿using OpenAI_API.Chat;
+
+namespace AI_Social_Platform.Server.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Authorization;
@@ -125,5 +127,46 @@
                 return StatusCode(500, $"Error: {ex.Message}");
             }
         }
+
+        [HttpPost("TranslateAi")]
+        public async Task<IActionResult> TranslateAi([FromBody] TranslationRequest request)
+        {
+            try
+            {
+                var apiKey = configuration["OpenAi:ApiKey"];
+                var openAiApi = new OpenAIAPI(apiKey);
+                var response = await openAiApi.Chat.CreateChatCompletionAsync(
+                    messages: new[]
+                        { 
+                            new ChatMessage
+                            { Role = ChatMessageRole.System, TextContent =
+                                $"You will be provided with a sentence in {request.InputLanguage}, and your task is to translate it into {request.TargetLanguage}."
+                            },
+                            new ChatMessage
+                                { Role = ChatMessageRole.User, TextContent = request.InputToTranslate }
+                        },
+                    temperature: 0.7,
+                    max_tokens: 64
+                    );
+               
+
+                // Extract the translated text from the API response
+                string translatedText = response.Choices[0].Message.TextContent;
+
+                return Ok(new { TranslatedText = translatedText });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error: {ex.Message}");
+            }
+        }
+    }
+
+    public class TranslationRequest
+    {
+        public string InputLanguage { get; set; } = null!;
+        public string InputToTranslate { get; set; } = null!;
+        public string TargetLanguage { get; set; } = null!;
     }
 }
+
