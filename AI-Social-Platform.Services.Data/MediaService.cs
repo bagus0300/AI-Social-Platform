@@ -53,7 +53,6 @@
         {
             Media? existingMedia = await dbContext
                .MediaFiles
-               .Where(m => m.IsDeleted == false)
                .FirstOrDefaultAsync(m => m.Id.ToString() == id);
 
             if (existingMedia == null)
@@ -83,13 +82,11 @@
         {
             Media? mediaForDelete = await dbContext
                 .MediaFiles
-                .Where(m => m.IsDeleted == false)
-                .FirstOrDefaultAsync(m => m.Id.ToString() == id && m.IsDeleted == false);
+                .FirstOrDefaultAsync(m => m.Id.ToString() == id);
 
             if (mediaForDelete != null)
             {
-                mediaForDelete.IsDeleted = true;
-
+                dbContext.MediaFiles.Remove(mediaForDelete);
                 await dbContext.SaveChangesAsync();
             }
         }
@@ -123,7 +120,7 @@
         public async Task<ICollection<Media>> GetAllMediaFilesByUserIdAsync(string userId)
         {
             List<Media> mediaFiles = await dbContext.MediaFiles
-                .Where(m => m.UserId.ToString() == userId && m.IsDeleted == false)
+                .Where(m => m.UserId.ToString() == userId)
                 .ToListAsync();
 
             return mediaFiles;
@@ -133,7 +130,7 @@
         {
             var publicationIdGuid = Guid.Parse(publicationId);
             List<Media> mediaFiles = await dbContext.MediaFiles
-                .Where(m => m.PublicationId == publicationIdGuid && m.IsDeleted == false)
+                .Where(m => m.PublicationId == publicationIdGuid)
                 .ToListAsync();
 
             return mediaFiles;

@@ -27,7 +27,5 @@
 
         [ForeignKey(nameof(Publication))]
         public Guid? PublicationId { get; set; }
-
-        public bool IsDeleted { get; set; } = false;
     }
 }
