@@ -1,0 +1,157 @@
+.section-heading {
+    text-align: center;
+    font-size: 1.2em;
+    margin-top: 0.5em;
+}
+
+.post-description {
+    padding: 1em;
+    resize: none;
+    border: 0;
+}
+
+.create-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-profile {
+    background-color: #eee;
+    padding: 2em 0;
+    width: 100%;
+    scroll-behavior: smooth;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+    margin-top: 3em;
+}
+
+.post-item-list {
+    background-color: #fff;
+    overflow: hidden;
+    width: 35em;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.5em;
+    box-shadow: 0 0 0.2em 0.1em #ddd;
+    justify-content: space-between;
+    position: relative;
+   
+}
+
+.profile-button {
+    background-color: #004aad;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    padding: 10px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer; 
+  }
+
+.parent-button{
+    text-align: center;
+  }
+
+.user-img {
+    width: 10em;
+    height:10em;
+    border-radius: 40px;
+}
+
+.user-img:hover {
+    border-radius: 0px;
+  transform: scale(1.4); 
+}
+
+.userprofile-li {
+    /* list-style-type:none; */
+    padding: 0em 1em 0.5em 1em;
+    } 
+
+.media-img {
+        width: 100%;
+        margin-top: 0.5em;
+    }
+
+.userprofile-input {
+        font-size: 0.8em;
+        font-weight: 600;
+        border: 1px solid #004aad;      
+    }
+
+.user-info-wrapper {
+    display: flex;
+    gap: 1em;
+    padding: 0.5em 1em 0.5em 1em;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.change-image {
+    padding: 0em;
+    resize: none;
+    border: 0;
+    font-size: 0.8em;
+    font-weight: 600;
+}
+
+.content-description {
+    padding: 0em 1em 0.5em 1em;
+    font-size: 1.2em;
+    text-align: justify;
+    text-indent: 0em;
+}
+
+.posted-on {
+    font-size: 0.6em;
+    color: #636363;
+}
+
+.likes {
+    display: flex;
+    justify-content: space-between;
+    color: #636363;
+    
+}
+
+.likes-count {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+    font-size: 0.6em;
+
+}
+
+.likes-count i {
+    color: #369;
+}
+
+.comments{
+    font-size: 0.6em;
+}
+
+.pagination{
+    font-size: 0.8em;
+    margin: auto;
+    width: 30%; 
+    padding: 10px;
+}
+
+.editPostLink{
+    text-decoration: underline;
+}
+
+.edit {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    cursor: pointer;
+    color: #585858;
+}
+

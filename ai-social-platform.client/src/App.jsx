@@ -20,6 +20,8 @@ import CreatePost from './components/CreatePost/CreatePost';
 // import Successfully from './components/Successfully/Successfully';
 import NotFound from './components/NotFound/NotFound';
 import PostDetails from './components/PostDetails/PostDetails';
+import Postlist from './components/PostEdit/PostList';
+import Postedit from './components/PostEdit/Postedit';
 import Search from './components/Search/Search';
 
 function App() {
@@ -75,6 +77,14 @@ function App() {
                                     element={<Userprofileedit />}
                                 />
                             </Route>
+                            <Route
+                                path={PATH.postlist}
+                                element={<Postlist />}
+                            />
+                            <Route
+                                path={PATH.postedit}
+                                element={<Postedit />}
+                            />
                         </Routes>
                     </main>
                     <Footer />

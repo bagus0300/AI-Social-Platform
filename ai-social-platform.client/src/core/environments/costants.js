@@ -13,6 +13,8 @@ export const PATH = {
     profileedit: '/profileedit/:userId',
     successfully: '/successfuly',
     userProfile: (userId) => `/profile/${userId}`,
+    postlist: '/postlist',
+    postedit: `/postedit/:postId`,
     notFound: '*',
 };
 
@@ -40,6 +42,10 @@ export const endpoints = {
     getAllPosts: 'Publication',
     getPostById: (postId) => `Publication/${postId}`,
     deletePost: (postId) => `Publication/${postId}`,
+    editPost: (postId) => `Publication/${postId}`,
+    // getPostsByUserId: (userId) => `Publication/User/${userId}`,
+    getPostsByUserId: (userId, page) => `Publication/User/${userId}`,
+
 
     // MEDIA
     addMedia: 'Media/upload?isItPublication=true',
@@ -47,6 +53,8 @@ export const endpoints = {
     getMediaById: (mediaId) => `Media/serve/${mediaId}`,
     getMediaByPostId: (postId) => `Media/${postId}`,
     deleteMedia: (mediaId) => `Media/delete/${mediaId}`,
+    editMedia: (mediaId) => `Media/edit/${mediaId}`,
+
 
     // COMMENTS
     createComment: 'SocialFeature/comment',
@@ -99,6 +107,13 @@ export const ProfileFormKeys = {
     School: 'School',
     Birthday: 'Birthday',
     Relationship: 'Relationship',
+};
+
+export const EditPostFormKeys = {
+    PostDescription: 'content',
+    TopicId: 'topicId',
+    PostPicture: 'PostPicture',
+    ChangePostPicture: 'ChangePostPicture',
 };
 
 export const CreateFormKeys = {

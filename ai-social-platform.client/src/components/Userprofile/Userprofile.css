@@ -7,6 +7,7 @@
     flex-direction: column;
     align-items: center;
     gap: 1em;
+    margin-top: 3em;
 }
 
 .post-item {
@@ -151,3 +152,15 @@
     border-radius: 0px;
   transform: scale(2.3); 
 }
+
+.profile-link {
+    border: 2px solid #004aad;
+    border-radius: 10px;
+    padding: 10px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+    margin: 4px 8px;
+    cursor: pointer; 
+  }

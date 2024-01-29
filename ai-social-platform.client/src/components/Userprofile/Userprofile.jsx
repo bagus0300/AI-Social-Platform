@@ -202,6 +202,11 @@ export default function Userprofile() {
                         Relationship Status: {userData.relationship}
                     </p>
                 </fieldset>
+                {isCurrentUserProfile && (
+                    <Link className="profile-link" to={PATH.postlist}>
+                        My Posts
+                    </Link>
+                )}
                 <fieldset className="userprofile-fieldset">
                     <legend>Friends</legend>
                     <div>
