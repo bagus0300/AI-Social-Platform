@@ -1,41 +1,13 @@
-body {
-    margin: 0;
-    min-height: 100%;
-    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.4;
-    color: #000;
-    background-color: #f7f7f7;
-    min-width: 250px;
-    position: relative;
-  }
-  
-  a {
-    text-decoration: none;
-    color: inherit;
-  }
-  
-  a::after {
-    display: none;
-  }
-  
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .overlay {
+.overlay {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     z-index: 100;
-  }
-    
-  .backdrop {
+}
+
+.backdrop {
     background-color: rgba(0, 0, 0, 0.75);
     height: 100vh;
     left: 0;
@@ -43,16 +15,16 @@ body {
     top: 0;
     width: 100%;
     z-index: 20;
-  }
-  
-  .modal {
+}
+
+.modal {
     display: flex;
     align-content: center;
-  }
+}
 
-  .openAI-container {
-    width: 25rem;    
-    border-radius: 14px;    
+.openAI-container {
+    width: 25rem;
+    border-radius: 14px;
     margin: auto;
     border-radius: 20px;
     background-color: white;
@@ -60,10 +32,10 @@ body {
     box-shadow: 0 2px 8px rgb(0 0 0 / 25%);
     z-index: 30;
     margin-top: 50px;
-  }
-  
-  /* Header styles */
-  .headers {
+}
+
+/* Header styles */
+.headers {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -71,32 +43,31 @@ body {
     padding: 0em 1em;
     border-bottom: 1px solid #ccc;
     margin-bottom: 15px;
-  } 
-  
-    
-  /* Input warepper */
-  .form-group-theme {
+}
+
+/* Input warepper */
+.form-group-theme {
     text-align: center;
-  }
-  
-  .form-group-theme p {
+}
+
+.form-group-theme p {
     text-align: left;
-  }
-  
-  .labelTheme {
+}
+
+.labelTheme {
     font-size: 1em;
     text-align: center;
     align-items: center;
     font-weight: 800;
-  }
-  
-  .input-wrapper {
+}
+
+.input-wrapper {
     display: flex;
     align-items: stretch;
-    width: 100%;  
-  }
-  
-  .input-wrapper span {
+    width: 100%;
+}
+
+.input-wrapper span {
     display: flex;
     align-items: center;
     padding: 3px 10px;
@@ -108,9 +79,9 @@ body {
     border: 1px solid #d5dee6;
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
-  }
-  
-  .input-wrapper span i {
+}
+
+.input-wrapper span i {
     width: 2em;
     height: 0.7em;
     min-width: 28px;
@@ -118,9 +89,9 @@ body {
     font-size: 1.2em;
     color: #aa1111;
     vertical-align: -0.125em;
-  }
-  
-  .input-wrapper input {
+}
+
+.input-wrapper input {
     width: 100%;
     font-weight: 600;
     font-size: 1.1em;
@@ -134,100 +105,90 @@ body {
     border-top-right-radius: 1.25rem;
     border-bottom-right-radius: 1.25rem;
     margin-right: 1em;
-  }
-  
-  .form-group-radio {
-    width: 96%;    
+}
+
+.form-group-radio {
+    width: 96%;
     font-size: 12px;
     line-height: 1.2;
-    border: 1px solid #d5dee6;    
-    outline: none;  
+    border: 1px solid #d5dee6;
+    outline: none;
     padding: 0px 8x;
     background-color: #f7f7f7;
-    align-items: center;  
-    text-align: center;    
-  }
-  
-  .radio-box {
+    align-items: center;
+    text-align: center;
+}
+
+.radio-box {
     width: 100%;
-    display: flex; 
+    display: flex;
     border: 1px solid #d5dee6;
     border: none;
-    outline: none;    
+    outline: none;
     padding: 5px 10px;
     background-color: #f7f7f7;
-    align-items: center;  
+    align-items: center;
     text-align: center;
-  }
-  
-  .radio-button {
-    max-width: 1em;      
-  }
-  
-  .labelName {
+}
+
+.radio-button {
+    max-width: 1em;
+}
+
+.labelName {
     text-align: center;
     font-weight: 800;
     align-items: center;
     padding: 0em;
     margin: 0em;
-  }
-  
-  /* Action buttons  */ 
-  
-  
-  .btn:hover {
+}
+
+/* Action buttons  */
+
+.btn:hover {
     opacity: 0.9;
     box-shadow: 1px 2px 8px black;
-    
-  }
+}
 
-    
-  .svg-inline--fa {
+.svg-inline--fa {
     color: inherit;
     font-size: 1.25rem;
     margin: 30;
-  }
-  
-  
-  
-  .btn.close {
+}
+
+.btn.close {
     background-color: transparent;
     padding: 5px 10px;
     height: auto;
-  }
-  
-  .btn.close svg {
+}
+
+.btn.close svg {
     color: rgb(0, 0, 0);
-  }  
-     
-        
-  .form-error {
+}
+
+.form-error {
     color: #d9534f;
     min-height: 12px;
     font-size: 14px;
-  }
-  
-  #form-actions {
+}
+
+#form-actions {
     display: flex;
     justify-content: flex-end;
-  }
-  
-  #action-submit {
+}
+
+#action-submit {
     width: 4em;
     height: 2em;
     margin-right: 18px;
     background-color: rgb(81, 194, 123);
     border-radius: 0.3em;
-  }
-  
-  #action-cancel {
+}
+
+#action-cancel {
     width: 4em;
     height: 2em;
     margin-right: 18px;
     background-color: rgb(231, 108, 108);
     border-radius: 0.3em;
-  }
-
-  
-  
-  
+}

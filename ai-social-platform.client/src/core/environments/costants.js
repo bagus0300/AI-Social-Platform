@@ -16,6 +16,10 @@ export const PATH = {
     notFound: '*',
 };
 
+export const FILES = {
+    aiLogo: '/images/openAi.png',
+};
+
 export const endpoints = {
     // AUTH
     login: 'User/login',
@@ -66,7 +70,6 @@ export const endpoints = {
 
     // SEARCH
     search: (type, query) => `SocialFeature/search?type=${type}&query=${query}`,
-
 };
 
 export const LoginFormKeys = {

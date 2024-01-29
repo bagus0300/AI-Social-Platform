@@ -80,6 +80,13 @@
     flex-direction: column;
 }
 
+.text-length-error {
+    font-size: 0.8em;
+    text-align: center;
+    color: #a10000;
+    margin-top: 0.5em;
+}
+
 .post-description {
     padding: 1em;
     resize: none;
@@ -155,8 +162,8 @@
     display: flex;
     text-align: center;
     font-size: 1em;
-  }
-  
+}
+
 .openAi-button {
     border: 0;
     background-color: black;
@@ -164,21 +171,20 @@
     border-radius: 0.5em;
     cursor: pointer;
     font-size: 0.8em;
-    font-weight: 600;    
+    font-weight: 600;
     height: 25px;
-    width: 100px;    
+    width: 100px;
 }
 
 .openAi-button:hover {
-    background-color: #333; 
-    color: red; 
+    background-color: #333;
+    color: red;
 }
-  
+
 .openAi-logo {
-    max-width: 10%; 
+    max-width: 10%;
     height: auto;
     max-height: 90%;
-    margin-right: 8px; 
+    margin-right: 8px;
     align-items: center;
 }
-  

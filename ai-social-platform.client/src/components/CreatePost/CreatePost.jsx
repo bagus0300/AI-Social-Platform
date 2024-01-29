@@ -5,14 +5,12 @@ import { useFormik } from 'formik';
 import * as postService from '../../core/services/postService';
 import * as mediaService from '../../core/services/mediaService';
 
-import { CreateFormKeys, PATH } from '../../core/environments/costants';
+import { CreateFormKeys, FILES, PATH } from '../../core/environments/costants';
 import styles from './CreatePost.module.css';
 import createPostValidation from './createPostValidation';
 import AuthContext from '../../contexts/authContext';
 
-import OpenAiLogo from '../../../public/images/openAi.png'
-import OpenAIForm from '../OpenAI/openAi';
-
+import OpenAIForm from '../OpenAI/OpenAi';
 
 const initialValues = {
     [CreateFormKeys.PostDescription]: '',
@@ -25,8 +23,8 @@ export default function CreatePost() {
     const [textareaRows, setTextareaRows] = useState(2);
 
     const [openAiFormVisible, setOpenAiFormVisible] = useState(false);
-    
-    const toggleOpenAiForm = () => {setOpenAiFormVisible(!openAiFormVisible);};
+
+    const toggleOpenAiForm = () => setOpenAiFormVisible(!openAiFormVisible);
 
     const navigate = useNavigate();
 
@@ -46,7 +44,15 @@ export default function CreatePost() {
 
     const incrementTextareaRows = () => setTextareaRows(7);
 
-    const closeCreateForm = () => navigate(PATH.home);
+    const closeCreateForm = () => {
+        values[CreateFormKeys.PostDescription] = '';
+        navigate(PATH.home);
+    };
+
+    const updatePostDescription = (generatedText) =>
+        (values[CreateFormKeys.PostDescription] = `${
+            values[CreateFormKeys.PostDescription]
+        } ${generatedText}`);
 
     async function onSubmit(values) {
         const formData = new FormData();
@@ -107,8 +113,13 @@ export default function CreatePost() {
     }
 
     return (
-        <>  
-            {openAiFormVisible && (<OpenAIForm onClose={toggleOpenAiForm} onSubmit={(data) => {console.log(data); toggleOpenAiForm();}} /> )}
+        <>
+            {openAiFormVisible && (
+                <OpenAIForm
+                    onClose={toggleOpenAiForm}
+                    updatePostDescription={updatePostDescription}
+                />
+            )}
             <div onClick={closeCreateForm} className={styles['backdrop']}></div>
             <section className={styles['create-post-section']}>
                 <div className={styles['section-header']}>
@@ -134,11 +145,28 @@ export default function CreatePost() {
                 </div>
                 <div className={styles['openAi']}>
                     <section className={styles['openAi-section']}>
-                        <img src={OpenAiLogo} alt="OpenAI Logo" className={styles['openAi-logo']}/>
-                        <p className={styles['openAi']}><strong>Generating text with OpenAI</strong></p>
+                        <img
+                            src={FILES.aiLogo}
+                            alt="OpenAI Logo"
+                            className={styles['openAi-logo']}
+                        />
+                        <p className={styles['openAi']}>
+                            <strong>Generating text with OpenAI</strong>
+                        </p>
                     </section>
-                    <button className={styles['openAi-button']} onClick={toggleOpenAiForm}>Try</button>
+                    <button
+                        className={styles['openAi-button']}
+                        onClick={toggleOpenAiForm}
+                    >
+                        Try
+                    </button>
                 </div>
+                <div className={styles['text-length-error']}>
+                    {errors[CreateFormKeys.PostDescription] && (
+                        <p>{errors[CreateFormKeys.PostDescription]}</p>
+                    )}
+                </div>
+
                 <form onSubmit={handleSubmit} className={styles['create-form']}>
                     <label htmlFor={CreateFormKeys.PostDescription}></label>
                     <textarea
