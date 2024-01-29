@@ -20,6 +20,7 @@ import CreatePost from './components/CreatePost/CreatePost';
 // import Successfully from './components/Successfully/Successfully';
 import NotFound from './components/NotFound/NotFound';
 import PostDetails from './components/PostDetails/PostDetails';
+import Search from './components/Search/Search';
 
 function App() {
     return (
@@ -44,7 +45,10 @@ function App() {
 
                             <Route element={<AuthGuard />}>
                                 <Route path={PATH.home} element={<Home />} />
-
+                                <Route
+                                    path={PATH.search}
+                                    element={<Search />}
+                                />
                                 <Route
                                     path={PATH.logout}
                                     element={<Logout />}
