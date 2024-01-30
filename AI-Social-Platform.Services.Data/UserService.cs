@@ -209,6 +209,24 @@
            return true;
         }
 
+        public async Task<ICollection<UserDetailsDto>?> GetAllUsers() 
+        {
+            var users = dbContext.ApplicationUsers
+                .Where(u => u.IsActive);
+
+            ICollection<UserDetailsDto> userDto =  await users.Select(u => new UserDetailsDto()
+            {
+                Id = u.Id,
+                UserName = u.UserName,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                ProfilePictureData = u.ProfilePicture,
+
+            }).ToArrayAsync();
+
+            return userDto;
+        }
+
 
         public async Task<ICollection<FriendDetailsDto>?> GetFriendsAsync(Guid userId)
         {
@@ -226,6 +244,7 @@
            
            return friendsDto;
         }
+        
 
         public async Task<bool> CheckIfUserExistByEmailAsync(string userEmail) //returns true if user exists
         {

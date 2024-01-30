@@ -337,6 +337,38 @@ namespace AI_Social_Platform.Server.Controllers
                 return StatusCode(500, new { message = $"An error occurred: {ex.Message}"});
             }
         }
+
+
+        [HttpGet("allUsers")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            try
+            {
+                ICollection<UserDetailsDto>? users = await userService.GetAllUsers();
+
+                if (users.Any())
+                {
+                    foreach (var user in users)
+                    {
+                        if (user.ProfilePictureData == null)
+                        {
+                            user.ProfilePictureUrl = null;
+                        }
+                        else
+                        {
+                            user.ProfilePictureUrl = GetProfileImageUrl(user.Id);
+                            user.ProfilePictureData = null;
+                        }
+                    }
+                }
+
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
+        }
         
 
         private string GetProfileImageUrl(Guid userId)

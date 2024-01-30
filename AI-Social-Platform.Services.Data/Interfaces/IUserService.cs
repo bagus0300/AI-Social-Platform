@@ -22,6 +22,8 @@
 
         Task<ICollection<FriendDetailsDto>?> GetFriendsAsync(Guid userId);
 
+        Task<ICollection<UserDetailsDto>?> GetAllUsers();
+
         Task<bool> CheckIfUserExistByEmailAsync(string userEmail);
 
         Task<bool> CheckIfUserExistsByIdAsync(Guid id);
