@@ -16,6 +16,8 @@
 
         public string? ErrorMessage { get; set; }
 
+        public byte[]? ProfilePictureData { get; set; }
+
         public string? ProfilePicture { get; set; }
     }
 }
