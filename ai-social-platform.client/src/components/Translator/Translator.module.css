@@ -1,0 +1,85 @@
+.translator-section {
+    margin-top: 2em;
+    border-top: 1px solid #ccc;
+    padding-top: 1em;
+    position: relative;
+}
+
+.translator-section-heading {
+    text-align: center;
+    background-color: #004aad;
+    color: #fff;
+}
+
+.select-options {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 0.5em 0;
+    gap: 0.3em;
+}
+
+.select-input-language,
+.select-target-language {
+    border: 0;
+    font-size: 0.9em;
+}
+
+.select-input-language,
+.select-target-language,
+.switch-button,
+.translate-button {
+    cursor: pointer;
+}
+
+.areas-and-button-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.input-language-wrapper {
+    order: 1;
+}
+
+.target-language-wrapper {
+    order: 3;
+}
+
+.target-language-area {
+    color: #000;
+    cursor: auto;
+}
+
+.input-language-area,
+.target-language-area {
+    resize: none;
+    border: 1px solid #aaa;
+    padding: 0.5em;
+    border-radius: 0.3em;
+}
+
+.translate-button {
+    order: 2;
+    padding: 0.5em 2em;
+    background-color: #004aad;
+    color: #fff;
+    margin-bottom: 0.3em;
+    border-radius: 0.3em;
+    transition: all 0.2s ease-in-out;
+}
+
+.translate-button-disabled {
+    order: 2;
+    padding: 0.5em 2em;
+    background-color: #ddd;
+    color: #000;
+    margin-bottom: 0.3em;
+    border-radius: 0.3em;
+    cursor: no-drop;
+}
+
+.translate-button:hover {
+    border-radius: 0;
+}

@@ -47,7 +47,6 @@ export const endpoints = {
     // getPostsByUserId: (userId) => `Publication/User/${userId}`,
     getPostsByUserId: (userId, page) => `Publication/User/${userId}`,
 
-
     // MEDIA
     addMedia: 'Media/upload?isItPublication=true',
     getPostMedia: (postId) => `Media/${postId}`,
@@ -55,7 +54,6 @@ export const endpoints = {
     getMediaByPostId: (postId) => `Media/${postId}`,
     deleteMedia: (mediaId) => `Media/delete/${mediaId}`,
     editMedia: (mediaId) => `Media/edit/${mediaId}`,
-
 
     // COMMENTS
     createComment: 'SocialFeature/comment',
@@ -76,6 +74,7 @@ export const endpoints = {
 
     // OpenAI
     getTextWhitOpenAi: 'OpenAi/generateText',
+    translateWithAi: 'OpenAi/TranslateAi',
 
     // SEARCH
     search: (type, query) => `SocialFeature/search?type=${type}&query=${query}`,
@@ -135,6 +134,13 @@ export const SearchFormKeys = {
     SearchText: 'search-text',
 };
 
+export const TranslatorFormKeys = {
+    selectInputLanguage: 'select-input-language',
+    selectTargetLanguage: 'select-target-language',
+    inputLanguageArea: 'input-language-area',
+    targetLanguageArea: 'target-language-area',
+};
+
 export const ContentType = {
     ApplicationJSON: 'application/json',
     MulitpartFormData: 'multipart/form-data',
@@ -161,3 +167,55 @@ export const LikeActions = {
 };
 
 export const tokenName = 'accessToken';
+
+export const languages = [
+    'English',
+    'Spanish',
+    'Mandarin Chinese',
+    'Hindi',
+    'Arabic',
+    'Bengali',
+    'Portuguese',
+    'Russian',
+    'Urdu',
+    'Indonesian',
+    'German',
+    'Japanese',
+    'Swahili',
+    'French',
+    'Turkish',
+    'Italian',
+    'Korean',
+    'Vietnamese',
+    'Tamil',
+    'Telugu',
+    'Marathi',
+    'Thai',
+    'Filipino',
+    'Polish',
+    'Dutch',
+    'Yoruba',
+    'Malayalam',
+    'Ukrainian',
+    'Persian',
+    'Romanian',
+    'Gujarati',
+    'Hausa',
+    'Kannada',
+    'Odia',
+    'Sundanese',
+    'Farsi',
+    'Malay',
+    'Uzbek',
+    'Sindhi',
+    'Amharic',
+    'Oromo',
+    'Maithili',
+    'Burmese',
+    'Hakka',
+    'Saraiki',
+    'Yiddish',
+    'Malagasy',
+    'Kurdish',
+    'Bulgarian',
+];
