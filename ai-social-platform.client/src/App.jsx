@@ -23,6 +23,8 @@ import PostDetails from './components/PostDetails/PostDetails';
 import Postlist from './components/PostEdit/PostList';
 import Postedit from './components/PostEdit/Postedit';
 import Search from './components/Search/Search';
+import LeftAside from './components/LeftAside/LeftAside';
+import RightAside from './components/RightAside/RightAside';
 
 function App() {
     return (
@@ -30,63 +32,75 @@ function App() {
             <AuthProvider>
                 <>
                     <Header />
-                    <main className="main-content">
-                        <Routes>
-                            <Route
-                                path={PATH.notFound}
-                                element={<NotFound />}
-                            />
+                    <div className="main-wrapper">
+                        <main className="main-content">
+                            <Routes>
+                                <Route
+                                    path={PATH.notFound}
+                                    element={<NotFound />}
+                                />
 
-                            <Route element={<LoggedInGuard />}>
-                                <Route path={PATH.login} element={<Login />} />
-                                <Route
-                                    path={PATH.register}
-                                    element={<Register />}
-                                />
-                            </Route>
+                                <Route element={<LoggedInGuard />}>
+                                    <Route
+                                        path={PATH.login}
+                                        element={<Login />}
+                                    />
+                                    <Route
+                                        path={PATH.register}
+                                        element={<Register />}
+                                    />
+                                </Route>
 
-                            <Route element={<AuthGuard />}>
-                                <Route path={PATH.home} element={<Home />} />
-                                <Route
-                                    path={PATH.search}
-                                    element={<Search />}
-                                />
-                                <Route
-                                    path={PATH.logout}
-                                    element={<Logout />}
-                                />
-                                <Route
-                                    path={PATH.create}
-                                    element={<CreatePost />}
-                                />
-                                <Route
-                                    path={PATH.detailsPost}
-                                    element={<PostDetails />}
-                                />
-                                {/* <Route
+                                <Route element={<AuthGuard />}>
+                                    <Route
+                                        path={PATH.home}
+                                        element={<Home />}
+                                    />
+                                    <Route
+                                        path={PATH.search}
+                                        element={<Search />}
+                                    />
+                                    <Route
+                                        path={PATH.logout}
+                                        element={<Logout />}
+                                    />
+                                    <Route
+                                        path={PATH.create}
+                                        element={<CreatePost />}
+                                    />
+                                    <Route
+                                        path={PATH.detailsPost}
+                                        element={<PostDetails />}
+                                    />
+                                    {/* <Route
                                     path={PATH.successfully}
                                     element={<Successfully />}
                                 /> */}
 
+                                    <Route
+                                        path={PATH.profile}
+                                        element={<Userprofile />}
+                                    />
+                                    <Route
+                                        path={PATH.profileedit}
+                                        element={<Userprofileedit />}
+                                    />
+                                </Route>
                                 <Route
-                                    path={PATH.profile}
-                                    element={<Userprofile />}
+                                    path={PATH.postlist}
+                                    element={<Postlist />}
                                 />
                                 <Route
-                                    path={PATH.profileedit}
-                                    element={<Userprofileedit />}
+                                    path={PATH.postedit}
+                                    element={<Postedit />}
                                 />
-                            </Route>
-                            <Route
-                                path={PATH.postlist}
-                                element={<Postlist />}
-                            />
-                            <Route
-                                path={PATH.postedit}
-                                element={<Postedit />}
-                            />
-                        </Routes>
-                    </main>
+                            </Routes>
+                        </main>
+
+                        <LeftAside />
+
+                        <RightAside />
+                    </div>
                     <Footer />
                 </>
             </AuthProvider>

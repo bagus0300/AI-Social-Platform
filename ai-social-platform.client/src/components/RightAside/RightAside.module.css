@@ -1,0 +1,15 @@
+.right-aside {
+    margin: 5em 2em 1em 0;
+    order: 3;
+    text-align: center;
+    border-top-left-radius: 0;
+    flex: 1 1 200px;
+    padding: 0.5em 1em;
+    overflow: hidden;
+    box-shadow: 0 0 0.5em 0.1em #ccc;
+    border-radius: 0.5em;
+    background-color: #fff;
+    height: 85vh;
+    position: sticky;
+    top: 5em;
+}

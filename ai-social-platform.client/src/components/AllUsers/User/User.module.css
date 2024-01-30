@@ -1,0 +1,53 @@
+.user-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.7em;
+    box-shadow: 0 0 0.4em 0.1em #ccc;
+    border-radius: 0.3em;
+    padding: 0.3em;
+}
+
+.user-item:hover {
+    box-shadow: 0 0 1em 0.3em #ccc;
+}
+
+.user-info-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.user-img {
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+    margin-right: 0.5em;
+    cursor: pointer;
+}
+
+.user-img:hover {
+    filter: brightness(110%);
+}
+
+.add-friend-btn {
+    margin-right: 1em;
+    font-size: 0.8em;
+    background-color: #004aad;
+    padding: 0.2em 0.4em;
+    color: #fff;
+    border-radius: 0.2em;
+    cursor: pointer;
+}
+
+.add-friend-btn:hover {
+    filter: brightness(110%);
+    border-radius: 0;
+}
+
+.user-username {
+    cursor: pointer;
+}
+
+.user-username:hover {
+    text-decoration: underline;
+}

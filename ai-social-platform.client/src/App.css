@@ -1,4 +1,9 @@
-﻿.main-content {
-    flex: 1 1 auto;
-    /* margin: 3em 0 0 0; */
+﻿.main-wrapper {
+    display: flex;
+    position: relative;
+}
+
+.main-content {
+    flex: 2 1 auto;
+    order: 2;
 }

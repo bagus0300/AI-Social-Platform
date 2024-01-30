@@ -32,6 +32,7 @@ export const endpoints = {
     getLoggedUserDetails: 'User/userDetails',
     userDetails: 'User/userDetails',
     updateUser: 'User/updateUser',
+    getAllUsers: 'User/allUsers',
     userDetails: (userId) => `User/userDetails/${userId}`,
     addFriend: (userId) => `User/addFriend/${userId}`,
     removeFriend: (userId) => `User/removeFriend/${userId}`,

@@ -146,7 +146,10 @@ export default function Search() {
                             >
                                 <div className={styles['media']}>
                                     <img
-                                        src="/images/default-profile-pic.png"
+                                        src={
+                                            user?.profilePictureUrl ||
+                                            '/images/default-profile-pic.png'
+                                        }
                                         alt=""
                                     />
                                 </div>

@@ -1,0 +1,18 @@
+.left-aside {
+    margin: 5em 0 1em 2em;
+    order: 1;
+    border-top-right-radius: 0;
+    flex: 1 1 200px;
+    padding: 0.5em 1em;
+    overflow: hidden;
+    box-shadow: 0 0 0.5em 0.1em #ccc;
+    border-radius: 0.5em;
+    background-color: #fff;
+    height: 85vh;
+    position: sticky;
+    top: 5em;
+}
+
+.topic-heading {
+    text-align: center;
+}

@@ -28,5 +28,5 @@ export const removeFriend = async (userId) =>
 
 export const getFriendsData = async (userId) =>
     await api.get(endpoints.allFriends(userId));
-    
 
+export const getAllUsers = async () => await api.get(endpoints.getAllUsers);
