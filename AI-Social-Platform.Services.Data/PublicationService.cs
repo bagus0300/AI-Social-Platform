@@ -36,9 +36,12 @@ public class PublicationService : IPublicationService
 
         var userId = GetUserId();
 
-        var userFriends =  dbContext.Friendships
+        var userFriends = await dbContext.Friendships
             .Where(u => u.UserId == userId)
-            .Select(f => f.FriendId);
+            .Select(f => f.FriendId)
+            .ToListAsync();
+
+        userFriends.Add(userId);
 
         var publications = dbContext.Publications
             .Where(p => userFriends.Any(u => u == p.AuthorId))

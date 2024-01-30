@@ -178,6 +178,8 @@
                     FriendId = GetUserId()
                 }
             };
+
+            await baseSocialService.CreateNotificationAsync(friendId, GetUserId(), NotificationType.Follow, GetUserId());
            
             await dbContext.Friendships.AddRangeAsync(friendship);
             await dbContext.SaveChangesAsync();
