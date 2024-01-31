@@ -6,6 +6,7 @@
     box-shadow: 0 0 0.4em 0.1em #ccc;
     border-radius: 0.3em;
     padding: 0.3em;
+    position: relative;
 }
 
 .user-item:hover {
@@ -40,6 +41,21 @@
 }
 
 .add-friend-btn:hover {
+    filter: brightness(110%);
+    border-radius: 0;
+}
+
+.remove-friend-btn {
+    margin-right: 1em;
+    font-size: 0.8em;
+    background-color: #aaa;
+    padding: 0.2em 0.4em;
+    color: #ffffff;
+    border-radius: 0.2em;
+    cursor: pointer;
+}
+
+.remove-friend-btn:hover {
     filter: brightness(110%);
     border-radius: 0;
 }

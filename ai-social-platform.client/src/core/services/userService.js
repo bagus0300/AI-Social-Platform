@@ -30,3 +30,6 @@ export const getFriendsData = async (userId) =>
     await api.get(endpoints.allFriends(userId));
 
 export const getAllUsers = async () => await api.get(endpoints.getAllUsers);
+
+export const isFriend = async (friendId) =>
+    await api.get(`${endpoints.isFriend(friendId)}`);

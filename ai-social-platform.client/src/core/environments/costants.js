@@ -37,6 +37,7 @@ export const endpoints = {
     addFriend: (userId) => `User/addFriend/${userId}`,
     removeFriend: (userId) => `User/removeFriend/${userId}`,
     allFriends: (userId) => `User/allFriends?userId=${userId}`,
+    isFriend: (friendId) => `User/usersAreFriends/${friendId}`,
 
     // POSTS
     createPost: 'Publication',
@@ -46,7 +47,6 @@ export const endpoints = {
     editPost: (postId) => `Publication/${postId}`,
     // getPostsByUserId: (userId) => `Publication/User/${userId}`,
     getPostsByUserId: (userId, page) => `Publication/User/${userId}`,
-
 
     // MEDIA
     addMedia: 'Media/upload?isItPublication=true',
