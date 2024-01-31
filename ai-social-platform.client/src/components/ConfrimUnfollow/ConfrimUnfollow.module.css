@@ -7,8 +7,16 @@
     box-shadow: 0 0 0.5em 0.1em #aaa;
     z-index: 1000;
     padding: 0.5em 1em;
-    min-width: 10em;
+    min-width: 13em;
     border-radius: 0.3em;
+}
+
+.confrim-unfollow-section span {
+    display: none;
+}
+
+.unfollow-text {
+    margin-bottom: 0.5em;
 }
 
 .unfollow-section-buttons {

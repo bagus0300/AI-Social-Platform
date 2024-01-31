@@ -60,6 +60,7 @@ export default function User({ user }) {
                     <ConfrimUnfollow
                         unfollowPerson={unfollowPerson}
                         closeConfirmUnfollowModal={closeConfirmUnfollowModal}
+                        user={user}
                     />
                 )}
                 <div className={styles['user-info-wrapper']}>
