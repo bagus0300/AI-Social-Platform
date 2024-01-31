@@ -58,8 +58,9 @@
 }
 
 .search-result {
-    margin: 2em 0;
+    margin: 2em auto;
     padding: 0 1em;
+    max-width: 35em;
 }
 
 .no-match-message {

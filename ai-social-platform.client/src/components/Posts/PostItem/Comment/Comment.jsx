@@ -45,7 +45,7 @@ export default function Comment({
                 <img
                     className={styles['comment-user-img']}
                     src={
-                        comment.user?.avatar ||
+                        comment.user?.profilePictureUrl ||
                         '/images/default-profile-pic.png'
                     }
                     alt="user"

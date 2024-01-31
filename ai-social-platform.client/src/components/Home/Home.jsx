@@ -20,7 +20,7 @@ export default function Home() {
                     >
                         <img
                             className={styles['user-profile-pic']}
-                            src={avatar || "/images/default-profile-pic.png"}
+                            src={avatar || '/images/default-profile-pic.png'}
                             alt="profile-pic"
                         />
                     </Link>

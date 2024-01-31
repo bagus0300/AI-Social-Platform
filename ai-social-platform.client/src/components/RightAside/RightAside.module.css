@@ -5,7 +5,7 @@
     border-top-left-radius: 0;
     flex: 1 1 200px;
     padding: 0.5em 1em;
-    overflow: hidden;
+    overflow-y: scroll;
     box-shadow: 0 0 0.5em 0.1em #ccc;
     border-radius: 0.5em;
     background-color: #fff;

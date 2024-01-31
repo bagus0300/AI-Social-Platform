@@ -12,7 +12,7 @@ export default function UserInfo({ post }) {
                     <img
                         className={styles['user-img']}
                         src={
-                            post.author?.profilPictureUrl ||
+                            post.author?.profilePictureUrl ||
                             '/images/default-profile-pic.png'
                         }
                         alt="User profile pic"

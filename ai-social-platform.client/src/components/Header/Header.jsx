@@ -17,6 +17,7 @@ export default function Header() {
 
     const { isAuthenticated, firstName, lastName, userId, avatar } =
         useContext(AuthContext);
+
     const [notificationsCount, setNotificationsCount] = useState(0);
 
     useEffect(() => {

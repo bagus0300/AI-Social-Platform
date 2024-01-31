@@ -80,13 +80,15 @@ export default function CreatePost() {
             values[CreateFormKeys.PostDescription].length === 0 &&
             values[CreateFormKeys.PostMedia].length > 0
         ) {
-            postService
-                .createPost({ content: '' })
+            Promise.all([
+                postService.createPost({
+                    content: '',
+                }),
+                mediaService.addMedia(formData),
+            ])
                 .then(() => {
-                    mediaService
-                        .addMedia(formData)
-                        .then(navigate(PATH.home))
-                        .catch((error) => console.log(error));
+                    resetForm();
+                    navigate(PATH.home);
                 })
                 .catch((error) => console.log(error));
         }
@@ -95,18 +97,15 @@ export default function CreatePost() {
             values[CreateFormKeys.PostDescription].length > 0 &&
             values[CreateFormKeys.PostMedia].length > 0
         ) {
-            postService
-                .createPost({
+            Promise.all([
+                postService.createPost({
                     content: values[CreateFormKeys.PostDescription],
-                })
+                }),
+                mediaService.addMedia(formData),
+            ])
                 .then(() => {
-                    mediaService
-                        .addMedia(formData)
-                        .then(() => {
-                            resetForm();
-                            navigate(PATH.home);
-                        })
-                        .catch((error) => console.log(error));
+                    resetForm();
+                    navigate(PATH.home);
                 })
                 .catch((error) => console.log(error));
         }
