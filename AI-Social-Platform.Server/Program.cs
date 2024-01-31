@@ -17,14 +17,17 @@ using static AI_Social_Platform.Common.GeneralApplicationConstants;
 using Microsoft.AspNetCore.Authentication.Certificate;
 
 
-WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+builder.Configuration.AddJsonFile($"appsettings.Development.json", optional: true);
+builder.Configuration.AddEnvironmentVariables();
 
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 builder.Services.AddDbContext<ASPDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
 builder.Services.AddAuthentication(options =>
     {
@@ -65,7 +68,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AISocialPlatform", builder =>
     {
-        builder.WithOrigins("https://localhost:5173")
+        builder.WithOrigins("https://localhost:5173", "https://ai-social-platform-fe.azurewebsites.net")
             .AllowAnyMethod()
             .AllowAnyHeader();
     });
@@ -132,6 +135,19 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+else
+{
+    app.UseSwagger(options =>
+    {
+        options.SerializeAsV2 = false;
+    });
+
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        options.RoutePrefix = string.Empty;
+    });
 }
 
 app.UseHttpsRedirection();
