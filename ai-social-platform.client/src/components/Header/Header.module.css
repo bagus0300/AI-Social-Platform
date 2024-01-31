@@ -14,7 +14,7 @@
 
 .app-header {
     background-color: #004aad;
-    padding: 0.5em 1em;
+    padding: 0.1em 1em;
     color: #fff;
     text-align: center;
     display: flex;
@@ -25,8 +25,15 @@
     z-index: 100;
 }
 
+.logo-image {
+    max-width: 30px;
+    height: 30px;
+    margin-right: 1em;
+}
+
 .logo-heading {
-    font-size: 1.5em;
+    font-size: 1.2em;
+    margin-right: auto;
 }
 
 .logo-heading:hover .logo-text {
@@ -38,9 +45,11 @@
     color: #fff;
 }
 
+
 .search-form {
     display: flex;
     align-items: center;
+    margin-left: auto;
 }
 
 .search-input-wrapper {
@@ -64,7 +73,7 @@
 
 .search-form input,
 .search-form button {
-    padding: 0.3em 0.5em;
+    padding: 0.2em 0.3em;
     border: 0;
     border-radius: 0.3em;
     cursor: pointer;
@@ -196,3 +205,5 @@
 .logout i {
     width: 1.5em;
 }
+
+

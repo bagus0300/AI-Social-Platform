@@ -226,7 +226,7 @@
         public async Task<ICollection<UserDetailsDto>?> GetAllUsers() 
         {
             var users = dbContext.ApplicationUsers
-                .Where(u => u.IsActive);
+                .Where(u => u.IsActive && u.Id != GetUserId());
 
             ICollection<UserDetailsDto> userDto =  await users.Select(u => new UserDetailsDto()
             {

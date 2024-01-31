@@ -26,6 +26,11 @@
 }
 
 .select-input-language,
+.select-target-language {
+    max-width: 30%;
+}
+
+.select-input-language,
 .select-target-language,
 .switch-button,
 .translate-button {
@@ -37,14 +42,29 @@
     flex-direction: column;
     align-items: center;
     gap: 0.5em;
+    width: 100%;
+        
+}
+
+.input-language-wrapper,
+.target-language-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .input-language-wrapper {
-    order: 1;
+    order: 1;   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
 }
 
 .target-language-wrapper {
     order: 3;
+    
+    
 }
 
 .target-language-area {
@@ -54,10 +74,11 @@
 
 .input-language-area,
 .target-language-area {
-    resize: none;
+    width: 90%;
     border: 1px solid #aaa;
     padding: 0.5em;
     border-radius: 0.3em;
+    resize: none;
 }
 
 .translate-button {
