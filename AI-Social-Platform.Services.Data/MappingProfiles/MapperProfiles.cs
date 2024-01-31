@@ -41,7 +41,9 @@ namespace AI_Social_Platform.Services.Data.MappingProfiles
                     opt.MapFrom(t => t.Followers.Select(f => f.UserId).ToArray());
                 });
 
-            this.CreateMap<UserDto, ApplicationUser>().ReverseMap();
+            this.CreateMap<UserDto, ApplicationUser>().ReverseMap()
+                .ForMember(p => p.ProfilePictureUrl, opt => opt.Ignore())
+                .ForMember(p => p.ProfilePictureData, opt => {opt.MapFrom(u => u.ProfilePicture);});
             this.CreateMap<TopicDto, Topic>().ReverseMap();
         }
 

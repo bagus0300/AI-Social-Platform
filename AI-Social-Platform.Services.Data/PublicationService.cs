@@ -67,6 +67,8 @@ public class PublicationService : IPublicationService
             p.IsLiked = likeIds.Any(l => l.PublicationId == p.Id);
         });
 
+        publicationsDto = ReturnListDtoWithImages(publicationsDto);
+
         var indexPublicationDto = new IndexPublicationDto
         {
             Publications = publicationsDto.OrderByDescending(p => p.LatestActivity),
@@ -97,6 +99,8 @@ public class PublicationService : IPublicationService
             .ToListAsync();
 
         publications.ForEach(p => p.IsLiked = dbContext.Likes.Any(l => l.PublicationId == p.Id && l.UserId == GetUserId()));
+
+        publications = ReturnListDtoWithImages(publications);
 
         var indexPublicationDto = new IndexPublicationDto
         {
@@ -133,6 +137,8 @@ public class PublicationService : IPublicationService
             .ProjectTo<CommentDto>(mapper.ConfigurationProvider)
             .ToListAsync();
 
+        publicationDto = ReturnDtoWithImages(publicationDto);
+
         publicationDto.CommentsCount = await dbContext.Comments
             .Where(c => c.PublicationId == publication.Id)
             .CountAsync();
@@ -158,6 +164,8 @@ public class PublicationService : IPublicationService
        publicationDto.Author = mapper.Map<UserDto>(await dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId));
        publicationDto.Topic = mapper.Map<TopicDto>(await dbContext.Topics.FirstOrDefaultAsync(t => t.Id == publication.TopicId));
 
+       publicationDto = ReturnDtoWithImages(publicationDto);
+
        return publicationDto;
     }
     
@@ -177,7 +185,12 @@ public class PublicationService : IPublicationService
         }
 
         publication.Content = dto.Content;
-        publication.TopicId = dto.TopicId;
+
+        if (dto.TopicId != Guid.Empty)
+        {
+            publication.TopicId = dto.TopicId;
+        }
+
         publication.DateModified = DateTime.UtcNow;
         publication.LatestActivity = DateTime.UtcNow;
         await dbContext.SaveChangesAsync();
@@ -215,5 +228,55 @@ public class PublicationService : IPublicationService
         return Guid.Parse(userId);
     }
 
-   
+    private List<PublicationDto> ReturnListDtoWithImages(List<PublicationDto> publications)
+    {
+        publications.ForEach(p =>
+        {
+            if (p.Author.ProfilePictureData != null)
+            {
+                p.Author.ProfilePictureUrl = GetProfilePicturePath(p.Author.Id);
+                p.Author.ProfilePictureData = null;
+            }
+
+            foreach (var comment in p.Comments)
+            {
+                if (comment.User.ProfilePictureData != null)
+                {
+                    comment.User.ProfilePictureUrl = GetProfilePicturePath(comment.User.Id);
+                    comment.User.ProfilePictureData = null;
+                }
+            }
+        });
+
+        return publications;
+    }
+
+    private PublicationDto ReturnDtoWithImages(PublicationDto p)
+    {
+        if (p.Author.ProfilePictureData != null)
+        {
+            p.Author.ProfilePictureUrl = GetProfilePicturePath(p.Author.Id);
+            p.Author.ProfilePictureData = null;
+        }
+
+        foreach (var comment in p.Comments)
+        {
+            if (comment.User.ProfilePictureData != null)
+            {
+                comment.User.ProfilePictureUrl = GetProfilePicturePath(comment.User.Id);
+                comment.User.ProfilePictureData = null;
+            }
+        }
+
+        return p;
+    }
+
+    private string GetProfilePicturePath(Guid userId)
+    {
+        var request = httpContext.Request;
+        var baseUrl = $"{request.Scheme}://{request.Host}{request.PathBase}";
+        var path = $"{baseUrl}/api/User/ProfilePicture/{userId}";
+        return path;
+    }
+
 }

@@ -15,7 +15,6 @@ using AI_Social_Platform.Services.Data.Models.PublicationDtos;
 using AI_Social_Platform.Services.Data.Models.UserDto;
 using static AI_Social_Platform.Common.ExceptionMessages.PublicationExceptionMessages;
 
-
 namespace AI_Social_Platform.Services.Data
 {
     public class BaseSocialService : IBaseSocialService
@@ -120,23 +119,38 @@ namespace AI_Social_Platform.Services.Data
 
         private async Task<IEnumerable> SearchUsersAsync(string query, int take)
         {
-            return await mapper.ProjectTo<UserDto>
+            var users = await mapper.ProjectTo<UserDto>
             (dbContext.Users
                            .AsQueryable()
                            .Where(u => u.FirstName.Contains(query) || u.LastName.Contains(query))
                            .Take(take))
                 .ToArrayAsync();
+
+            foreach (var user in users)
+            {
+                if (user.ProfilePictureData != null)
+                {
+                    user.ProfilePictureUrl = GetProfilePicturePath(user.Id);
+                    user.ProfilePictureData = null;
+                }
+            }
+
+            return users;
         }
 
         private async Task<IEnumerable> SearchPublicationsAsync(string query, int take)
         {
-            return await mapper.ProjectTo<PublicationDto>
+            var publications = await mapper.ProjectTo<PublicationDto>
                 (dbContext.Publications
                 .AsQueryable()
                 .Where(p => p.Content.Contains(query))
                 .OrderByDescending(p => p.LatestActivity)
-                .Take(take))
-                .ToArrayAsync();
+            .Take(take))
+                .ToListAsync();
+
+           publications = ReturnListDtoWithImages(publications);
+
+            return publications;
         }
 
         private async Task<IEnumerable> SearchTopicsAsync(string query, int take)
@@ -185,9 +199,16 @@ namespace AI_Social_Platform.Services.Data
                     UserName = u.UserName,
                     FirstName = u.FirstName,
                     LastName = u.LastName,
-                    ProfilePictureData = null,
+                    ProfilePictureData = u.ProfilePicture
                 })
                 .FirstOrDefaultAsync();
+
+            if (user?.ProfilePictureData != null)
+            {
+                user.ProfilePictureUrl = GetProfilePicturePath(user.Id);
+                user.ProfilePictureData = null;
+            }
+
             var dtoReturn = mapper.Map<CommentDto>(comment);
             dtoReturn.User = user!;
 
@@ -213,6 +234,12 @@ namespace AI_Social_Platform.Services.Data
 
             var commentDto = mapper.Map<CommentDto>(comment);
             commentDto.User = mapper.Map<UserDto>(await dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId));
+
+            if (commentDto.User.ProfilePictureData != null)
+            {
+                commentDto.User.ProfilePictureUrl = GetProfilePicturePath(commentDto.User.Id);
+                commentDto.User.ProfilePictureData = null;
+            }
 
             return commentDto;
         }
@@ -250,6 +277,15 @@ namespace AI_Social_Platform.Services.Data
                 .Skip(skip)
                 .Take(pageSize)
                 .ToListAsync();
+
+            foreach (var comment in comments)
+            {
+                if (comment.User.ProfilePictureData != null)
+                {
+                    comment.User.ProfilePictureUrl = GetProfilePicturePath(comment.User.Id);
+                    comment.User.ProfilePictureData = null;
+                }
+            }
 
             return new IndexCommentDto()
             {
@@ -295,7 +331,15 @@ namespace AI_Social_Platform.Services.Data
             await dbContext.Likes.AddAsync(like);
             await dbContext.SaveChangesAsync();
 
-            return mapper.Map<LikeDto>(like);
+            var likeDto = mapper.Map<LikeDto>(like);
+
+            if (likeDto.User.ProfilePictureData != null)
+            {
+                likeDto.User.ProfilePictureUrl = GetProfilePicturePath(likeDto.User.Id);
+                likeDto.User.ProfilePictureData = null;
+            }
+
+            return likeDto;
         }
 
         public async Task<LikeDto> DeleteLikeOnPublicationAsync(Guid likeId)
@@ -316,16 +360,35 @@ namespace AI_Social_Platform.Services.Data
             dbContext.Likes.Remove(like);
             await dbContext.SaveChangesAsync();
 
+            var likeDto = mapper.Map<LikeDto>(like);
+
+            if (likeDto.User.ProfilePictureData != null)
+            {
+                likeDto.User.ProfilePictureUrl = GetProfilePicturePath(likeDto.User.Id);
+                likeDto.User.ProfilePictureData = null;
+            }
+
             return mapper.Map<LikeDto>(like);
         }
 
         public async Task<IEnumerable<LikeDto>> GetLikesOnPublicationAsync(Guid publicationId)
         {
-            return await dbContext.Likes
+            var likesDto = await dbContext.Likes
                 .Where(l => l.PublicationId == publicationId)
                 .ProjectTo<LikeDto>(mapper.ConfigurationProvider)
                 .OrderByDescending(l => l.DateCreated)
                 .ToListAsync();
+
+            foreach (var like in likesDto)
+            {
+                if (like.User.ProfilePictureData != null)
+                {
+                    like.User.ProfilePictureUrl = GetProfilePicturePath(like.User.Id);
+                    like.User.ProfilePictureData = null;
+                }
+            }
+
+            return likesDto;
         }
 
         //Share
@@ -396,6 +459,37 @@ namespace AI_Social_Platform.Services.Data
             }
 
             return Guid.Parse(userId);
+        }
+
+        private List<PublicationDto> ReturnListDtoWithImages(List<PublicationDto> publications)
+        {
+            publications.ForEach(p =>
+            {
+                if (p.Author.ProfilePictureData != null)
+                {
+                    p.Author.ProfilePictureUrl = GetProfilePicturePath(p.Author.Id);
+                    p.Author.ProfilePictureData = null;
+                }
+
+                foreach (var comment in p.Comments)
+                {
+                    if (comment.User.ProfilePictureData != null)
+                    {
+                        comment.User.ProfilePictureUrl = GetProfilePicturePath(comment.User.Id);
+                        comment.User.ProfilePictureData = null;
+                    }
+                }
+            });
+
+            return publications;
+        }
+
+        private string GetProfilePicturePath(Guid userId)
+        {
+            var request = httpContext.Request;
+            var baseUrl = $"{request.Scheme}://{request.Host}{request.PathBase}";
+            var path = $"{baseUrl}/api/User/ProfilePicture/{userId}";
+            return path;
         }
     }
 }
