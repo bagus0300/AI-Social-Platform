@@ -28,5 +28,7 @@
 
         Task<bool> CheckIfUserExistsByIdAsync(Guid id);
 
+        Task<bool> ThisTwoUsersAreFriends(string userId, Guid friendId);
+
     }
 }

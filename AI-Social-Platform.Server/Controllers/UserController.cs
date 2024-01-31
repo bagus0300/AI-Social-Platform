@@ -255,7 +255,32 @@ namespace AI_Social_Platform.Server.Controllers
                 return StatusCode(500, new { message = $"Internal server error: {ex.Message}"});
             }
         }
-        
+
+        [HttpGet("usersAreFriends/{friendId}")]
+        public async Task<IActionResult> UsersAreFriends(Guid friendId)
+        {
+            var userId = HttpContext.User.GetUserId();
+
+            try
+            {
+                var user = userService.GetUserByIdAsync(userId);
+
+                bool friendUser = await userService.CheckIfUserExistsByIdAsync(friendId);
+
+                if (!friendUser)
+                {
+                    return NotFound(new { message = "Current user not found!" });
+                }
+
+                var result = await userService.ThisTwoUsersAreFriends(userId, friendId);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
+            }
+        }
 
         [HttpPost("addFriend/{friendId}")]
         public async Task<IActionResult> AddFriend(Guid friendId)

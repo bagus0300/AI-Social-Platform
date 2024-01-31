@@ -157,6 +157,18 @@
             return false;
         }
 
+        public async Task<bool> ThisTwoUsersAreFriends(string userId, Guid friendId)
+        {
+            Friendship? friendship = await dbContext.Friendships.FirstOrDefaultAsync(f => f.UserId == Guid.Parse(userId) && f.FriendId == friendId);
+
+            if (friendship != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public async Task<bool> AddFriendAsync(Guid friendId)
         {
             var friendShip = await dbContext.Friendships.FirstOrDefaultAsync(f => f.UserId == GetUserId() && f.FriendId == friendId);
