@@ -94,9 +94,7 @@ export default function Userprofileedit() {
 
             setProfilePictureUrlCurrent(imageUrl);
         } else {
-            setProfilePictureUrlCurrent(
-                '../../../public/images/default-profile-pic.png'
-            );
+            setProfilePictureUrlCurrent('/images/default-profile-pic.png');
         }
     }, [userData.profilePictureUrl]);
 
@@ -108,7 +106,7 @@ export default function Userprofileedit() {
 
             setCoverPhotoUrlCurrent(imageUrlCover);
         } else {
-            setCoverPhotoUrlCurrent('../../../public/images/Logo.png');
+            setCoverPhotoUrlCurrent('/images/Logo.png');
         }
     }, [userData.coverPhotoUrl]);
 

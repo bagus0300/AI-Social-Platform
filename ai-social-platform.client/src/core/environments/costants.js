@@ -47,6 +47,7 @@ export const endpoints = {
     // getPostsByUserId: (userId) => `Publication/User/${userId}`,
     getPostsByUserId: (userId, page) => `Publication/User/${userId}`,
 
+
     // MEDIA
     addMedia: 'Media/upload?isItPublication=true',
     getPostMedia: (postId) => `Media/${postId}`,

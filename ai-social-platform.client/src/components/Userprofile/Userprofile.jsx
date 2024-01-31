@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
-import styles from "./Userprofile.css?inline";
+import styles from './Userprofile.css?inline';
 import * as userService from '../../core/services/userService';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { PATH } from '../../core/environments/costants';
 import { pathToUrl } from '../Userprofile/pathUtils';
 import AuthContext from '../../contexts/authContext';
@@ -17,6 +17,7 @@ export default function Userprofile() {
     const [friendsDataFriend, setFriendsDataFriend] = useState(null);
     const [error, setError] = useState(null);
     const authContext = useContext(AuthContext);
+    const navigate = useNavigate();
     let isUserFriend;
 
     useEffect(() => {
@@ -69,14 +70,14 @@ export default function Userprofile() {
     if (userData.profilePictureUrl) {
         imageUrl = `${userData.profilePictureUrl}?${Math.random()}`;
     } else {
-        imageUrl = '../../../public/images/default-profile-pic.png';
+        imageUrl = '/images/default-profile-pic.png';
     }
 
     let imageUrlCover;
     if (userData.coverPhotoUrl) {
         imageUrlCover = `${userData.coverPhotoUrl}?${Math.random()}`;
     } else {
-        imageUrlCover = '../../../public/images/Logo.png';
+        imageUrlCover = '/images/Logo.png';
     }
 
     const handleAddFriend = async () => {
@@ -117,21 +118,22 @@ export default function Userprofile() {
         }
     };
 
+    const closeUserProfile = async () => {
+        navigate(PATH.home);
+    };
+
     return (
         <div className="user-profile">
             <article className="post-item">
                 <img
                     className="user-cover"
-                    src={imageUrlCover || '../../../public/images/Logo.png'}
+                    src={imageUrlCover || '/images/Logo.png'}
                     alt="User cover photo"
                 />
                 <div className="user-info-wrapper">
                     <img
                         className="user-img"
-                        src={
-                            imageUrl ||
-                            '../../../public/images/default-profile-pic.png'
-                        }
+                        src={imageUrl || '/images/default-profile-pic.png'}
                         alt="User profile pic"
                     />
 
@@ -161,7 +163,7 @@ export default function Userprofile() {
                             >
                                 <img
                                     className="edit-img"
-                                    src="../../../public/images/edit-pen-icon-6.jpg"
+                                    src="/images/edit-pen-icon-6.jpg"
                                     alt="edit button"
                                 />
                             </Link>
@@ -224,7 +226,7 @@ export default function Userprofile() {
                                                   className="friend-img"
                                                   src={
                                                       friend.profilePictureUrl ||
-                                                      '../../../public/images/default-profile-pic.png'
+                                                      '/images/default-profile-pic.png'
                                                   }
                                                   alt="User profile pic"
                                               />{' '}
@@ -245,7 +247,7 @@ export default function Userprofile() {
                                                   className="friend-img"
                                                   src={
                                                       friend.profilePictureUrl ||
-                                                      '../../../public/images/default-profile-pic.png'
+                                                      '/images/default-profile-pic.png'
                                                   }
                                                   alt="User profile pic"
                                               />{' '}
@@ -257,6 +259,17 @@ export default function Userprofile() {
                         </ul>
                     </div>
                 </fieldset>
+
+                <div className="parent-button">
+                    <button
+                        className="profile-button"
+                        type="submit"
+                        //disabled={isSubmitting}
+                        onClick={closeUserProfile}
+                    >
+                        Go to Home page
+                    </button>
+                </div>
             </article>
         </div>
     );
