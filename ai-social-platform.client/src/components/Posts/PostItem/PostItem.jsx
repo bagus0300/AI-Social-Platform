@@ -1,6 +1,7 @@
 import { useContext, useEffect, useReducer, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
+import EmojiPicker from 'emoji-picker-react';
 
 import * as mediaService from '../../../core/services/mediaService';
 import * as commentService from '../../../core/services/commentService';
@@ -17,8 +18,6 @@ import likeReducer from '../../../reducers/likeReducer';
 import commentReducer from '../../../reducers/commentReducer';
 import AuthContext from '../../../contexts/authContext';
 
-// import DeletePost from '../../DeletePost/DeletePost';
-// import EditComment from './Comment/EditComment/EditComment';
 import Comment from './Comment/Comment';
 import UserInfo from './UserInfo/UserInfo';
 import Like from './Like/Like';
@@ -33,15 +32,13 @@ export default function PostItem({ post }) {
 
     const [commentsCount, setCommentsCount] = useState(post.commentsCount);
 
-    // const [editMenu, setEditMenu] = useState(false);
-
     const [isPostLiked, setIsPostLiked] = useState(post.isLiked);
 
     const [isLoading, setIsLoading] = useState(true);
 
-    const [likes, dispatchLike] = useReducer(likeReducer, []);
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
-    // const [deleteModal, setDeleteModal] = useState(false);
+    const [likes, dispatchLike] = useReducer(likeReducer, []);
 
     const [comments, dispatchComment] = useReducer(commentReducer, []);
 
@@ -99,9 +96,6 @@ export default function PostItem({ post }) {
     };
 
     const openPostDetails = () => navigate(PATH.postDetails(post.id));
-    // const showEditMenuToggle = () => setEditMenu(!editMenu);
-
-    // const closeEditMenu = () => setEditMenu(false);
 
     const onLikeButtonClickHandler = async () => {
         if (!isPostLiked) {
@@ -127,7 +121,7 @@ export default function PostItem({ post }) {
         }
     };
 
-    // const closeDeleteModal = () => setDeleteModal(false);
+    const toggleEmojiPicker = () => setShowEmojiPicker(!showEmojiPicker);
 
     async function onSubmit(values) {
         try {
@@ -143,12 +137,20 @@ export default function PostItem({ post }) {
 
             setCommentsCount((state) => state + 1);
 
-            resetForm();
+            values[CommentFormKeys.CommentText] = '';
         } catch (error) {
             console.log(error);
             resetForm();
         }
     }
+
+    const onEmojiClick = (emojiObject) => {
+        setShowEmojiPicker(false);
+
+        values[CommentFormKeys.CommentText] = `${
+            values[CommentFormKeys.CommentText]
+        }${emojiObject.emoji}`;
+    };
 
     function editCommentHandler(editedComment) {
         dispatchComment({
@@ -172,38 +174,8 @@ export default function PostItem({ post }) {
 
             {!isLoading && (
                 <article className={styles['post-item']}>
-                    {/* {editMenu && (
-
-                <div
-                    onClick={closeEditMenu}
-                    className={styles['backdrop']}
-                ></div>
-            )} */}
-
-                    {/* {deleteModal && (
-                <DeletePost
-                    closeDeleteModal={closeDeleteModal}
-                    postId={post.id}
-                />
-            )} */}
-
                     <UserInfo post={post} />
 
-                    {/* {editMenu && ( */}
-                    {/* <section className={styles['edit-menu']}> */}
-                    {/* <div className={styles['edit-post']}> */}
-                    {/* <i className="fa-solid fa-pen-to-square"></i> */}
-                    {/* <p>Edit Post</p> */}
-                    {/* </div> */}
-                    {/* <div */}
-                    {/* onClick={showDeleteModal} */}
-                    {/* className={styles['delete-post']} */}
-                    {/* > */}
-                    {/* <i className="fa-solid fa-trash-can"></i> */}
-                    {/* <p>Delete Post</p> */}
-                    {/* </div> */}
-                    {/* </section> */}
-                    {/* // )} */}
                     <section
                         ref={mediaSectionRef}
                         className={styles['content-description']}
@@ -347,6 +319,10 @@ export default function PostItem({ post }) {
                                     onChange={handleChange}
                                     value={values[CommentFormKeys.CommentText]}
                                 ></textarea>
+                                <i
+                                    onClick={toggleEmojiPicker}
+                                    className="fa-solid fa-face-grin"
+                                ></i>
                                 <button
                                     className={
                                         values[CommentFormKeys.CommentText]
@@ -364,6 +340,14 @@ export default function PostItem({ post }) {
                                     <i className="fa-solid fa-paper-plane"></i>
                                 </button>
                             </form>
+                            {showEmojiPicker && (
+                                <div className={styles['emoji-picker-wrapper']}>
+                                    <EmojiPicker
+                                        height="20em"
+                                        onEmojiClick={onEmojiClick}
+                                    />
+                                </div>
+                            )}
                         </div>
                     </section>
                 </article>

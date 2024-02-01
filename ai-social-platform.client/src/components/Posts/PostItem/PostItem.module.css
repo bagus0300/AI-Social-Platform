@@ -1,12 +1,10 @@
 .post-item {
     background-color: #fff;
-    overflow: hidden;
     width: 30em;
     display: flex;
     flex-direction: column;
     border-radius: 0.5em;
     box-shadow: 0 0 0.2em 0.1em #ddd;
-    position: relative;
 }
 
 .content-description,
@@ -203,6 +201,19 @@
     display: flex;
     gap: 0.5em;
     align-items: center;
+    position: relative;
+}
+
+.emoji-picker-wrapper {
+    position: absolute;
+    z-index: 20;
+    left: 22em;
+    bottom: 2.5em;
+}
+
+.comment-form i:nth-child(3) {
+    color: #ffac33;
+    cursor: pointer;
 }
 
 .comment-area {

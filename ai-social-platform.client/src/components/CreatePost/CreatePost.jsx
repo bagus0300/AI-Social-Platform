@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
+import EmojiPicker from 'emoji-picker-react';
 
 import * as postService from '../../core/services/postService';
 import * as mediaService from '../../core/services/mediaService';
@@ -19,16 +20,20 @@ const initialValues = {
 };
 
 export default function CreatePost() {
-    const { firstName, lastName } = useContext(AuthContext);
+    const { firstName, lastName, avatar } = useContext(AuthContext);
 
     const [textareaRows, setTextareaRows] = useState(2);
 
     const [openAiFormVisible, setOpenAiFormVisible] = useState(false);
 
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
     const [isGenerateImageSectionVisible, setIsGenerateImageSectionVisible] =
         useState(false);
 
     const toggleOpenAiForm = () => setOpenAiFormVisible(!openAiFormVisible);
+
+    const toggleEmojiPicker = () => setShowEmojiPicker(!showEmojiPicker);
 
     const openGenerateImageSection = () =>
         setIsGenerateImageSectionVisible(true);
@@ -51,6 +56,14 @@ export default function CreatePost() {
         onSubmit,
         validationSchema: createPostValidation,
     });
+
+    const onEmojiClick = (emojiObject) => {
+        values[CreateFormKeys.PostDescription] = `${
+            values[CreateFormKeys.PostDescription]
+        }${emojiObject.emoji}`;
+
+        setShowEmojiPicker(false);
+    };
 
     const incrementTextareaRows = () => setTextareaRows(7);
 
@@ -138,6 +151,11 @@ export default function CreatePost() {
 
             <div onClick={closeCreateForm} className={styles['backdrop']}></div>
             <section className={styles['create-post-section']}>
+                {showEmojiPicker && (
+                    <div className={styles['emoji-picker-wrapper']}>
+                        <EmojiPicker onEmojiClick={onEmojiClick} />
+                    </div>
+                )}
                 <div className={styles['section-header']}>
                     <h2 className={styles['section-heading']}>Create Post</h2>
                     <p
@@ -151,7 +169,7 @@ export default function CreatePost() {
                     <Link className={styles['profile-pic-wrapper']}>
                         <img
                             className={styles['profile-picture']}
-                            src="/images/default-profile-pic.png"
+                            src={avatar || '/images/default-profile-pic.png'}
                             alt=""
                         />
                     </Link>
@@ -203,16 +221,24 @@ export default function CreatePost() {
 
                 <form onSubmit={handleSubmit} className={styles['create-form']}>
                     <label htmlFor={CreateFormKeys.PostDescription}></label>
-                    <textarea
-                        className={styles['post-description']}
-                        name={CreateFormKeys.PostDescription}
-                        id={CreateFormKeys.PostDescription}
-                        onFocus={incrementTextareaRows}
-                        rows={textareaRows}
-                        placeholder={`What's on your mind, ${firstName}?`}
-                        onChange={handleChange}
-                        value={values[CreateFormKeys.PostDescription]}
-                    ></textarea>
+                    <div className={styles['description-wrapper']}>
+                        <textarea
+                            className={styles['post-description']}
+                            name={CreateFormKeys.PostDescription}
+                            id={CreateFormKeys.PostDescription}
+                            onFocus={incrementTextareaRows}
+                            rows={textareaRows}
+                            placeholder={`What's on your mind, ${firstName}?`}
+                            onChange={handleChange}
+                            value={values[CreateFormKeys.PostDescription]}
+                        ></textarea>
+                        <div
+                            onClick={toggleEmojiPicker}
+                            className={styles['emoji-logo-wrapper']}
+                        >
+                            <i className="fa-solid fa-face-grin"></i>
+                        </div>
+                    </div>
                     <div className={styles['media-input']}>
                         <label
                             className={styles['media-label']}

@@ -48,9 +48,9 @@ export default function Translator() {
 
     return (
         <section className={styles['translator-section']}>
-            <h4 className={styles['translator-section-heading']}>
+            <h3 className={styles['translator-section-heading']}>
                 Translate with AI
-            </h4>
+            </h3>
             <form className={styles['translator-form']} onSubmit={handleSubmit}>
                 <div className={styles['select-options']}>
                     <select

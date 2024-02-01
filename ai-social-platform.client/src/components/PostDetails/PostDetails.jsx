@@ -1,6 +1,7 @@
 import { useContext, useEffect, useReducer, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useFormik } from 'formik';
+import EmojiPicker from 'emoji-picker-react';
 
 import * as postService from '../../core/services/postService';
 import * as mediaService from '../../core/services/mediaService';
@@ -37,6 +38,8 @@ export default function PostDetails() {
     const [isPostLiked, setIsPostLiked] = useState();
 
     const [isLoading, setIsLoading] = useState(true);
+
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
     const [likes, dispatchLike] = useReducer(likeReducer, []);
 
@@ -119,12 +122,24 @@ export default function PostDetails() {
 
             setCommentsCount((state) => state + 1);
 
+            values[CommentFormKeys.CommentText] = '';
+
             resetForm();
         } catch (error) {
             console.log(error);
             resetForm();
         }
     }
+
+    const toggleEmojiPicker = () => setShowEmojiPicker(!showEmojiPicker);
+
+    const onEmojiClick = (emojiObject) => {
+        setShowEmojiPicker(false);
+
+        values[CommentFormKeys.CommentText] = `${
+            values[CommentFormKeys.CommentText]
+        }${emojiObject.emoji}`;
+    };
 
     const editCommentHandler = (editedComment) => {
         dispatchComment({
@@ -262,6 +277,10 @@ export default function PostDetails() {
                                     onChange={handleChange}
                                     value={values[CommentFormKeys.CommentText]}
                                 ></textarea>
+                                <i
+                                    onClick={toggleEmojiPicker}
+                                    className="fa-solid fa-face-grin"
+                                ></i>
                                 <button
                                     className={
                                         values[CommentFormKeys.CommentText]
@@ -279,6 +298,11 @@ export default function PostDetails() {
                                     <i className="fa-solid fa-paper-plane"></i>
                                 </button>
                             </form>
+                            {showEmojiPicker && (
+                                <div className={styles['emoji-picker-wrapper']}>
+                                    <EmojiPicker onEmojiClick={onEmojiClick} />
+                                </div>
+                            )}
                         </div>
                     </section>
                 </section>

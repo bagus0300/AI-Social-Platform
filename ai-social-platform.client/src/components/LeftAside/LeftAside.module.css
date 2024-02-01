@@ -19,3 +19,16 @@
     background-color: #004aad;
     color: #fff;
 }
+
+.topics {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.topics-text {
+    margin-top: 1.5em;
+    padding: 0.6em;
+    border: 1px dotted #aaa;
+    border-radius: 0.3em;
+}

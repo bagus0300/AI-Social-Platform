@@ -124,6 +124,17 @@
     align-items: center;
 }
 
+.comment-form i:nth-child(3) {
+    color: #ffac33;
+    cursor: pointer;
+}
+
+.emoji-picker-wrapper {
+    position: absolute;
+    bottom: 2.5em;
+    right: 0;
+}
+
 .comment-area {
     padding: 0.5em;
     resize: none;

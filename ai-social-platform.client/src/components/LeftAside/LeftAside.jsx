@@ -11,6 +11,9 @@ export default function LeftAside() {
     return isAuthenticated ? (
         <aside className={styles['left-aside']}>
             <h3 className={styles['topic-heading']}>Topics</h3>
+            <section className={styles['topics']}>
+                <p className={styles['topics-text']}>Coming Soon</p>
+            </section>
             <Translator />
         </aside>
     ) : null;

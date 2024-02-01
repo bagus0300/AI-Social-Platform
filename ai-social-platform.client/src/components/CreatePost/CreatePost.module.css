@@ -80,6 +80,31 @@
     flex-direction: column;
 }
 
+.description-wrapper {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.emoji-picker-wrapper {
+    height: 9em;
+    z-index: 500;
+    position: absolute;
+    top: 12em;
+    left: 23em;
+}
+
+.emoji-logo-wrapper {
+    position: absolute;
+    right: 1.5em;
+    top: 0.5em;
+}
+
+.emoji-logo-wrapper i {
+    color: #ffac33;
+    cursor: pointer;
+}
+
 .text-length-error {
     font-size: 0.8em;
     text-align: center;
