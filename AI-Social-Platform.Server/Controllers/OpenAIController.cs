@@ -202,7 +202,7 @@ namespace AI_Social_Platform.Server.Controllers
                                 { Role = ChatMessageRole.User, TextContent = request.InputToTranslate }
                         },
                     temperature: 0.7,
-                    max_tokens: 64
+                    max_tokens: 2048
                     );
                
 
