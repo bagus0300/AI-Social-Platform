@@ -11,6 +11,7 @@ import createPostValidation from './createPostValidation';
 import AuthContext from '../../contexts/authContext';
 
 import OpenAIForm from '../OpenAI/OpenAi';
+import AiGeneratePhoto from '../AiGeneratePhoto/AiGeneratePhoto';
 
 const initialValues = {
     [CreateFormKeys.PostDescription]: '',
@@ -24,7 +25,16 @@ export default function CreatePost() {
 
     const [openAiFormVisible, setOpenAiFormVisible] = useState(false);
 
+    const [isGenerateImageSectionVisible, setIsGenerateImageSectionVisible] =
+        useState(false);
+
     const toggleOpenAiForm = () => setOpenAiFormVisible(!openAiFormVisible);
+
+    const openGenerateImageSection = () =>
+        setIsGenerateImageSectionVisible(true);
+
+    const closeGenerateImageSection = () =>
+        setIsGenerateImageSectionVisible(false);
 
     const navigate = useNavigate();
 
@@ -119,6 +129,13 @@ export default function CreatePost() {
                     updatePostDescription={updatePostDescription}
                 />
             )}
+
+            {isGenerateImageSectionVisible && (
+                <AiGeneratePhoto
+                    closeGenerateImageSection={closeGenerateImageSection}
+                />
+            )}
+
             <div onClick={closeCreateForm} className={styles['backdrop']}></div>
             <section className={styles['create-post-section']}>
                 <div className={styles['section-header']}>
@@ -156,6 +173,24 @@ export default function CreatePost() {
                     <button
                         className={styles['openAi-button']}
                         onClick={toggleOpenAiForm}
+                    >
+                        Try
+                    </button>
+                </div>
+                <div className={styles['openAi']}>
+                    <section className={styles['openAi-section']}>
+                        <img
+                            src={FILES.aiLogo}
+                            alt="OpenAI Logo"
+                            className={styles['openAi-logo']}
+                        />
+                        <p className={styles['openAi']}>
+                            <strong>Generating image with OpenAI</strong>
+                        </p>
+                    </section>
+                    <button
+                        className={styles['openAi-button']}
+                        onClick={openGenerateImageSection}
                     >
                         Try
                     </button>

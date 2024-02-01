@@ -9,10 +9,10 @@ import {
 import styles from './Translator.module.css';
 
 const initialValues = {
-    [TranslatorFormKeys.selectInputLanguage]: 'English',
-    [TranslatorFormKeys.selectTargetLanguage]: 'Bulgarian',
-    [TranslatorFormKeys.inputLanguageArea]: '',
-    [TranslatorFormKeys.targetLanguageArea]: '',
+    [TranslatorFormKeys.SelectInputLanguage]: 'English',
+    [TranslatorFormKeys.SelectTargetLanguage]: 'Bulgarian',
+    [TranslatorFormKeys.InputLanguageArea]: '',
+    [TranslatorFormKeys.TargetLanguageArea]: '',
 };
 
 export default function Translator() {
@@ -23,26 +23,26 @@ export default function Translator() {
 
     async function onSubmit(values) {
         const data = {
-            inputLanguage: values[TranslatorFormKeys.selectInputLanguage],
-            inputToTranslate: values[TranslatorFormKeys.inputLanguageArea],
-            targetLanguage: values[TranslatorFormKeys.selectTargetLanguage],
+            inputLanguage: values[TranslatorFormKeys.SelectInputLanguage],
+            inputToTranslate: values[TranslatorFormKeys.InputLanguageArea],
+            targetLanguage: values[TranslatorFormKeys.SelectTargetLanguage],
         };
 
         const result = await openAiService.translateWithAi(data);
 
-        values[TranslatorFormKeys.targetLanguageArea] = result.translatedText;
+        values[TranslatorFormKeys.TargetLanguageArea] = result.translatedText;
     }
 
     const switchLanguages = () => {
         setValues((val) => ({
-            [TranslatorFormKeys.selectInputLanguage]:
-                val[TranslatorFormKeys.selectTargetLanguage],
-            [TranslatorFormKeys.selectTargetLanguage]:
-                val[TranslatorFormKeys.selectInputLanguage],
-            [TranslatorFormKeys.inputLanguageArea]:
-                val[TranslatorFormKeys.inputLanguageArea],
-            [TranslatorFormKeys.targetLanguageArea]:
-                val[TranslatorFormKeys.targetLanguageArea],
+            [TranslatorFormKeys.SelectInputLanguage]:
+                val[TranslatorFormKeys.SelectTargetLanguage],
+            [TranslatorFormKeys.SelectTargetLanguage]:
+                val[TranslatorFormKeys.SelectInputLanguage],
+            [TranslatorFormKeys.InputLanguageArea]:
+                val[TranslatorFormKeys.InputLanguageArea],
+            [TranslatorFormKeys.TargetLanguageArea]:
+                val[TranslatorFormKeys.TargetLanguageArea],
         }));
     };
 
@@ -55,10 +55,10 @@ export default function Translator() {
                 <div className={styles['select-options']}>
                     <select
                         className={styles['select-input-language']}
-                        name={TranslatorFormKeys.selectInputLanguage}
-                        id={TranslatorFormKeys.selectInputLanguage}
+                        name={TranslatorFormKeys.SelectInputLanguage}
+                        id={TranslatorFormKeys.SelectInputLanguage}
                         onChange={handleChange}
-                        value={values[TranslatorFormKeys.selectInputLanguage]}
+                        value={values[TranslatorFormKeys.SelectInputLanguage]}
                     >
                         {languages
                             .sort((a, b) => a.localeCompare(b))
@@ -76,10 +76,10 @@ export default function Translator() {
 
                     <select
                         className={styles['select-target-language']}
-                        name={TranslatorFormKeys.selectTargetLanguage}
-                        id={TranslatorFormKeys.selectTargetLanguage}
+                        name={TranslatorFormKeys.SelectTargetLanguage}
+                        id={TranslatorFormKeys.SelectTargetLanguage}
                         onChange={handleChange}
-                        value={values[TranslatorFormKeys.selectTargetLanguage]}
+                        value={values[TranslatorFormKeys.SelectTargetLanguage]}
                     >
                         {languages
                             .sort((a, b) => a.localeCompare(b))
@@ -91,22 +91,22 @@ export default function Translator() {
                 <div className={styles['areas-and-button-wrapper']}>
                     <div className={styles['input-language-wrapper']}>
                         <label
-                            htmlFor={TranslatorFormKeys.inputLanguageArea}
+                            htmlFor={TranslatorFormKeys.InputLanguageArea}
                         ></label>
                         <textarea
                             className={styles['input-language-area']}
                             cols="40"
                             rows="10"
                             type="text"
-                            name={TranslatorFormKeys.inputLanguageArea}
-                            id={TranslatorFormKeys.inputLanguageArea}
+                            name={TranslatorFormKeys.InputLanguageArea}
+                            id={TranslatorFormKeys.InputLanguageArea}
                             onChange={handleChange}
-                            value={values[TranslatorFormKeys.inputLanguageArea]}
+                            value={values[TranslatorFormKeys.InputLanguageArea]}
                         ></textarea>
                     </div>
                     <div className={styles['target-language-wrapper']}>
                         <label
-                            htmlFor={TranslatorFormKeys.targetLanguageArea}
+                            htmlFor={TranslatorFormKeys.TargetLanguageArea}
                         ></label>
                         <textarea
                             className={styles['target-language-area']}
@@ -114,22 +114,22 @@ export default function Translator() {
                             rows="10"
                             type="text"
                             disabled
-                            name={TranslatorFormKeys.targetLanguageArea}
-                            id={TranslatorFormKeys.targetLanguageArea}
+                            name={TranslatorFormKeys.TargetLanguageArea}
+                            id={TranslatorFormKeys.TargetLanguageArea}
                             onChange={handleChange}
                             value={
-                                values[TranslatorFormKeys.targetLanguageArea]
+                                values[TranslatorFormKeys.TargetLanguageArea]
                             }
                         ></textarea>
                     </div>
 
                     <button
                         disabled={
-                            values[TranslatorFormKeys.inputLanguageArea]
+                            values[TranslatorFormKeys.InputLanguageArea]
                                 .length < 1
                         }
                         className={
-                            values[TranslatorFormKeys.inputLanguageArea]
+                            values[TranslatorFormKeys.InputLanguageArea]
                                 .length < 1
                                 ? styles['translate-button-disabled']
                                 : styles['translate-button']

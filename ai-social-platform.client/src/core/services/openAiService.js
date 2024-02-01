@@ -15,3 +15,10 @@ export const translateWithAi = async (data) =>
         data,
         ContentType.ApplicationJSON
     );
+
+export const generatePhoto = async (data) =>
+    await api.post(
+        `${endpoints.generatePhoto}`,
+        data,
+        ContentType.ApplicationJSON
+    );

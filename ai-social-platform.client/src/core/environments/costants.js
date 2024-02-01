@@ -78,6 +78,7 @@ export const endpoints = {
     // OpenAI
     getTextWhitOpenAi: 'OpenAi/generateText',
     translateWithAi: 'OpenAi/TranslateAi',
+    generatePhoto: 'OpenAi/GenerateAIImage',
 
     // SEARCH
     search: (type, query) => `SocialFeature/search?type=${type}&query=${query}`,
@@ -138,10 +139,14 @@ export const SearchFormKeys = {
 };
 
 export const TranslatorFormKeys = {
-    selectInputLanguage: 'select-input-language',
-    selectTargetLanguage: 'select-target-language',
-    inputLanguageArea: 'input-language-area',
-    targetLanguageArea: 'target-language-area',
+    SelectInputLanguage: 'select-input-language',
+    SelectTargetLanguage: 'select-target-language',
+    InputLanguageArea: 'input-language-area',
+    TargetLanguageArea: 'target-language-area',
+};
+
+export const GeneratePhotoFormKeys = {
+    PhotoDescription: 'photo-description',
 };
 
 export const ContentType = {

@@ -120,7 +120,7 @@ namespace AI_Social_Platform.Server.Controllers
                 var api = new OpenAIAPI(apiKey);
                 var result = await api.ImageGenerations.CreateImageAsync(ImageDescription, OpenAI_API.Models.Model.DALLE3);
 
-                return Ok(result.Data[0].Url);
+                return Ok(new {imageUrl = result.Data[0].Url});
             }
             catch (Exception ex)
             {

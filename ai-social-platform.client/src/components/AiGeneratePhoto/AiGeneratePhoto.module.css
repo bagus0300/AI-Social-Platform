@@ -1,0 +1,119 @@
+.backdrop {
+    background-color: rgba(0, 0, 0, 0.3);
+    height: 100vh;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 40;
+}
+
+.generate-photo-section {
+    z-index: 1000;
+    background-color: #fff;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 35em;
+    border-radius: 0.2em;
+    box-shadow: 0 0 0.2em 0.1em #ddd;
+}
+
+.header-wrapper {
+    position: relative;
+    border-bottom: 1px solid #aaa;
+    width: 100%;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+}
+
+.section-heading {
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.close-button {
+    position: absolute;
+    top: 0.2em;
+    right: 1em;
+    background-color: #ddd;
+    color: #505050;
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    text-align: center;
+    cursor: pointer;
+}
+
+.generate-photo-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.photo-description-area {
+    padding: 1em;
+    resize: none;
+    border: 0;
+    border-left: 1px solid #aaa;
+}
+
+.generate-button,
+.generate-button-disabled {
+    border: 0;
+    margin-top: 0.5em;
+    padding: 0.3em 0;
+    border-radius: 0.3em;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.generate-button {
+    background-color: #004aad;
+    color: #fff;
+}
+
+.generate-button-disabled {
+    background-color: #aaa;
+    color: #000;
+}
+
+.generated-photo-wrapper {
+    width: 28em;
+    margin-top: 1em;
+}
+
+.generated-img {
+    width: 100%;
+    height: 20em;
+    aspect-ratio: 16/9;
+    border-radius: 0.2em;
+}
+
+.result-text {
+    padding: 5em 8em;
+    background-color: #ddd;
+    border: 2px dotted #ccc;
+    margin-top: 1em;
+}
+
+.view-button {
+    text-decoration: none;
+    background-color: #004aad;
+    color: #fff;
+    padding: 0.2em 0.5em;
+    border-radius: 0.3em;
+    transition: all 0.3s ease-in-out;
+}
+
+.view-button:visited {
+    color: #fff;
+}
+
+.view-button:hover {
+    border-radius: 0;
+}
