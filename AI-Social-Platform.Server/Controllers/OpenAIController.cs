@@ -12,6 +12,7 @@ namespace AI_Social_Platform.Server.Controllers
     using System.Text;
     using OpenAI_API;
     using OpenAI.Images;
+    using OpenAI_API.Images;
 
     [ApiController]
     [Route("api/[controller]")]
@@ -121,6 +122,61 @@ namespace AI_Social_Platform.Server.Controllers
                 var result = await api.ImageGenerations.CreateImageAsync(ImageDescription, OpenAI_API.Models.Model.DALLE3);
 
                 return Ok(new {imageUrl = result.Data[0].Url});
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error: {ex.Message}");
+            }
+        }
+
+        [HttpPost("GenerateAIImagePicture")]
+        public async Task<IActionResult> GenerateImagePicture([FromBody] string ImageDescription)
+        {
+            try
+            {
+                var apiKey = configuration["OpenAi:ApiKey"];
+                var api = new OpenAIAPI(apiKey);
+                var requestSettings = new OpenAI_API.Images.ImageGenerationRequest();
+                requestSettings.Prompt = ImageDescription;
+                requestSettings.Model = OpenAI_API.Models.Model.DALLE3;
+                requestSettings.ResponseFormat = ImageResponseFormat.B64_json;
+                requestSettings.Size = OpenAI_API.Images.ImageSize._1024;
+                requestSettings.Quality = "standard";
+                requestSettings.NumOfImages = 1;
+
+                var result = await api.ImageGenerations.CreateImageAsync(requestSettings);
+
+                var image = result.Data[0].Base64Data;
+                var imageBytes = Convert.FromBase64String(image);
+
+                return File(imageBytes, "image/png");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error: {ex.Message}");
+            }
+        }
+
+        [HttpPost("GenerateAIImageBase64")]
+        public async Task<IActionResult> GenerateImageBase64([FromBody] string ImageDescription)
+        {
+            try
+            {
+                var apiKey = configuration["OpenAi:ApiKey"];
+                var api = new OpenAIAPI(apiKey);
+                var requestSettings = new OpenAI_API.Images.ImageGenerationRequest();
+                requestSettings.Prompt = ImageDescription;
+                requestSettings.Model = OpenAI_API.Models.Model.DALLE3;
+                requestSettings.ResponseFormat = ImageResponseFormat.B64_json;
+                requestSettings.Size = OpenAI_API.Images.ImageSize._1024;
+                requestSettings.Quality = "standard";
+                requestSettings.NumOfImages = 1;
+
+                var result = await api.ImageGenerations.CreateImageAsync(requestSettings);
+
+                var image = result.Data[0].Base64Data;
+
+                return Ok(new {imageBase64 = image});
             }
             catch (Exception ex)
             {
