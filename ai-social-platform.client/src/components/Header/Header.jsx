@@ -9,7 +9,7 @@ import AuthContext from '../../contexts/authContext';
 
 import Notifications from '../Notifications/Notifications';
 
-import Logo from '/images/Logo-White.svg'
+import Logo from '/images/Logo-White.svg';
 
 export default function Header() {
     const [showUserMenu, setShowUserMenu] = useState(false);
@@ -64,6 +64,12 @@ export default function Header() {
 
     const formSubmit = (e) => e.preventDefault();
 
+    const scrollToTop = () =>
+        window.scroll({
+            behavior: 'smooth',
+            top: 0,
+        });
+
     return (
         <>
             {showNotificationsMenu && (
@@ -75,8 +81,12 @@ export default function Header() {
                 <div onClick={hideMenus} className={styles['backdrop']}></div>
             )}
             <header className={styles['app-header']}>
-            <img src={Logo} alt="AI-Social-Platform Logo" className={styles['logo-image']} />
-                <h1 className={styles['logo-heading']}>
+                <img
+                    src={Logo}
+                    alt="AI-Social-Platform Logo"
+                    className={styles['logo-image']}
+                />
+                <h1 onClick={scrollToTop} className={styles['logo-heading']}>
                     <Link className={styles['logo-text']} to={PATH.home}>
                         AI-Social-Platform
                     </Link>
