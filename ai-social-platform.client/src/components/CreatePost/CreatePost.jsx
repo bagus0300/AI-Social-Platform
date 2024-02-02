@@ -185,7 +185,7 @@ export default function CreatePost() {
                             className={styles['openAi-logo']}
                         />
                         <p className={styles['openAi']}>
-                            <strong>Generating text with OpenAI</strong>
+                            <strong>Generate text with OpenAI</strong>
                         </p>
                     </section>
                     <button
@@ -203,7 +203,7 @@ export default function CreatePost() {
                             className={styles['openAi-logo']}
                         />
                         <p className={styles['openAi']}>
-                            <strong>Generating image with OpenAI</strong>
+                            <strong>Generate image with OpenAI</strong>
                         </p>
                     </section>
                     <button
