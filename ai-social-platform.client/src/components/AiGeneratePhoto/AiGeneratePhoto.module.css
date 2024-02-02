@@ -82,6 +82,11 @@
     color: #000;
 }
 
+.error-text {
+    margin-top: 0.5em;
+    color: #a10000;
+}
+
 .generated-photo-wrapper {
     width: 28em;
     margin-top: 1em;
@@ -101,19 +106,16 @@
     margin-top: 1em;
 }
 
-.view-button {
+.add-image-button {
     text-decoration: none;
     background-color: #004aad;
     color: #fff;
     padding: 0.2em 0.5em;
     border-radius: 0.3em;
     transition: all 0.3s ease-in-out;
+    cursor: pointer;
 }
 
-.view-button:visited {
-    color: #fff;
-}
-
-.view-button:hover {
+.add-image-button:hover {
     border-radius: 0;
 }

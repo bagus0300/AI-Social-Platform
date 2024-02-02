@@ -112,6 +112,16 @@
     margin-top: 0.5em;
 }
 
+.generated-images {
+    margin: 0.5em 0 0 0.5em;
+}
+
+.generated-image-count-error {
+    color: #a10000;
+    text-align: center;
+    margin: 0.5em;
+}
+
 .post-description {
     padding: 1em;
     resize: none;

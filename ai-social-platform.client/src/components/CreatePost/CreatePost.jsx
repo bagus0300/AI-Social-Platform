@@ -8,7 +8,6 @@ import * as mediaService from '../../core/services/mediaService';
 
 import { CreateFormKeys, FILES, PATH } from '../../core/environments/costants';
 import styles from './CreatePost.module.css';
-import createPostValidation from './createPostValidation';
 import AuthContext from '../../contexts/authContext';
 
 import OpenAIForm from '../OpenAI/OpenAi';
@@ -28,6 +27,11 @@ export default function CreatePost() {
 
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
+    const [generatedImageCount, setGeneratedImageCount] = useState(0);
+
+    const [generateImageCountError, setGenerateImageCountError] =
+        useState(false);
+
     const [isGenerateImageSectionVisible, setIsGenerateImageSectionVisible] =
         useState(false);
 
@@ -35,8 +39,13 @@ export default function CreatePost() {
 
     const toggleEmojiPicker = () => setShowEmojiPicker(!showEmojiPicker);
 
-    const openGenerateImageSection = () =>
-        setIsGenerateImageSectionVisible(true);
+    const openGenerateImageSection = () => {
+        if (generatedImageCount > 0) {
+            setGenerateImageCountError(true);
+        } else {
+            setIsGenerateImageSectionVisible(true);
+        }
+    };
 
     const closeGenerateImageSection = () =>
         setIsGenerateImageSectionVisible(false);
@@ -51,10 +60,10 @@ export default function CreatePost() {
         handleChange,
         handleSubmit,
         setFieldValue,
+        setValues,
     } = useFormik({
         initialValues,
         onSubmit,
-        validationSchema: createPostValidation,
     });
 
     const onEmojiClick = (emojiObject) => {
@@ -77,18 +86,40 @@ export default function CreatePost() {
             values[CreateFormKeys.PostDescription]
         } ${generatedText}`);
 
+    const updateFormValues = (photo) => {
+        setValues((prevValues) => {
+            return {
+                ...prevValues,
+                [CreateFormKeys.PostMedia]: {
+                    ...prevValues[CreateFormKeys.PostMedia],
+                    photo,
+                },
+            };
+        });
+
+        setGeneratedImageCount(1);
+    };
+
+    const addGeneratedPhoto = (photo) => {
+        updateFormValues(photo);
+
+        setIsGenerateImageSectionVisible(false);
+    };
+
     async function onSubmit(values) {
         const formData = new FormData();
 
-        if (values[CreateFormKeys.PostMedia].length > 0) {
-            for (const file of values[CreateFormKeys.PostMedia]) {
+        if (Object.keys(values[CreateFormKeys.PostMedia]).length > 0) {
+            for (const file of Object.values(
+                values[CreateFormKeys.PostMedia]
+            )) {
                 formData.append('files', file);
             }
         }
 
         if (
-            values[CreateFormKeys.PostDescription].length > 0 &&
-            values[CreateFormKeys.PostMedia].length === 0
+            Object.keys(values[CreateFormKeys.PostDescription]).length > 0 &&
+            Object.keys(values[CreateFormKeys.PostMedia]).length === 0
         ) {
             postService
                 .createPost({ content: values[CreateFormKeys.PostDescription] })
@@ -100,37 +131,39 @@ export default function CreatePost() {
         }
 
         if (
-            values[CreateFormKeys.PostDescription].length === 0 &&
-            values[CreateFormKeys.PostMedia].length > 0
+            Object.keys(values[CreateFormKeys.PostDescription]).length === 0 &&
+            Object.keys(values[CreateFormKeys.PostMedia]).length > 0
         ) {
-            Promise.all([
-                postService.createPost({
-                    content: '',
-                }),
-                mediaService.addMedia(formData),
-            ])
-                .then(() => {
+            postService
+                .createPost({ content: '' })
+                .then(() =>
+                    mediaService
+                        .addMedia(formData)
+                        .catch((error) => console.log(error))
+                )
+                .catch((error) => console.log(error))
+                .finally(() => {
                     resetForm();
                     navigate(PATH.home);
-                })
-                .catch((error) => console.log(error));
+                });
         }
 
         if (
-            values[CreateFormKeys.PostDescription].length > 0 &&
-            values[CreateFormKeys.PostMedia].length > 0
+            Object.keys(values[CreateFormKeys.PostDescription]).length > 0 &&
+            Object.keys(values[CreateFormKeys.PostMedia]).length > 0
         ) {
-            Promise.all([
-                postService.createPost({
-                    content: values[CreateFormKeys.PostDescription],
-                }),
-                mediaService.addMedia(formData),
-            ])
-                .then(() => {
+            postService
+                .createPost({ content: values[CreateFormKeys.PostDescription] })
+                .then(() =>
+                    mediaService
+                        .addMedia(formData)
+                        .catch((error) => console.log(error))
+                )
+                .catch((error) => console.log(error))
+                .finally(() => {
                     resetForm();
                     navigate(PATH.home);
-                })
-                .catch((error) => console.log(error));
+                });
         }
     }
 
@@ -145,6 +178,7 @@ export default function CreatePost() {
 
             {isGenerateImageSectionVisible && (
                 <AiGeneratePhoto
+                    addGeneratedPhoto={addGeneratedPhoto}
                     closeGenerateImageSection={closeGenerateImageSection}
                 />
             )}
@@ -213,6 +247,16 @@ export default function CreatePost() {
                         Try
                     </button>
                 </div>
+                {generateImageCountError && (
+                    <p className={styles['generated-image-count-error']}>
+                        You can only generate one image per post.
+                    </p>
+                )}
+                {generatedImageCount > 0 && (
+                    <p className={styles['generated-images']}>
+                        Generated Image: {generatedImageCount}
+                    </p>
+                )}
                 <div className={styles['text-length-error']}>
                     {errors[CreateFormKeys.PostDescription] && (
                         <p>{errors[CreateFormKeys.PostDescription]}</p>

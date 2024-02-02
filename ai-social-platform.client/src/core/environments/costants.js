@@ -24,6 +24,8 @@ export const FILES = {
     aiLogo: '/images/openAi.png',
 };
 
+export const GeneratedImageName = 'generateImage';
+
 export const endpoints = {
     // AUTH
     login: 'User/login',
@@ -153,6 +155,7 @@ export const GeneratePhotoFormKeys = {
 export const ContentType = {
     ApplicationJSON: 'application/json',
     MulitpartFormData: 'multipart/form-data',
+    ImagePng: 'image/png',
 };
 
 export const CommentActions = {

@@ -1,21 +1,32 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 
-import { GeneratePhotoFormKeys } from '../../core/environments/costants';
+import {
+    ContentType,
+    GeneratePhotoFormKeys,
+    GeneratedImageName,
+} from '../../core/environments/costants';
 import styles from './AiGeneratePhoto.module.css';
 import * as openAiService from '../../core/services/openAiService';
 
 import PaginationSpinner from '../PaginationSpinner/PaginationSpinner';
+import { convertBase64ToFileObject } from '../../utils/convertBase64ToFileObject';
 
 const initialValues = {
     [GeneratePhotoFormKeys.PhotoDescription]: '',
 };
 
-export default function AiGeneratePhoto({ closeGenerateImageSection }) {
+export default function AiGeneratePhoto({
+    closeGenerateImageSection,
+    addGeneratedPhoto,
+}) {
     const [generatedPhoto, setGeneratedPhoto] = useState();
 
     const [isLoading, setIsLoading] = useState(false);
+
+    const [generatedFile, setGeneratedFile] = useState();
+
+    const [haveError, setHaveError] = useState(false);
 
     const { values, isSubmitting, handleChange, handleSubmit } = useFormik({
         initialValues,
@@ -26,20 +37,30 @@ export default function AiGeneratePhoto({ closeGenerateImageSection }) {
         try {
             setGeneratedPhoto('');
 
+            setHaveError(false);
+
             setIsLoading(true);
 
-            const result = await openAiService.generatePhoto(
+            const result = await openAiService.generatePhotoBase64(
                 values[GeneratePhotoFormKeys.PhotoDescription]
             );
 
-            setGeneratedPhoto(result.imageUrl);
+            const file = await convertBase64ToFileObject(
+                result.imageBase64,
+                GeneratedImageName,
+                ContentType.ImagePng
+            );
 
-            console.log(result.imageUrl);
+            setGeneratedFile(file);
+
+            const fileUrl = URL.createObjectURL(file);
+
+            setGeneratedPhoto(fileUrl);
 
             setIsLoading(false);
         } catch (error) {
-            console.log(error);
             setIsLoading(false);
+            setHaveError(true);
         }
     }
 
@@ -97,6 +118,12 @@ export default function AiGeneratePhoto({ closeGenerateImageSection }) {
 
                 {isLoading && <PaginationSpinner />}
 
+                {haveError && (
+                    <p className={styles['error-text']}>
+                        Something went wrong please try again later.
+                    </p>
+                )}
+
                 {generatedPhoto && (
                     <>
                         <div className={styles['generated-photo-wrapper']}>
@@ -106,13 +133,14 @@ export default function AiGeneratePhoto({ closeGenerateImageSection }) {
                                 alt="generated photo"
                             />
                         </div>
-                        <Link
-                            className={styles['view-button']}
-                            to={generatedPhoto}
-                            target="_blank"
+                        <p
+                            onClick={() => {
+                                addGeneratedPhoto(generatedFile);
+                            }}
+                            className={styles['add-image-button']}
                         >
-                            View in full size
-                        </Link>
+                            Add to post
+                        </p>
                     </>
                 )}
             </section>
