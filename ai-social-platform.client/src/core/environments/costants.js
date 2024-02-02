@@ -10,7 +10,7 @@ export const PATH = {
     create: '/create-post',
     detailsPost: '/posts/:postId',
     search: '/search',
-    postDetails: (postId) => `posts/${postId}`,
+    postDetails: (postId) => `/posts/${postId}`,
     profile: '/profile/:userId',
     profileedit: '/profileedit/:userId',
     successfully: '/successfuly',
@@ -50,7 +50,6 @@ export const endpoints = {
     // getPostsByUserId: (userId) => `Publication/User/${userId}`,
     getPostsByUserId: (userId, page) => `Publication/User/${userId}`,
 
-
     // MEDIA
     addMedia: 'Media/upload?isItPublication=true',
     getPostMedia: (postId) => `Media/${postId}`,
@@ -80,6 +79,7 @@ export const endpoints = {
     getTextWhitOpenAi: 'OpenAi/generateText',
     translateWithAi: 'OpenAi/TranslateAi',
     generatePhoto: 'OpenAi/GenerateAIImage',
+    generatePhotoBase64: 'OpenAi/GenerateAIImageBase64',
 
     // SEARCH
     search: (type, query) => `SocialFeature/search?type=${type}&query=${query}`,

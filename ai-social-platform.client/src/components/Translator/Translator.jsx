@@ -7,6 +7,7 @@ import {
     languages,
 } from '../../core/environments/costants';
 import styles from './Translator.module.css';
+import { useState } from 'react';
 
 const initialValues = {
     [TranslatorFormKeys.SelectInputLanguage]: 'English',
@@ -16,21 +17,37 @@ const initialValues = {
 };
 
 export default function Translator() {
+    const [isLoading, setIsLoading] = useState(false);
+
+    const [haveError, setHaveError] = useState(false);
+
     const { values, handleChange, handleSubmit, setValues } = useFormik({
         initialValues,
         onSubmit,
     });
 
     async function onSubmit(values) {
-        const data = {
-            inputLanguage: values[TranslatorFormKeys.SelectInputLanguage],
-            inputToTranslate: values[TranslatorFormKeys.InputLanguageArea],
-            targetLanguage: values[TranslatorFormKeys.SelectTargetLanguage],
-        };
+        try {
+            setHaveError(false);
 
-        const result = await openAiService.translateWithAi(data);
+            setIsLoading(true);
 
-        values[TranslatorFormKeys.TargetLanguageArea] = result.translatedText;
+            const data = {
+                inputLanguage: values[TranslatorFormKeys.SelectInputLanguage],
+                inputToTranslate: values[TranslatorFormKeys.InputLanguageArea],
+                targetLanguage: values[TranslatorFormKeys.SelectTargetLanguage],
+            };
+
+            const result = await openAiService.translateWithAi(data);
+
+            setIsLoading(false);
+
+            values[TranslatorFormKeys.TargetLanguageArea] =
+                result.translatedText;
+        } catch (error) {
+            setHaveError(true);
+            setIsLoading(false);
+        }
     }
 
     const switchLanguages = () => {
@@ -136,8 +153,13 @@ export default function Translator() {
                         }
                         type="submit"
                     >
-                        Translate
+                        {!isLoading ? 'Translate' : 'In process...'}
                     </button>
+                    {haveError && (
+                        <p className={styles['error-text']}>
+                            Something went wrong please try agin later.
+                        </p>
+                    )}
                 </div>
             </form>
         </section>

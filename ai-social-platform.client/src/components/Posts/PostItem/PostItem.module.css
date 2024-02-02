@@ -22,6 +22,10 @@
     margin-bottom: 0.5em;
 }
 
+.media img {
+    width: 100%;
+}
+
 .media:hover {
     cursor: pointer;
     filter: brightness(105%);
@@ -60,6 +64,7 @@
 }
 
 .with-two-files ul li img {
+    aspect-ratio: 16/9;
     height: 100%;
 }
 
@@ -86,14 +91,14 @@
     flex: 1 1 200px;
 }
 
-.files .file:nth-of-type(2) img,
-.files .file:nth-of-type(3) img {
-    aspect-ratio: 16/9;
-}
-
 .files .file {
     list-style: none;
-    height: auto;
+    width: 100%;
+}
+
+.file img {
+    aspect-ratio: 16/9;
+    width: 100%;
 }
 
 .file:hover {

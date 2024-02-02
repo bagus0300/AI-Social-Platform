@@ -30,24 +30,32 @@ export default function User({ user }) {
     const goToProfilePage = () => navigate(PATH.userProfile(user.id));
 
     const onFollowButtonClickHandler = async () => {
-        setSuccessfullyFollow(true);
+        try {
+            setSuccessfullyFollow(true);
 
-        await userService.addFriend(user.id);
-        setIsFriend(true);
+            await userService.addFriend(user.id);
+            setIsFriend(true);
 
-        const timeout = setTimeout(() => {
-            setSuccessfullyFollow(false);
-        }, 2000);
+            const timeout = setTimeout(() => {
+                setSuccessfullyFollow(false);
+            }, 2000);
 
-        return () => clearTimeout(timeout);
+            return () => clearTimeout(timeout);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const onUnfollowButtonClickHandler = async () => setUnfollow(true);
 
     const unfollowPerson = async () => {
-        await userService.removeFriend(user.id);
-        setIsFriend(false);
-        setUnfollow(false);
+        try {
+            await userService.removeFriend(user.id);
+            setIsFriend(false);
+            setUnfollow(false);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const closeConfirmUnfollowModal = () => setUnfollow(false);

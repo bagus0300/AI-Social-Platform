@@ -40,18 +40,20 @@ export default function Posts() {
     }, [posts]);
 
     async function fetchMoreItems() {
-        const data = await postService.getAllPosts(page);
+        try {
+            const data = await postService.getAllPosts(page);
 
-        if (data.publicationsLeft === 0 && data.publications.length === 0) {
-            setHasMore(false);
-        } else {
-            dispatchPost({
-                type: PostActions.GetAllPosts,
-                payload: data.publications,
-            });
+            if (data.publicationsLeft === 0 && data.publications.length === 0) {
+                setHasMore(false);
+            } else {
+                dispatchPost({
+                    type: PostActions.GetAllPosts,
+                    payload: data.publications,
+                });
 
-            setPage((state) => state + 1);
-        }
+                setPage((state) => state + 1);
+            }
+        } catch (error) {}
     }
 
     return (

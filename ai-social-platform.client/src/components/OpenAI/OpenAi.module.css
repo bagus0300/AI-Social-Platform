@@ -45,6 +45,11 @@
     margin-bottom: 15px;
 }
 
+.error-message {
+    padding: 0.5em;
+    color: #ed0b0b;
+}
+
 /* Input warepper */
 .form-group-theme {
     text-align: center;

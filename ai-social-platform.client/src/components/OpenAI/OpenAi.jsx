@@ -8,6 +8,7 @@ export default function OpenAIForm({ onClose, updatePostDescription }) {
     const [tone, setTone] = useState('');
     const [audienceType, setAudienceType] = useState('');
     const [textLength, setTextLength] = useState('');
+    const [haveError, setHaveError] = useState(false);
 
     const [loading, setLoading] = useState(false);
 
@@ -40,13 +41,15 @@ export default function OpenAIForm({ onClose, updatePostDescription }) {
         };
 
         try {
+            setHaveError(false);
             setLoading(true);
             const response = await generateTextWhitOpenAi(data);
             setLoading(false);
             updatePostDescription(response.generatedText);
             onClose(onClose);
         } catch (error) {
-            console.error('Error:', error);
+            setLoading(false);
+            setHaveError(true);
         }
     };
 
@@ -64,6 +67,11 @@ export default function OpenAIForm({ onClose, updatePostDescription }) {
                         <header className={styles['headers']}>
                             <h2>OpenAI</h2>
                             {loading && <BeatLoader color="#2d2ae6" />}
+                            {haveError && (
+                                <p className={styles['error-message']}>
+                                    Something went wrong please try again later.
+                                </p>
+                            )}
                             <button
                                 className={styles['btn btn-close']}
                                 onClick={onClose}

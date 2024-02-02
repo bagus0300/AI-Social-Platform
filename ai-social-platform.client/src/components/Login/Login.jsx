@@ -107,7 +107,7 @@ export default function Login() {
                             className={styles['login-button']}
                             disabled={isSubmitting}
                         >
-                            Log in
+                            {isSubmitting ? 'Logging in...' : 'Log in'}
                         </button>
                     </form>
                     <section className={styles['create-account']}>

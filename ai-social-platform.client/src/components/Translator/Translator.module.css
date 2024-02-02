@@ -104,3 +104,8 @@
 .translate-button:hover {
     border-radius: 0;
 }
+
+.error-text {
+    font-size: 0.8em;
+    color: #a10000;
+}
